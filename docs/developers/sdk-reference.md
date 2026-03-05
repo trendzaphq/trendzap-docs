@@ -2,6 +2,9 @@
 sidebar_position: 1
 title: SDK Reference
 description: Complete reference for the TrendZap TypeScript SDK
+last_update:
+  date: 2026-03-05
+  author: TrendZap Team
 ---
 
 # SDK Reference

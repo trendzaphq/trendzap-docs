@@ -5,7 +5,7 @@ import { themes as prismThemes } from 'prism-react-renderer';
 const config = {
   title: 'TrendZap Documentation',
   tagline: 'The decentralized prediction market for social media virality',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/trendzap_logo.png',
 
   url: 'https://docs.trendzap.xyz',
   baseUrl: '/',
@@ -13,13 +13,43 @@ const config = {
   organizationName: 'trendzaphq',
   projectName: 'trendzap-docs',
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
 
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
   },
+
+  headTags: [
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'preconnect',
+        href: 'https://fonts.googleapis.com',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossorigin: 'anonymous',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap',
+      },
+    },
+  ],
 
   presets: [
     [
@@ -29,6 +59,9 @@ const config = {
         docs: {
           sidebarPath: './sidebars.js',
           editUrl: 'https://github.com/trendzaphq/trendzap-docs/tree/main/',
+          routeBasePath: 'docs',
+          showLastUpdateTime: false,
+          showLastUpdateAuthor: false,
         },
         blog: false,
         theme: {
@@ -41,13 +74,25 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      image: 'img/trendzap-social-card.png',
+      colorMode: {
+        defaultMode: 'dark',
+        disableSwitch: true,
+        respectPrefersColorScheme: false,
+      },
+      image: 'img/trendzap_logo.png',
+      metadata: [
+        { name: 'theme-color', content: '#0a0a0a' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'og:type', content: 'website' },
+      ],
       navbar: {
         title: 'TrendZap',
         logo: {
           alt: 'TrendZap Logo',
-          src: 'img/logo.svg',
+          src: 'img/trendzap_logo.png',
+          style: { borderRadius: '8px' },
         },
+        hideOnScroll: false,
         items: [
           {
             type: 'docSidebar',
@@ -57,7 +102,7 @@ const config = {
           },
           {
             href: 'https://trendzap.xyz',
-            label: 'App',
+            label: 'App →',
             position: 'right',
           },
           {
@@ -73,32 +118,70 @@ const config = {
           {
             title: 'Docs',
             items: [
-              { label: 'Introduction', to: '/docs/introduction/what-is-trendzap' },
-              { label: 'Quick Start', to: '/docs/getting-started/quick-start' },
-              { label: 'SDK Reference', to: '/docs/developers/sdk-reference' },
+              { label: '🚀 Introduction', to: '/docs/introduction/what-is-trendzap' },
+              { label: '⚡ Quick Start', to: '/docs/getting-started/quick-start' },
+              { label: '🛠 SDK Reference', to: '/docs/developers/sdk-reference' },
             ],
           },
           {
             title: 'Community',
             items: [
-              { label: 'Twitter', href: 'https://twitter.com/TrendZapHQ' },
-              { label: 'Discord', href: 'https://discord.gg/trendzap' },
+              { label: '𝕏 Twitter / X', href: 'https://twitter.com/TrendZapHQ' },
+              { label: '💬 Discord', href: 'https://discord.gg/trendzap' },
+              { label: '📢 Telegram', href: 'https://t.me/+fsKNAii3K-Q5NWY0' },
             ],
           },
           {
-            title: 'More',
+            title: 'Built on',
             items: [
-              { label: 'GitHub', href: 'https://github.com/trendzaphq' },
               { label: 'Arbitrum', href: 'https://arbitrum.io' },
+              { label: 'Chainlink', href: 'https://chain.link' },
+              { label: 'GitHub ↗', href: 'https://github.com/trendzaphq' },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} TrendZap. Built on Arbitrum.`,
+        copyright: `© ${new Date().getFullYear()} TrendZap — The first social virality prediction market. Built on Arbitrum.`,
       },
       prism: {
-        theme: prismThemes.github,
-        darkTheme: prismThemes.dracula,
-        additionalLanguages: ['solidity', 'typescript', 'bash'],
+        theme: {
+          plain: {
+            color: '#e2e8f0',
+            backgroundColor: '#0a0a0a',
+          },
+          styles: [
+            { types: ['comment', 'prolog', 'doctype', 'cdata'], style: { color: '#4a5568', fontStyle: 'italic' } },
+            { types: ['punctuation'], style: { color: '#718096' } },
+            { types: ['property', 'tag', 'boolean', 'number', 'constant', 'symbol', 'deleted'], style: { color: '#fc8181' } },
+            { types: ['selector', 'attr-name', 'string', 'char', 'builtin', 'inserted'], style: { color: '#4ade80' } },
+            { types: ['operator', 'entity', 'url'], style: { color: '#22d3ee' } },
+            { types: ['atrule', 'attr-value', 'keyword'], style: { color: '#a78bfa' } },
+            { types: ['function', 'class-name'], style: { color: '#fbbf24' } },
+            { types: ['regex', 'important', 'variable'], style: { color: '#f472b6' } },
+          ],
+        },
+        darkTheme: {
+          plain: {
+            color: '#e2e8f0',
+            backgroundColor: '#0a0a0a',
+          },
+          styles: [
+            { types: ['comment', 'prolog', 'doctype', 'cdata'], style: { color: '#4a5568', fontStyle: 'italic' } },
+            { types: ['punctuation'], style: { color: '#718096' } },
+            { types: ['property', 'tag', 'boolean', 'number', 'constant', 'symbol', 'deleted'], style: { color: '#fc8181' } },
+            { types: ['selector', 'attr-name', 'string', 'char', 'builtin', 'inserted'], style: { color: '#4ade80' } },
+            { types: ['operator', 'entity', 'url'], style: { color: '#22d3ee' } },
+            { types: ['atrule', 'attr-value', 'keyword'], style: { color: '#a78bfa' } },
+            { types: ['function', 'class-name'], style: { color: '#fbbf24' } },
+            { types: ['regex', 'important', 'variable'], style: { color: '#f472b6' } },
+          ],
+        },
+        additionalLanguages: ['solidity', 'typescript', 'bash', 'json'],
+      },
+      docs: {
+        sidebar: {
+          hideable: true,
+          autoCollapseCategories: true,
+        },
       },
     }),
 };

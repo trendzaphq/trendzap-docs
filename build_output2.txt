@@ -1,0 +1,66 @@
+
+> @trendzap/docs@0.1.0 build /Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs
+> docusaurus build
+
+[WARNING] The `siteConfig.onBrokenMarkdownLinks` config option is deprecated and will be removed in Docusaurus v4.
+Please migrate and move this option to `siteConfig.markdown.hooks.onBrokenMarkdownLinks` instead.
+[INFO] [en] Creating an optimized production build...
+[WARNING] The `siteConfig.onBrokenMarkdownLinks` config option is deprecated and will be removed in Docusaurus v4.
+Please migrate and move this option to `siteConfig.markdown.hooks.onBrokenMarkdownLinks` instead.
+[webpackbar] ℹ Compiling Client
+[webpackbar] ℹ Compiling Server
+[webpackbar] ✔ Server: Compiled successfully in 1.90s
+[webpackbar] ✔ Client: Compiled successfully in 2.17s
+
+[ERROR] Error: Unable to build website for locale en.
+    at tryToBuildLocale (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/lib/commands/build/build.js:83:15)
+    at async /Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/lib/commands/build/build.js:35:9
+    at async mapAsyncSequential (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+utils@3.9.2_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/@docusaurus/utils/lib/jsUtils.js:21:24)
+    at async Command.build (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/lib/commands/build/build.js:34:5)
+    at async Promise.all (index 0)
+    at async runCLI (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/lib/commands/cli.js:56:5)
+    at async file:///Users/ayomisco/Documents/Main/Startup/TrendZap%20Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/bin/docusaurus.mjs:44:3 {
+  [cause]: Error: Docusaurus found broken links!
+  
+  Please check the pages of your site in the list below, and make sure you don't reference any path that does not exist.
+  Note: it's possible to ignore broken links with the 'onBrokenLinks' Docusaurus configuration, and let the build pass.
+  
+  It looks like some of the broken links we found appear in many pages of your site.
+  Maybe those broken links appear on all pages through your site layout?
+  We recommend that you check your theme configuration for such links (particularly, theme navbar and footer).
+  Frequent broken links are linking to:
+  - /
+  
+  Exhaustive list of all broken links found:
+  - Broken link on source page path = /404.html:
+     -> linking to /
+  - Broken link on source page path = /docs/developers/sdk-reference:
+     -> linking to /
+  - Broken link on source page path = /docs/getting-started/quick-start:
+     -> linking to /
+     -> linking to /docs/getting-started/connect-wallet
+     -> linking to /docs/getting-started/first-bet
+     -> linking to /docs/user-guide/creating-markets
+  - Broken link on source page path = /docs/introduction/how-it-works:
+     -> linking to /
+  - Broken link on source page path = /docs/introduction/what-is-trendzap:
+     -> linking to /
+     -> linking to /docs/getting-started/first-bet
+  - Broken link on source page path = /docs/introduction/why-arbitrum:
+     -> linking to /
+     -> linking to /docs/developers/smart-contracts
+  
+      at throwError (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+logger@3.9.2/node_modules/@docusaurus/logger/lib/logger.js:80:11)
+      at reportBrokenLinks (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/lib/server/brokenLinks.js:250:47)
+      at handleBrokenLinks (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/lib/server/brokenLinks.js:282:5)
+      at executeBrokenLinksCheck (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/lib/commands/build/buildLocale.js:119:47)
+      at /Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/lib/commands/build/buildLocale.js:94:67
+      at Object.async (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+logger@3.9.2/node_modules/@docusaurus/logger/lib/perfLogger.js:42:47)
+      at buildLocale (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/lib/commands/build/buildLocale.js:94:31)
+      at async runBuildLocaleTask (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/lib/commands/build/build.js:98:5)
+      at async /Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/lib/commands/build/build.js:79:13
+      at async tryToBuildLocale (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/lib/commands/build/build.js:75:9)
+}
+[INFO] Docusaurus version: 3.9.2
+Node version: v22.20.0
+ ELIFECYCLE  Command failed with exit code 1.

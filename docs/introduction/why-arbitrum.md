@@ -2,6 +2,9 @@
 sidebar_position: 3
 title: Why Arbitrum?
 description: Why TrendZap is built exclusively on Arbitrum
+last_update:
+  date: 2026-03-05
+  author: TrendZap Team
 ---
 
 # Why Arbitrum?

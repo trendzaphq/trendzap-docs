@@ -1,0 +1,35 @@
+
+> @trendzap/docs@0.1.0 build /Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs
+> docusaurus build
+
+[WARNING] The `siteConfig.onBrokenMarkdownLinks` config option is deprecated and will be removed in Docusaurus v4.
+Please migrate and move this option to `siteConfig.markdown.hooks.onBrokenMarkdownLinks` instead.
+[INFO] [en] Creating an optimized production build...
+[WARNING] The `siteConfig.onBrokenMarkdownLinks` config option is deprecated and will be removed in Docusaurus v4.
+Please migrate and move this option to `siteConfig.markdown.hooks.onBrokenMarkdownLinks` instead.
+[ERROR] Sidebars file at "/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/sidebars.js" failed to be loaded.
+[ERROR] Loading of version failed for version current
+
+[ERROR] Error: Unable to build website for locale en.
+    at tryToBuildLocale (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/lib/commands/build/build.js:83:15)
+    at async /Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/lib/commands/build/build.js:35:9
+    at async mapAsyncSequential (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+utils@3.9.2_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/@docusaurus/utils/lib/jsUtils.js:21:24)
+    at async Command.build (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/lib/commands/build/build.js:34:5)
+    at async Promise.all (index 0)
+    at async runCLI (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/lib/commands/cli.js:56:5)
+    at async file:///Users/ayomisco/Documents/Main/Startup/TrendZap%20Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+core@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18.3.1__react-dom_56d219fb05994390416d5f42a8af4d85/node_modules/@docusaurus/core/bin/docusaurus.mjs:44:3 {
+  [cause]: Error: Sidebar category User Guide has neither any subitem nor a link. This makes this item not able to link to anything.
+      at postProcessSidebarItem (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+plugin-content-docs@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18_730ef6c7f2c6349acf871cb30e3472db/node_modules/@docusaurus/plugin-content-docs/lib/sidebars/postProcessor.js:35:19)
+      at /Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+plugin-content-docs@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18_730ef6c7f2c6349acf871cb30e3472db/node_modules/@docusaurus/plugin-content-docs/lib/sidebars/postProcessor.js:80:24
+      at Array.map (<anonymous>)
+      at /Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+plugin-content-docs@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18_730ef6c7f2c6349acf871cb30e3472db/node_modules/@docusaurus/plugin-content-docs/lib/sidebars/postProcessor.js:80:10
+      at /Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/lodash@4.17.23/node_modules/lodash/lodash.js:13508:38
+      at /Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/lodash@4.17.23/node_modules/lodash/lodash.js:5006:15
+      at baseForOwn (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/lodash@4.17.23/node_modules/lodash/lodash.js:3032:24)
+      at Function.mapValues (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/lodash@4.17.23/node_modules/lodash/lodash.js:13507:7)
+      at postProcessSidebars (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+plugin-content-docs@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18_730ef6c7f2c6349acf871cb30e3472db/node_modules/@docusaurus/plugin-content-docs/lib/sidebars/postProcessor.js:79:29)
+      at loadSidebars (/Users/ayomisco/Documents/Main/Startup/TrendZap Platform/trendzap-docs/node_modules/.pnpm/@docusaurus+plugin-content-docs@3.9.2_@mdx-js+react@3.1.1_@types+react@19.2.14_react@18_730ef6c7f2c6349acf871cb30e3472db/node_modules/@docusaurus/plugin-content-docs/lib/sidebars/index.js:92:56)
+}
+[INFO] Docusaurus version: 3.9.2
+Node version: v22.20.0
+ ELIFECYCLE  Command failed with exit code 1.

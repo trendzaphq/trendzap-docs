@@ -2,6 +2,9 @@
 sidebar_position: 2
 title: How It Works
 description: Understanding TrendZap's prediction market mechanics
+last_update:
+  date: 2026-03-05
+  author: TrendZap Team
 ---
 
 # How TrendZap Works

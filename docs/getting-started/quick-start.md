@@ -2,6 +2,9 @@
 sidebar_position: 1
 title: Quick Start
 description: Get started with TrendZap in 5 minutes
+last_update:
+  date: 2026-03-05
+  author: TrendZap Team
 ---
 
 # Quick Start

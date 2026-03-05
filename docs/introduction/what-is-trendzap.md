@@ -2,6 +2,9 @@
 sidebar_position: 1
 title: What is TrendZap?
 description: Introduction to TrendZap - the first decentralized prediction market for social media virality
+last_update:
+  date: 2026-03-05
+  author: TrendZap Team
 ---
 
 # What is TrendZap?
