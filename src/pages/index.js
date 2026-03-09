@@ -4,6 +4,20 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import styles from './index.module.css';
 
+// Get ecosystem from context
+function useEcosystem() {
+  const { siteConfig } = useDocusaurusContext();
+  return siteConfig.customFields?.ecosystem || 'avalanche';
+}
+
+function useEcosystemConfig() {
+  const { siteConfig } = useDocusaurusContext();
+  return siteConfig.customFields?.ecosystemConfig || {
+    name: 'Avalanche',
+    oracle: { provider: 'Chainlink' },
+  };
+}
+
 const features = [
   {
     icon: '⚡',
@@ -15,7 +29,7 @@ const features = [
   {
     icon: '📖',
     title: 'Introduction',
-    description: 'Learn what TrendZap is, how the protocol works, and why we chose to build exclusively on Arbitrum.',
+    description: 'Learn what TrendZap is, how the protocol works, and why we built on this ecosystem.',
     href: '/docs/introduction/what-is-trendzap',
     color: 'cyan',
   },
@@ -28,9 +42,9 @@ const features = [
   },
   {
     icon: '🔮',
-    title: 'Why Arbitrum',
-    description: 'Understand why we chose Arbitrum — low fees, high throughput, and native Chainlink oracle support.',
-    href: '/docs/introduction/why-arbitrum',
+    title: 'Why Our Chain',
+    description: 'Understand why we chose this ecosystem — low fees, high throughput, and reliable oracle support.',
+    href: '/docs/introduction/why-this-chain',
     color: 'purple',
   },
   {
@@ -50,13 +64,20 @@ const features = [
 ];
 
 const stats = [
-  { value: 'Arbitrum', label: 'Exclusive Chain' },
-  { value: 'Chainlink', label: 'Oracle Provider' },
   { value: 'USDC', label: 'Settlement Token' },
   { value: 'Open Source', label: 'License: MIT' },
 ];
 
 function HeroSection() {
+  const ecosystemConfig = useEcosystemConfig();
+  
+  // Dynamic stats based on ecosystem
+  const dynamicStats = [
+    { value: ecosystemConfig.name, label: 'Chain Ecosystem' },
+    { value: ecosystemConfig.oracle?.provider || 'Chainlink', label: 'Oracle Provider' },
+    ...stats,
+  ];
+  
   return (
     <div className={styles.hero}>
       {/* Ambient orbs */}
@@ -68,7 +89,7 @@ function HeroSection() {
         {/* Badge */}
         <div className={styles.badge}>
           <span className={styles.badgeDot} />
-          Built on Arbitrum — Coming Soon
+          Built on {ecosystemConfig.name} — Coming Soon
         </div>
 
         {/* Headline */}
@@ -95,7 +116,7 @@ function HeroSection() {
 
         {/* Stats row */}
         <div className={styles.statsRow}>
-          {stats.map(({ value, label }) => (
+          {dynamicStats.map(({ value, label }) => (
             <div key={label} className={styles.statItem}>
               <span className={styles.statValue}>{value}</span>
               <span className={styles.statLabel}>{label}</span>
@@ -120,10 +141,17 @@ function FeatureCard({ icon, title, description, href, color }) {
 
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
+  const ecosystemConfig = useEcosystemConfig();
+
+  React.useEffect(() => {
+    document.body.classList.add('homepage-view');
+    return () => document.body.classList.remove('homepage-view');
+  }, []);
+
   return (
     <Layout
       title="TrendZap Documentation"
-      description="The decentralized prediction market for social media virality — built on Arbitrum"
+      description={`The decentralized prediction market for social media virality — built on ${ecosystemConfig.name}`}
     >
       <main className={styles.main}>
         <HeroSection />

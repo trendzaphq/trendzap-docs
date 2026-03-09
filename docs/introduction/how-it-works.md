@@ -112,5 +112,5 @@ TrendZap has multiple safety mechanisms:
 
 ## Next Steps
 
-- [Why Arbitrum?](/docs/introduction/why-arbitrum) - Our chain choice
+- [Why Our Chain?](/docs/introduction/why-this-chain) - Our ecosystem choice
 - [Quick Start](/docs/getting-started/quick-start) - Get started now

@@ -3,3 +3,4 @@ build/
 .docusaurus/
 .cache-loader/
 .DS_Store
+.vercel

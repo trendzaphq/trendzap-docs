@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Creator: CorelDRAW -->
-<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="2.86591in" height="0.798634in" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-viewBox="0 0 2865.92 798.64"
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="0.8in" height="0.8in" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 650 800"
  xmlns:xlink="http://www.w3.org/1999/xlink"
  xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
  <defs>
@@ -109,7 +109,6 @@ viewBox="0 0 2865.92 798.64"
     </g>
    </g>
    <path class="fil3" d="M481.12 366.07l-120.93 235.83 154.94 -10.83 99.68 -299.04 -106.15 0c-15.61,-0.28 -27.09,-6.44 -21.32,-23.69l105.37 -265.28 -240.13 363.01 128.53 0z"/>
-   <text x="676.66" y="541.93"  class="fil7 fnt0">TrendZap</text>
   </g>
  </g>
 </svg>

@@ -162,6 +162,92 @@ body::after {
   top: 0;
   z-index: 100;
   box-shadow: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Hide complete navbar on landing page as requested */
+.homepage-view .navbar {
+  display: none !important;
+}
+
+/* But ensure it is visible and properly layered on docs pages */
+body:not(.homepage-view) .navbar {
+  display: flex !important;
+  z-index: 1000 !important;
+}
+
+/* Navbar toggle (hamburger menu) - CRITICAL for mobile */
+.navbar__toggle {
+  display: flex !important;
+  color: var(--tz-text) !important;
+  margin-right: 0.5rem;
+}
+
+.navbar__toggle[aria-label="Toggle navigation bar"] {
+  background: transparent !important;
+}
+
+.navbar__toggle:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.navbar__toggle > svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Ensure mobile header is properly built and visible on doc pages */
+@media (max-width: 996px) {
+  body:not(.homepage-view) .navbar {
+    display: flex !important;
+    position: fixed !important;
+    top: 0;
+    width: 100%;
+    background: var(--tz-bg) !important;
+    padding: 0 1rem;
+    z-index: 1000 !important;
+    height: 60px;
+  }
+  
+  body:not(.homepage-view) .main-wrapper {
+    padding-top: 60px;
+  }
+  
+  .navbar__logo {
+    margin-right: 0 !important;
+  }
+}
+
+/* Navbar sidebar (mobile drawer) */
+.navbar-sidebar {
+  background: var(--tz-bg) !important;
+  border-right: 1px solid var(--tz-border) !important;
+  backdrop-filter: blur(24px);
+}
+
+.navbar-sidebar__brand {
+  border-bottom: 1px solid var(--tz-border) !important;
+  background: rgba(10, 10, 10, 0.8) !important;
+}
+
+.navbar-sidebar__items {
+  padding: 1rem 0;
+}
+
+.navbar-sidebar__back {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--tz-purple) !important;
+  font-weight: 600;
+}
+
+/* Ensure navbar items in sidebar are visible */
+.navbar-sidebar .menu__link {
+  color: var(--tz-text-muted) !important;
+}
+
+.navbar-sidebar .menu__link--active {
+  color: var(--tz-purple) !important;
 }
 
 /* Progress bar at top */
@@ -179,16 +265,6 @@ body::after {
 .navbar__logo img {
   height: 36px;
   width: auto;
-}
-
-.navbar__title {
-  font-weight: 700;
-  font-size: 1.15rem;
-  background: linear-gradient(135deg, var(--tz-purple), var(--tz-cyan));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.02em;
 }
 
 .navbar__items .navbar__item {

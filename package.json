@@ -1,7 +1,7 @@
 {
   "name": "@trendzap/docs",
   "version": "0.1.0",
-  "description": "Official TrendZap documentation",
+  "description": "Official TrendZap documentation - Multi-ecosystem support",
   "author": "TrendZap Team",
   "license": "MIT",
   "repository": {
@@ -10,7 +10,17 @@
   },
   "scripts": {
     "dev": "docusaurus start",
+    "dev:avalanche": "cp .env.avalanche .env && docusaurus start",
+    "dev:arbitrum": "cp .env.arbitrum .env && docusaurus start",
+    "dev:base": "cp .env.base .env && docusaurus start",
+    "dev:solana": "cp .env.solana .env && docusaurus start",
+    "dev:flow": "cp .env.flow .env && docusaurus start",
     "build": "docusaurus build",
+    "build:avalanche": "cp .env.avalanche .env && docusaurus build",
+    "build:arbitrum": "cp .env.arbitrum .env && docusaurus build",
+    "build:base": "cp .env.base .env && docusaurus build",
+    "build:solana": "cp .env.solana .env && docusaurus build",
+    "build:flow": "cp .env.flow .env && docusaurus build",
     "serve": "docusaurus serve",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -22,6 +32,7 @@
     "@docusaurus/preset-classic": "^3.0.0",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
+    "dotenv": "^16.6.1",
     "prism-react-renderer": "^2.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

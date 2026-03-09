@@ -1,17 +1,31 @@
 // @ts-check
 import { themes as prismThemes } from 'prism-react-renderer';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+// Load environment variables
+import 'dotenv/config';
+
+// Load ecosystem configuration
+const { activeConfig, currentEcosystem } = require('./ecosystem.config.js');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'TrendZap Documentation',
-  tagline: 'The decentralized prediction market for social media virality',
+  title: `TrendZap on ${activeConfig.name}`,
+  tagline: activeConfig.tagline,
   favicon: 'img/trendzap_logo.png',
 
-  url: 'https://docs.trendzap.xyz',
+  url: process.env.SITE_URL || 'https://docs.trendzap.xyz',
   baseUrl: '/',
 
   organizationName: 'trendzaphq',
   projectName: 'trendzap-docs',
+  
+  // Custom fields for ecosystem data access in components
+  customFields: {
+    ecosystem: currentEcosystem,
+    ecosystemConfig: activeConfig,
+  },
 
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
@@ -60,8 +74,8 @@ const config = {
           sidebarPath: './sidebars.js',
           editUrl: 'https://github.com/trendzaphq/trendzap-docs/tree/main/',
           routeBasePath: 'docs',
-          showLastUpdateTime: false,
-          showLastUpdateAuthor: false,
+          showLastUpdateTime: true,
+          showLastUpdateAuthor: true,
         },
         blog: false,
         theme: {
@@ -86,10 +100,9 @@ const config = {
         { name: 'og:type', content: 'website' },
       ],
       navbar: {
-        title: 'TrendZap',
         logo: {
           alt: 'TrendZap Logo',
-          src: 'img/trendzap_logo.png',
+          src: 'img/logo.svg',
           style: { borderRadius: '8px' },
         },
         hideOnScroll: false,
@@ -132,15 +145,15 @@ const config = {
             ],
           },
           {
-            title: 'Built on',
+            title: `Built on ${activeConfig.name}`,
             items: [
-              { label: 'Arbitrum', href: 'https://arbitrum.io' },
-              { label: 'Chainlink', href: 'https://chain.link' },
+              { label: activeConfig.name, href: activeConfig.links.ecosystem },
+              { label: activeConfig.oracle.provider, href: activeConfig.oracle.docsUrl },
               { label: 'GitHub ↗', href: 'https://github.com/trendzaphq' },
             ],
           },
         ],
-        copyright: `© ${new Date().getFullYear()} TrendZap — The first social virality prediction market. Built on Arbitrum.`,
+        copyright: `© ${new Date().getFullYear()} TrendZap — The first social virality prediction market. Built on ${activeConfig.name}.`,
       },
       prism: {
         theme: {
