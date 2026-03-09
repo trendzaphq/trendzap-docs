@@ -386,34 +386,30 @@ if (!activeConfig) {
   throw new Error(`Invalid ecosystem: ${currentEcosystem}. Supported: ${Object.keys(ecosystems).join(', ')}`);
 }
 
-module.exports = {
-  ecosystems,
-  currentEcosystem,
-  activeConfig,
-  
-  // Helper function to get ecosystem-specific text
-  getText: (key, fallback = '') => {
-    const texts = {
-      chainName: activeConfig.name,
-      chainShortName: activeConfig.shortName,
-      tagline: activeConfig.tagline,
-      description: activeConfig.description,
-      nativeToken: activeConfig.nativeToken.symbol,
-      stablecoin: activeConfig.stablecoin.symbol,
-      explorer: activeConfig.network.mainnet.explorerName,
-      testnetExplorer: activeConfig.network.testnet.explorerName,
-      oracleProvider: activeConfig.oracle.provider,
-      dex: activeConfig.defi.dex,
-    };
-    return texts[key] || fallback;
-  },
-  
-  // Check if current ecosystem is EVM-compatible
-  isEVM: () => ['avalanche', 'arbitrum', 'base'].includes(currentEcosystem),
-  
-  // Check if current ecosystem is Solana
-  isSolana: () => currentEcosystem === 'solana',
-  
-  // Check if current ecosystem is Flow
-  isFlow: () => currentEcosystem === 'flow',
+// Helper function to get ecosystem-specific text
+const getText = (key, fallback = '') => {
+  const texts = {
+    chainName: activeConfig.name,
+    chainShortName: activeConfig.shortName,
+    tagline: activeConfig.tagline,
+    description: activeConfig.description,
+    nativeToken: activeConfig.nativeToken.symbol,
+    stablecoin: activeConfig.stablecoin.symbol,
+    explorer: activeConfig.network.mainnet.explorerName,
+    testnetExplorer: activeConfig.network.testnet.explorerName,
+    oracleProvider: activeConfig.oracle.provider,
+    dex: activeConfig.defi.dex,
+  };
+  return texts[key] || fallback;
 };
+
+// Check if current ecosystem is EVM-compatible
+const isEVM = () => ['avalanche', 'arbitrum', 'base'].includes(currentEcosystem);
+
+// Check if current ecosystem is Solana
+const isSolana = () => currentEcosystem === 'solana';
+
+// Check if current ecosystem is Flow
+const isFlow = () => currentEcosystem === 'flow';
+
+export { ecosystems, currentEcosystem, activeConfig, getText, isEVM, isSolana, isFlow };

@@ -1,13 +1,11 @@
 // @ts-check
 import { themes as prismThemes } from 'prism-react-renderer';
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
 
 // Load environment variables
 import 'dotenv/config';
 
 // Load ecosystem configuration
-const { activeConfig, currentEcosystem } = require('./ecosystem.config.js');
+import { activeConfig, currentEcosystem } from './ecosystem.config.js';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
