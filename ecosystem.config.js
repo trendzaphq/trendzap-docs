@@ -376,8 +376,8 @@ const ecosystems = {
   },
 };
 
-// Get current ecosystem from environment variable
-const currentEcosystem = process.env.ECOSYSTEM || 'avalanche';
+// Get current ecosystem from environment variable (trim to handle newlines)
+const currentEcosystem = (process.env.ECOSYSTEM || 'avalanche').trim();
 
 // Export the active ecosystem configuration
 const activeConfig = ecosystems[currentEcosystem];
