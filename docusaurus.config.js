@@ -74,8 +74,8 @@ const config = {
           sidebarPath: './sidebars.js',
           editUrl: 'https://github.com/trendzaphq/trendzap-docs/tree/main/',
           routeBasePath: 'docs',
-          showLastUpdateTime: true,
-          showLastUpdateAuthor: true,
+          showLastUpdateTime: false,
+          showLastUpdateAuthor: false,
         },
         blog: false,
         theme: {
