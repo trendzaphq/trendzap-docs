@@ -1,72 +1,80 @@
 ---
 sidebar_position: 1
 title: What is TrendZap?
-description: Introduction to TrendZap - the first decentralized prediction market for social media virality
+description: TrendZap is the first decentralized prediction market for social media virality — built on Avalanche.
 last_update:
-  date: 2026-03-05
+  date: 2026-03-20
   author: TrendZap Team
 ---
 
 # What is TrendZap?
 
-TrendZap is the first decentralized prediction market built exclusively on **Arbitrum** that lets you bet on whether social media posts will go viral.
+TrendZap is the first decentralized prediction market built on **Avalanche** that lets anyone bet on whether social media posts will hit engagement thresholds — and get paid when they're right.
 
 ## The Problem
 
-Social media engagement is one of the most unpredictable yet valuable metrics in the digital world:
-- **Creators** wonder if their content will take off
-- **Marketers** bet millions on campaigns without knowing outcomes
-- **Traders** want exposure to social media trends
-- **Everyone** has opinions on what will go viral
+Every day, billions of social media users make predictions:
 
-Yet there's no way to put money behind your predictions... until now.
+- *"This video is going to blow up."*
+- *"That tweet won't age well."*
+- *"This campaign is going to flop."*
+
+These predictions are made constantly — by creators, marketers, crypto traders, and just about everyone with a social media account. But there has never been a trustless, transparent way to put real money behind them.
+
+Existing prediction markets (Polymarket, Kalshi) cover politics, sports, and macroeconomics. **None of them cover social media** — the category that most of the internet actually cares about.
 
 ## The Solution
 
-TrendZap creates prediction markets around social media posts:
+TrendZap creates OVER/UNDER prediction markets tied directly to real social media engagement metrics:
 
-1. **Pick a Post** - Any public post on X/Twitter, TikTok, Instagram, or YouTube
-2. **Set a Threshold** - Will it hit 100K likes? 1M views?
-3. **Place Your Bet** - Bet OVER or UNDER the threshold
-4. **Win or Lose** - When time's up, the market resolves based on actual metrics
+| Step | What Happens |
+|------|-------------|
+| **Create** | Any user links a public post, sets an engagement threshold, and defines a deadline |
+| **Bet** | Participants stake AVAX on OVER (exceeds threshold) or UNDER (stays below) |
+| **Resolve** | A Chainlink oracle fetches the actual metric from the platform's official API |
+| **Settle** | Winners receive their proportional share of the pool — automatically, on-chain |
 
-## Example
+No admin makes a decision about the outcome. No platform can change the result. The oracle delivers the data; the smart contract executes the payout.
 
-> "Will Elon Musk's latest tweet get more than 500,000 likes in 24 hours?"
+## A Simple Example
 
-- You think **yes** → Bet **OVER**
-- You think **no** → Bet **UNDER**
-- If you're right, you win!
+> **Market:** "Will this YouTube video hit 5 million views within 48 hours?"
+>
+> — Pool: 8.2 AVAX across 47 bettors  
+> — Current odds: OVER 61% / UNDER 39%  
+> — Resolution: Chainlink fetches the view count at the deadline  
+> — Settlement: OVER backers split the pool proportionally
 
-## Key Features
+If you staked 0.5 AVAX on OVER and OVER wins with a 61% implied probability, your payout is calculated automatically and claimable immediately after resolution.
 
-### 🎯 Simple Over/Under Markets
-No complex options. Just pick OVER or UNDER.
+## What Makes TrendZap Different
 
-### ⚡ Built on Arbitrum
-Fast, cheap transactions on Ethereum's leading L2.
+### 🔮 Decentralized Oracle — Not an Admin
+The outcome of every TrendZap market is determined by **Chainlink's decentralized oracle network**, which fetches data directly from official social media APIs. No team member, no admin key, no governance vote can change a resolved outcome. The result is verifiable by anyone with a block explorer.
 
-### 🔮 Real-Time Oracle
-Our oracle fetches actual engagement metrics from social platforms.
+### ⚡ Built for Speed on Avalanche
+Avalanche's sub-second finality means bet confirmation feels instant — not like waiting for Ethereum to catch up. Gas fees low enough for micro-bets starting at a fraction of a dollar.
 
-### 🛡️ Risk Protection
-Position limits and anti-manipulation systems protect users.
+### 🎯 LMSR Continuous Pricing
+TrendZap uses the Logarithmic Market Scoring Rule (LMSR) — the same market mechanism used by Polymarket. This means natural, liquid odds from the very first bet, dynamic prices that update as new bets come in, and the ability to **sell your position before resolution** if you change your mind.
 
-### 💰 Fair Payouts
-Winners split the pool proportionally (minus 2% platform fee).
+### 🛡️ Non-Custodial and Audited
+Your AVAX is held in audited smart contracts, not by TrendZap. Payouts execute automatically on resolution. The team cannot access or move user funds.
 
-## Who is TrendZap For?
+### 🎨 No Wallet Needed to Start
+Sign in with your X (Twitter) account or email via Privy. An embedded non-custodial wallet is created for you automatically — no seed phrase, no MetaMask setup.
 
-- **Social Media Enthusiasts** - Put your prediction skills to work
-- **Content Creators** - Hedge your content performance
-- **Marketers** - Gain exposure to campaign outcomes
-- **Crypto Traders** - Access a new asset class
-- **Data Nerds** - Bet on your analysis
+## Who TrendZap Is For
 
-## Next Steps
+| User | Why TrendZap |
+|------|-------------|
+| **Social Media Enthusiasts** | Turn strong opinions into verifiable predictions |
+| **Content Creators** | Create markets about your own content and earn a 0.5% royalty on all volume |
+| **Crypto Traders** | Access a new, uncorrelated asset class tied to social media performance |
+| **Marketers & Analysts** | Hedge campaign predictions or validate trend hypotheses |
 
-Ready to dive in?
+## Ready to Start?
 
-- [How It Works](/docs/introduction/how-it-works) - Understand the mechanics
-- [Quick Start](/docs/getting-started/quick-start) - Get started in 5 minutes
-- [Place Your First Bet](/docs/getting-started/first-bet) - Jump right in
+- [How It Works](/docs/introduction/how-it-works) — The mechanics in depth
+- [Quick Start](/docs/getting-started/quick-start) — Be in a market in under 5 minutes
+- [Why Avalanche](/docs/introduction/why-this-chain) — Our chain decision explained

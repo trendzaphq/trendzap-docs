@@ -1,6 +1,6 @@
 # TrendZap Documentation
 
-> Official documentation for TrendZap - the decentralized prediction market for social media virality on Arbitrum.
+> Official documentation for TrendZap - the decentralized prediction market for social media virality on Avalanche.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Docusaurus](https://img.shields.io/badge/Docusaurus-3.0-green)](https://docusaurus.io/)
@@ -63,7 +63,7 @@ trendzap-docs/
 │   ├── introduction/
 │   │   ├── what-is-trendzap.md
 │   │   ├── how-it-works.md
-│   │   └── why-arbitrum.md
+│   │   └── why-avalanche.md
 │   ├── getting-started/
 │   │   ├── quick-start.md
 │   │   ├── connect-wallet.md
@@ -124,7 +124,7 @@ Use triple backticks with language hints:
 
 ````markdown
 ```typescript
-const client = new TrendZapClient({ chain: 'arbitrum' });
+const client = new TrendZapClient({ chain: 'avalanche' });
 ```
 ````
 
