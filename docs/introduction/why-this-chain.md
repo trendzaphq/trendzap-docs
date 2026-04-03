@@ -1,126 +1,109 @@
 ---
 sidebar_position: 3
-title: Why Avalanche?
-description: Why TrendZap is built exclusively on Avalanche C-Chain — the technical and strategic case.
-last_update:
-  date: 2026-03-20
-  author: TrendZap Team
+title: Why Arbitrum?
+description: Why TrendZap chose Arbitrum — speed, cost, security, and ecosystem.
 ---
 
-# Why Avalanche?
+# Why Arbitrum?
 
-TrendZap chose Avalanche as its home chain. This wasn't a default — it was a deliberate technical and strategic decision based on what a social media prediction market actually needs to work at scale.
+Prediction markets are latency-sensitive and high-frequency. Someone posts a tweet. It starts gaining traction. A market opens. People want in. Every second of delay and every dollar of gas cost reduces the quality of the market.
 
----
-
-## The Requirements of a Prediction Market
-
-A working prediction market needs three things at the infrastructure level:
-
-1. **Speed** — Bets must confirm instantly. A 30-second wait after clicking "Bet" kills the UX.
-2. **Low fees** — Micro-bets need to be economically viable. If gas costs more than the bet, the product only works for whales.
-3. **A trustless data oracle** — The outcome of every market depends on external data. That data pipeline must be decentralized and manipulation-resistant.
-
-Avalanche solves all three. No other chain does it as cleanly for this use case.
+Arbitrum solves this.
 
 ---
 
-## Technical Alignment
+## The Technical Case
 
-### ⚡ Sub-Second Finality
+### Low Gas, High Frequency
 
-Avalanche's consensus mechanism achieves **finality in under 2 seconds** — often under 500ms. For comparison, Ethereum L1 takes 12–15 seconds for block confirmation. Even most L2s have meaningful confirmation delays.
+TrendZap markets can see many small bets in rapid succession — especially when a post is actively going viral. On Ethereum mainnet, that's prohibitively expensive. On Arbitrum:
 
-For TrendZap, this means:
-- A user clicks "Bet OVER" → their position is confirmed before they can switch tabs
-- Market state updates propagate instantly — the odds you see are the odds you get
-- Resolution events execute and settle in seconds
+- **Gas costs:** Typically $0.01–$0.15 per transaction
+- **Throughput:** Handles burst activity without congestion
+- **Finality:** Sub-second for user-facing confirmation
 
-This matters especially on mobile, where users expect app-like responsiveness.
+This makes micro-betting economically viable and turns TrendZap into a genuine high-frequency market rather than a low-liquidity curiosity.
 
-### 💸 Fees Low Enough for Everyone
+### Ethereum Security Inheritance
 
-Avalanche C-Chain transaction fees are denominated in **AVAX** and are consistently low — typically **$0.001–$0.05 per transaction** under normal conditions.
+Arbitrum is an optimistic rollup that settles on Ethereum mainnet. This means:
 
-This enables:
-- **Micro-betting** starting from 0.01 AVAX (less than $0.50 at current prices)
-- No scenario where gas costs more than a bet
-- Global accessibility — users in markets with lower purchasing power can participate meaningfully
+- All transaction data is posted to Ethereum
+- Fraud proofs protect against invalid state transitions
+- Users can always exit to mainnet — no permission required
+- The trust model is Ethereum-grade, not a new chain you have to evaluate
 
-Compare this to Ethereum mainnet, where a single transaction can cost $5–$50, making small bets economically irrational.
+For a protocol where people stake real money on real outcomes, this security inheritance matters.
 
-### 🔗 Native Chainlink Integration
+### EVM Compatibility
 
-TrendZap's `SocialOracle.sol` is built on **Chainlink's Any API** product, which is natively supported on Avalanche Fuji and C-Chain. This gives us:
+Every Solidity tool works on Arbitrum without modification:
 
-- Access to Chainlink's **Decentralized Oracle Network (DON)** — multiple independent nodes that aggregate and sign data before it reaches our contract
-- **Cryptographic proofs** for every data delivery — the oracle response is verifiable on-chain
-- Native **LINK token transfer** for oracle payments — no bridging needed
+- Foundry, Hardhat, Remix — same workflow
+- Ethers.js, Viem, Wagmi — same libraries
+- Chainlink, Pyth, UMA — battle-tested oracle providers already deployed
+- USDC native deployment — Circle's official USDC, not a bridged variant
 
-No other oracle provider offers the same combination of decentralization and Avalanche-native deployment.
-
----
-
-## Strategic Alignment
-
-### 🏗️ EVM Compatibility
-
-Avalanche C-Chain is fully EVM-compatible. This means:
-
-- All of TrendZap's smart contracts (Solidity, OpenZeppelin) deploy without modification
-- Developer tooling (Hardhat, Foundry, Ethers.js, wagmi, viem) works exactly as expected
-- Wallet support (MetaMask, Core Wallet, Coinbase Wallet, WalletConnect) is universal
-
-We can leverage the entire Ethereum development ecosystem while running on faster, cheaper infrastructure.
-
-### 🌐 Subnet Architecture — The Long-Game
-
-Avalanche's **Subnet** architecture allows any project to launch a custom blockchain with custom validator requirements, gas tokens, and consensus parameters — and have it interoperate with the main Avalanche network.
-
-The long-term vision for TrendZap is a dedicated **Prediction Market Subnet**:
-- Custom gas token tied to TrendZap economics
-- Optimised block parameters for high-frequency market operations
-- Zero-gas-fee UX for end users (protocol subsidises gas from revenue)
-- Subnet-specific validators with relevant slashing conditions
-
-This is not a short-term feature. It is why Avalanche is the correct long-term home for a prediction market at scale.
-
-### 🧭 The Avalanche Ecosystem
-
-Avalanche has a growing DeFi ecosystem built around genuine usage rather than vampire attacks. Projects like **Trader Joe**, **GMX on Avalanche**, and **Benqi** have demonstrated that well-built products find real users on this chain.
-
-Crucially, the **Avalanche Foundation actively supports early-stage projects** through grants, co-marketing, and ecosystem introductions — something that aligns directly with TrendZap's strategy of building the product before asking for capital.
-
-There is currently **no social media prediction market on Avalanche**. That is first-mover positioning.
+No chain-specific SDKs. No proprietary tooling. No new trust assumptions.
 
 ---
 
-## Core Wallet — The Native Experience
+## The Ecosystem Case
 
-TrendZap has integrated **Core Wallet** as the recommended native Avalanche wallet. Core users:
-- Get automatic Avalanche network configuration
-- See their AVAX balance without setup
-- Have access to the Avalanche faucet directly from the wallet
+### Arbitrum Backing
 
-For non-crypto users, TrendZap also supports login with **X (Twitter) or email** via Privy — generating a non-custodial embedded wallet automatically, no Core or MetaMask required.
+TrendZap is building within the Arbitrum ecosystem and actively participating in its grants and developer programs. The Arbitrum Foundation's support gives us infrastructure access, developer resources, and ecosystem visibility without the need to spread thin across multiple chains.
+
+Focused ecosystem participation means better liquidity density, a single community to build with, and chain-specific optimisations that a multi-chain approach never achieves.
+
+### Oracle Support
+
+The Arbitrum ecosystem has mature, battle-tested oracle infrastructure:
+
+- **Chainlink** — Price feeds and custom data delivery on Arbitrum One
+- **Pyth** — Low-latency price and data feeds
+- **UMA** — Optimistic oracle for custom resolution logic
+
+TrendZap uses Chainlink for final on-chain data delivery, with UMA as the dispute-resolution fallback layer.
+
+### DeFi Composability
+
+Arbitrum's DeFi ecosystem is one of the most developed outside of Ethereum mainnet:
+
+- Deep USDC liquidity on Uniswap, Camelot, and GMX
+- Users already familiar with Arbitrum wallets and bridge flows
+- Active community of prediction market participants from protocols like Dopex and GMX options markets
 
 ---
 
-## Summary
+## Why Not Multi-Chain?
 
-| Requirement | Solution | Why Avalanche |
-|-------------|----------|---------------|
-| Instant confirmation | Sub-second finality | Unique to Avalanche's consensus |
-| Micro-bet viability | < $0.05 gas fees | Consistently low C-Chain fees |
-| Trustless oracle | Chainlink Any API | Native Avalanche support |
-| Developer tooling | Full EVM compatibility | Standard Ethereum stack works |
-| Long-term scalability | Subnet architecture | Custom chain capability |
-| Ecosystem support | Avalanche Foundation | Proven builder support programme |
+We chose depth over breadth.
+
+Spreading liquidity across five chains fractures every pool. A 10,000 USDC market splits into five 2,000 USDC markets — thin, easily manipulated, poor implied probability signal.
+
+Prediction markets are more efficient with concentrated liquidity. One strong community, one oracle, one set of contracts — that's how you build a reliable market.
+
+Arbitrum will remain our home chain through mainnet launch and beyond. As volume matures, we will evaluate additional deployment — but only if it serves users, not for the sake of chain diversification.
+
+---
+
+## Network Details
+
+| Property | Value |
+|----------|-------|
+| Network | Arbitrum One |
+| Chain ID | 42161 |
+| RPC | `https://arb1.arbitrum.io/rpc` |
+| Explorer | arbiscan.io |
+| Settlement token | USDC (native) |
+| Oracle | Chainlink on Arbitrum One |
+| Testnet | Arbitrum Sepolia (Chain ID: 421614) |
 
 ---
 
 ## Next Steps
 
-- [Quick Start](/docs/getting-started/quick-start) — Get your first bet in under 5 minutes
-- [Oracle Integration](/docs/developers/oracle-integration) — How our Chainlink oracle works technically
-- [Smart Contracts](/docs/developers/smart-contracts) — The contracts powering TrendZap
+- [Quick Start](/docs/getting-started/quick-start) — Connect and place your first bet
+- [Smart Contracts](/docs/architecture/smart-contracts) — Contract addresses on Arbitrum
+- [Oracle System](/docs/architecture/oracle-system) — How Chainlink delivers verified metrics

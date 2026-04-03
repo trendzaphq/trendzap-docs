@@ -1,443 +1,475 @@
 /* ============================================================
-   TrendZap Documentation — Ultra-Premium "Milky Cyber" Aesthetic
+   TrendZap Documentation — Financial Editorial Design System
+   Aesthetic: Dark Naval · Amber Gold · Teal Data · Serif Display
    ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 /* ── Design Tokens ─────────────────────────────────────────── */
 :root {
-  /* Avant-garde palette */
-  --tz-volt:          #E2FF3D;
-  --tz-magenta:       #FF2079;
-  --tz-cyan:          #00F0FF;
-  --tz-void:          #050507;
-  --tz-surface:       rgba(20, 20, 25, 0.4);
-  --tz-border:        rgba(255, 255, 255, 0.05);
-  --tz-border-glow:   rgba(226, 255, 61, 0.3);
-  --tz-text:          #FFFFFF;
-  --tz-text-muted:    #8b8e99;
-  --tz-text-dim:      #565861;
+  /* Brand Palette */
+  --tz-amber:         #E9A020;
+  --tz-amber-dim:     #B87A18;
+  --tz-amber-faint:   rgba(233, 160, 32, 0.12);
+  --tz-teal:          #1BD8AE;
+  --tz-teal-dim:      #14A882;
+  --tz-teal-faint:    rgba(27, 216, 174, 0.12);
+  --tz-red:           #FF5050;
+  --tz-bg:            #09090E;
+  --tz-surface:       #0F1018;
+  --tz-surface-2:     #14151E;
+  --tz-border:        rgba(255, 255, 255, 0.07);
+  --tz-border-solid:  rgba(255, 255, 255, 0.10);
+  --tz-text:          #F2EFE8;
+  --tz-muted:         #7C7A88;
 
-  /* Typography override: Fontshare injected in docusaurus.config.js */
-  --ifm-font-family-base:         'Satoshi', sans-serif;
-  --ifm-font-family-monospace:    'JetBrains Mono', ui-monospace, monospace;
-  --tz-display-font:              'Clash Display', sans-serif;
-  
-  /* Standard Docusaurus Base values - heavily overwritten to look radically different */
-  --ifm-color-primary:          var(--tz-volt);
-  --ifm-color-primary-dark:     #b8e600;
-  --ifm-color-primary-darker:   #9fcc00;
-  --ifm-color-primary-darkest:  #87b300;
-  --ifm-color-primary-light:    #eaff80;
-  --ifm-color-primary-lighter:  #f0ff99;
-  --ifm-color-primary-lightest: #f5ffb3;
+  /* Docusaurus color overrides */
+  --ifm-color-primary:          var(--tz-amber);
+  --ifm-color-primary-dark:     var(--tz-amber-dim);
+  --ifm-color-primary-darker:   #9A6612;
+  --ifm-color-primary-darkest:  #7A500E;
+  --ifm-color-primary-light:    #F0B840;
+  --ifm-color-primary-lighter:  #F5CC70;
+  --ifm-color-primary-lightest: #FAE0A8;
 
-  --ifm-background-color:         var(--tz-void);
+  /* Layout */
+  --ifm-background-color:         var(--tz-bg);
   --ifm-background-surface-color: var(--tz-surface);
-  --ifm-font-size-base:           16px;
-  --ifm-line-height-base:         1.8;
-  --ifm-global-radius:            16px;
-  
-  --ifm-heading-font-family:      var(--tz-display-font);
-  --ifm-heading-font-weight:      600;
+  --ifm-font-family-base:         'Syne', ui-sans-serif, system-ui, sans-serif;
+  --ifm-font-family-monospace:    'JetBrains Mono', ui-monospace, monospace;
+  --ifm-font-size-base:           15px;
+  --ifm-line-height-base:         1.75;
+  --ifm-global-radius:            4px;
+  --ifm-navbar-height:            60px;
+  --ifm-code-font-size:           88%;
 
+  /* Colors */
   --ifm-color-content:                   var(--tz-text);
-  --ifm-color-content-secondary:         var(--tz-text-muted);
+  --ifm-color-content-secondary:         var(--tz-muted);
   --ifm-heading-color:                   var(--tz-text);
-  --ifm-link-color:                      var(--tz-cyan);
+  --ifm-link-color:                      var(--tz-amber);
+  --ifm-link-hover-color:               var(--tz-teal);
 
-  /* Drop navbar shadow entirely for floating pill look */
-  --ifm-navbar-background-color:         rgba(5, 5, 7, 0.65);
-  --ifm-navbar-shadow:                   none;
-  --ifm-navbar-height:                   72px;
+  /* Navbar */
+  --ifm-navbar-background-color:         rgba(9, 9, 14, 0.92);
+  --ifm-navbar-shadow:                   0 1px 0 var(--tz-border-solid);
+  --ifm-navbar-item-padding-horizontal:  0.9rem;
+  --ifm-navbar-link-color:              var(--tz-text);
+  --ifm-navbar-link-hover-color:        var(--tz-amber);
 
-  /* Sidebar styling */
-  --ifm-sidebar-width:                   320px;
-  --ifm-menu-color:                      var(--tz-text-muted);
-  --ifm-menu-color-active:               var(--tz-void);
-  --ifm-menu-color-background-active:    var(--tz-volt);
-  --ifm-menu-color-background-hover:     rgba(255, 255, 255, 0.05);
+  /* Sidebar */
+  --ifm-sidebar-width:                   272px;
+  --ifm-menu-color:                      var(--tz-muted);
+  --ifm-menu-color-active:               var(--tz-amber);
+  --ifm-menu-color-background-active:    var(--tz-amber-faint);
+  --ifm-menu-color-background-hover:     rgba(255, 255, 255, 0.03);
 
   /* TOC */
-  --ifm-toc-border-color:                var(--tz-border);
+  --ifm-toc-border-color:                var(--tz-border-solid);
+  --ifm-toc-padding-vertical:            0.3rem;
 
-  /* Code Blocks */
-  --ifm-pre-background:                  rgba(15, 15, 18, 0.8);
-  
-  /* Scrollbar */
-  scrollbar-width: none; /* Hide for firefox, we'll do webkit below */
+  /* Tables / Borders */
+  --ifm-color-emphasis-300:              var(--tz-border-solid);
+  --ifm-hr-border-color:                 var(--tz-border-solid);
+  --ifm-table-border-color:              var(--tz-border-solid);
+  --ifm-table-head-background:           rgba(255, 255, 255, 0.03);
+  --ifm-table-stripe-background:         rgba(255, 255, 255, 0.02);
+
+  /* Alerts */
+  --ifm-color-info:                      var(--tz-teal);
+  --ifm-color-success:                   #4ade80;
+  --ifm-color-warning:                   var(--tz-amber);
+  --ifm-color-danger:                    var(--tz-red);
+
+  /* Footer */
+  --ifm-footer-background-color:         var(--tz-surface);
+  --ifm-footer-color:                    var(--tz-muted);
+  --ifm-footer-link-color:               var(--tz-muted);
+  --ifm-footer-link-hover-color:         var(--tz-amber);
+
+  /* Code blocks */
+  --ifm-pre-background:                  #0C0D12;
+  --ifm-code-background:                 rgba(255, 255, 255, 0.06);
+  --ifm-code-border-radius:             3px;
+  --docusaurus-highlighted-code-line-bg: rgba(233, 160, 32, 0.08);
+
+  /* Card/Admonition */
+  --ifm-alert-border-radius:             4px;
+  --ifm-alert-border-width:             0 0 0 3px;
 }
 
-/* ── Base Setup ─────────────────────────────────────────────── */
-::-webkit-scrollbar { display: none; }
+/* ── Global Base ────────────────────────────────────────────── */
+html[data-theme='dark'],
+html {
+  background: var(--tz-bg);
+  color: var(--tz-text);
+}
 
 body {
-  background-color: var(--tz-void) !important;
-  color: var(--tz-text);
-  font-family: var(--ifm-font-family-base);
+  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  background: var(--tz-bg);
   -webkit-font-smoothing: antialiased;
-  letter-spacing: -0.01em;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Surreal Milky Base Layers */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background-image:
-    radial-gradient(circle at 15% 50%, rgba(255, 32, 121, 0.04) 0%, transparent 40%),
-    radial-gradient(circle at 85% 30%, rgba(0, 240, 255, 0.04) 0%, transparent 40%);
-  pointer-events: none;
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 10%, transparent 80%);
-  pointer-events: none;
-}
-
-#__docusaurus {
-  position: relative;
-  z-index: 1;
-}
-
-/* ── Radically Floating Navbar ──────────────────────────────── */
-.navbar {
-  margin: 1.5rem auto;
-  border-radius: 999px;
-  max-width: 1200px;
-  background: rgba(15, 15, 18, 0.4) !important;
-  backdrop-filter: blur(48px) saturate(180%);
-  -webkit-backdrop-filter: blur(48px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 40px 80px -20px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255, 255, 255, 0.04) !important;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s;
-}
-
-.navbar--hideable.navbar-hidden {
-  transform: translateY(-150%) scale(0.95);
-  opacity: 0;
-}
-
-.navbar__brand {
-  margin-left: 0.5rem;
-}
-
-.navbar__logo {
-  filter: brightness(0) invert(1); /* Ensure high contrast */
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.navbar__logo:hover {
-  transform: scale(1.05) rotate(-2deg);
-}
-
-.navbar__items .navbar__item {
-  font-family: var(--tz-display-font);
-  font-weight: 500;
-  font-size: 0.95rem;
-  letter-spacing: 0.02em;
-  padding: 0.5rem 1rem;
-  text-transform: uppercase;
-  color: var(--tz-text-muted);
-  border-radius: 999px;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.navbar__items .navbar__item:hover {
-  color: var(--tz-text);
-  background: rgba(255,255,255,0.08);
-}
-
-.navbar__items .navbar__item--active {
-  color: var(--tz-volt) !important;
-}
-
-/* Special App link in Navbar — Volt pill */
-.navbar__item.navbar__link[href*="trendzap.xyz"] {
-  background: var(--tz-volt);
-  color: var(--tz-void) !important;
-  font-weight: 700;
-  box-shadow: 0 0 20px rgba(226, 255, 61, 0.2);
-}
-.navbar__item.navbar__link[href*="trendzap.xyz"]:hover {
-  background: #f0ff8c;
-  box-shadow: 0 0 40px rgba(226, 255, 61, 0.6);
-  transform: translateY(-2px);
-}
-
-/* Mobile Navbar reset */
-@media (max-width: 996px) {
-  .navbar {
-    margin: 0;
-    border-radius: 0;
-    max-width: none;
-    border: none;
-    border-bottom: 1px solid var(--tz-border);
-    backdrop-filter: blur(20px);
-    background: rgba(5,5,7,0.85) !important;
-  }
-}
-
-/* ── Typography & Markdown ──────────────────────────────────── */
+/* ── Typography ─────────────────────────────────────────────── */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--tz-display-font);
-  font-weight: 600;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  color: var(--tz-text);
   letter-spacing: -0.01em;
-  margin-top: 2em;
 }
 
-h1 {
-  font-size: 4rem;
-  font-weight: 500;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-  background: linear-gradient(180deg, #FFFFFF 20%, rgba(255,255,255,0.3) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 2rem;
-}
-
-h2 {
+/* Article headings in docs get a ruled underline feel */
+.markdown h1 {
+  font-family: 'DM Serif Display', serif;
   font-size: 2.4rem;
-  font-weight: 500;
-  border: none;
-  background: linear-gradient(90deg, #FFF, #888);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  padding-bottom: 0px;
-  position: relative;
-}
-
-/* Liquid accent line under H2 */
-h2::after {
-  content: '';
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: var(--tz-volt);
-  margin-top: 0.75rem;
-  border-radius: 50px;
-  box-shadow: 0 0 15px rgba(226, 255, 61, 0.4);
-}
-
-h3 {
-  font-size: 1.5rem;
-  color: #fff;
-}
-
-p, li {
-  font-size: 1.1rem;
-  color: var(--tz-text-muted);
   font-weight: 400;
-}
-
-a {
-  color: var(--tz-cyan);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
-  transition: color 0.3s;
-}
-
-a:hover {
-  color: var(--tz-volt);
-  text-decoration-color: var(--tz-volt);
-}
-
-/* ── Code Blocks (Extreme Glass Stylization) ───────────────── */
-.theme-code-block {
-  border-radius: 20px !important;
-  border: 1px solid rgba(255,255,255,0.06) !important;
-  box-shadow: 0 40px 60px -20px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.03) !important;
-  overflow: hidden;
-  background: rgba(12, 12, 15, 0.6) !important;
-  backdrop-filter: blur(24px);
-  margin-bottom: 2.5rem !important;
-}
-
-/* Sub-header inside code blocks */
-.codeBlockTitle_Tqig {
-  background: rgba(255,255,255,0.02) !important;
-  border-bottom: 1px solid rgba(255,255,255,0.04) !important;
-  color: var(--tz-text-muted) !important;
-  font-family: var(--ifm-font-family-monospace);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.75rem !important;
-  padding: 0.75rem 1.25rem !important;
-}
-
-pre {
-  background: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-/* Inline code styling */
-code {
-  background: rgba(255, 255, 255, 0.05) !important;
-  color: #fff !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 8px !important;
-  padding: 0.2em 0.5em !important;
-}
-
-/* ── Sidebar Redesign ───────────────────────────────────────── */
-.theme-doc-sidebar-container {
-  background: transparent !important;
-  border-right: 1px dashed rgba(255,255,255,0.1) !important;
-  padding-right: 1rem;
-}
-
-.theme-doc-sidebar-menu {
-  font-family: var(--tz-display-font);
-}
-
-.menu__link {
-  font-size: 0.95rem;
-  letter-spacing: 0.02em;
-  border-radius: 12px;
-  padding: 0.6rem 1rem;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.menu__link:hover {
-  background: rgba(255,255,255,0.04) !important;
-  color: #fff;
-  transform: translateX(4px);
-}
-
-.menu__link--active {
-  background: var(--tz-volt) !important;
-  color: var(--tz-void) !important;
-  font-weight: 600;
-  box-shadow: 0 4px 20px rgba(226, 255, 61, 0.2);
-  transform: translateX(4px);
-  border: none;
-}
-
-.menu__list-item-collapsible .menu__link {
-  font-family: var(--ifm-font-family-monospace);
-  font-size: 0.75rem;
-  color: var(--tz-text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-weight: 500;
-}
-
-/* ── Tables & Alerts ───────────────────────────────────────── */
-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  width: 100%;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.08) !important;
-  background: rgba(20, 20, 25, 0.2);
-  margin: 2.5rem 0;
-}
-
-thead {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-}
-
-thead th {
-  padding: 1rem 1.25rem !important;
-  color: #fff;
-  font-family: var(--tz-display-font);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.85rem;
-  font-weight: 500;
-  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
-}
-
-tbody td {
-  padding: 1rem 1.25rem !important;
-  color: var(--tz-text-muted);
-  border-bottom: 1px solid rgba(255,255,255,0.02) !important;
-}
-
-.alert {
-  border-radius: 20px !important;
-  border: 1px solid !important;
-  background: rgba(20,20,25,0.4) !important;
-  backdrop-filter: blur(12px);
-  padding: 1.5rem !important;
-}
-.alert--info {
-  border-color: rgba(0,240,255,0.3) !important;
-  box-shadow: 0 0 40px rgba(0,240,255,0.05);
-}
-.alert--info * { color: rgba(0,240,255,0.9) !important; }
-
-/* ── Pagination Buttons ────────────────────────────────────── */
-.pagination-nav__link {
-  border-radius: 20px !important;
-  border: 1px solid rgba(255,255,255,0.08) !important;
-  background: rgba(15,15,18,0.5) !important;
-  backdrop-filter: blur(10px);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  padding: 1.5rem !important;
-}
-
-.pagination-nav__link:hover {
-  background: rgba(226, 255, 61, 0.05) !important;
-  border-color: var(--tz-volt) !important;
-  box-shadow: 0 10px 40px rgba(226, 255, 61, 0.1);
-  transform: translateY(-4px) scale(1.02);
-}
-
-.pagination-nav__sublabel {
-  font-family: var(--tz-display-font);
-  color: var(--tz-text-muted);
-  letter-spacing: 0.1em;
-}
-
-.pagination-nav__label {
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: #fff !important;
-}
-
-/* ── Footer ────────────────────────────────────────────────── */
-.footer {
-  background: transparent !important;
-  border-top: 1px dashed rgba(255,255,255,0.1) !important;
-  margin-top: 5rem;
-  padding: 4rem 0 !important;
-}
-
-.footer__title {
-  font-family: var(--tz-display-font);
-  font-size: 0.9rem;
-  color: #fff;
-  letter-spacing: 0.1em;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  border-bottom: 1px solid var(--tz-border-solid);
+  padding-bottom: 0.75rem;
   margin-bottom: 1.5rem;
 }
 
-.footer__link-item {
-  color: var(--tz-text-muted);
+.markdown h2 {
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--tz-border);
+}
+
+.markdown h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--tz-amber);
+}
+
+/* ── Links ──────────────────────────────────────────────────── */
+a {
+  color: var(--tz-amber);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--tz-teal);
+  text-decoration: underline;
+}
+
+/* ── Navbar ─────────────────────────────────────────────────── */
+.navbar {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--tz-border-solid);
+  background: rgba(9, 9, 14, 0.92) !important;
+}
+
+.navbar__logo img {
+  height: 28px;
+}
+
+.navbar__title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
   font-size: 1rem;
-  margin-bottom: 0.5rem;
-  transition: color 0.3s;
+  color: var(--tz-text);
+  letter-spacing: 0.01em;
+}
+
+.navbar__item.navbar__link {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--tz-muted);
+  transition: color 0.15s;
+}
+
+.navbar__item.navbar__link:hover,
+.navbar__item.navbar__link--active {
+  color: var(--tz-amber);
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────── */
+.menu {
+  background: var(--tz-bg);
+  padding: 0.75rem 0;
+}
+
+.menu__link {
+  font-size: 0.84rem;
+  font-weight: 500;
+  border-radius: 3px;
+  color: var(--tz-muted);
+  transition: color 0.15s, background 0.15s;
+}
+
+.menu__link:hover {
+  color: var(--tz-text);
+  background: var(--tz-teal-faint);
+}
+
+.menu__link--active {
+  color: var(--tz-amber) !important;
+  background: var(--tz-amber-faint) !important;
+  font-weight: 700;
+}
+
+.menu__list-item-collapsible:hover {
+  background: transparent;
+}
+
+.menu__caret::before {
+  border-color: var(--tz-muted) transparent transparent;
+}
+
+.menu__list-item--collapsed .menu__caret::before {
+  border-color: var(--tz-muted) transparent transparent;
+}
+
+/* Sidebar category labels */
+.menu__list .menu__list-item > .menu__link.menu__link--sublist {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--tz-amber);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Doc Article ─────────────────────────────────────────────── */
+.docItemContainer_node_modules-\@docusaurus-theme-classic-lib-theme-DocItem-Layout-index-module,
+article {
+  max-width: 740px;
+}
+
+/* ── Code Blocks ─────────────────────────────────────────────── */
+code {
+  background: rgba(233, 160, 32, 0.08);
+  color: var(--tz-amber);
+  border: 1px solid rgba(233, 160, 32, 0.15);
+  border-radius: 3px;
+  font-size: 0.85em;
+  padding: 0.1em 0.4em;
+}
+
+pre code {
+  background: transparent;
+  color: inherit;
+  border: none;
+  padding: 0;
+}
+
+pre {
+  background: var(--ifm-pre-background) !important;
+  border: 1px solid var(--tz-border-solid);
+  border-radius: 4px;
+}
+
+/* Code block header */
+.codeBlockContainer_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-Container-index-module {
+  border: 1px solid var(--tz-border-solid) !important;
+  border-radius: 4px !important;
+  overflow: hidden;
+}
+
+/* ── Tables ──────────────────────────────────────────────────── */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.88rem;
+}
+
+thead tr {
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--tz-border-solid);
+}
+
+th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tz-muted);
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--tz-border);
+  color: var(--tz-text);
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+
+/* ── Admonitions ─────────────────────────────────────────────── */
+.admonition {
+  border-radius: 4px;
+  background: rgba(255,255,255,0.02) !important;
+  border-left: 3px solid;
+  padding: 1rem 1.25rem;
+}
+
+.admonition-tip    { border-color: var(--tz-teal); }
+.admonition-note   { border-color: var(--tz-muted); }
+.admonition-info   { border-color: var(--tz-teal); }
+.admonition-caution { border-color: var(--tz-amber); }
+.admonition-danger  { border-color: var(--tz-red); }
+
+.admonition-heading {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.admonition-tip    .admonition-heading { color: var(--tz-teal); }
+.admonition-caution .admonition-heading { color: var(--tz-amber); }
+.admonition-danger  .admonition-heading { color: var(--tz-red); }
+
+/* ── TOC ─────────────────────────────────────────────────────── */
+.table-of-contents {
+  border-left: 2px solid var(--tz-border-solid);
+  font-size: 0.8rem;
+}
+
+.table-of-contents__link {
+  color: var(--tz-muted);
+  transition: color 0.15s;
+}
+
+.table-of-contents__link:hover,
+.table-of-contents__link--active {
+  color: var(--tz-amber);
+}
+
+/* ── Pagination / Prev-Next ──────────────────────────────────── */
+.pagination-nav__link {
+  background: var(--tz-surface);
+  border: 1px solid var(--tz-border-solid);
+  border-radius: 4px;
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--tz-amber);
+  background: var(--tz-amber-faint);
+}
+
+.pagination-nav__sublabel {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tz-muted);
+}
+
+.pagination-nav__label {
+  font-weight: 700;
+  color: var(--tz-text);
+}
+
+/* ── Footer ──────────────────────────────────────────────────── */
+.footer {
+  background: var(--tz-surface) !important;
+  border-top: 1px solid var(--tz-border-solid);
+  padding: 3rem 2rem;
+}
+
+.footer__title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--tz-muted);
+  margin-bottom: 0.75rem;
+}
+
+.footer__link-item {
+  font-size: 0.85rem;
+  color: var(--tz-muted);
+  transition: color 0.15s;
 }
 
 .footer__link-item:hover {
-  color: var(--tz-volt);
+  color: var(--tz-amber);
 }
 
 .footer__copyright {
-  font-family: var(--ifm-font-family-monospace);
-  color: var(--tz-text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.2);
+  margin-top: 2rem;
+  border-top: 1px solid var(--tz-border);
+  padding-top: 1.5rem;
+}
+
+/* ── Breadcrumbs ─────────────────────────────────────────────── */
+.breadcrumbs__item--active .breadcrumbs__link {
+  color: var(--tz-text);
+  font-weight: 600;
+}
+
+.breadcrumbs__link {
+  color: var(--tz-muted);
   font-size: 0.8rem;
-  margin-top: 3rem;
-  opacity: 0.5;
+}
+
+/* ── Search ──────────────────────────────────────────────────── */
+.DocSearch-Button {
+  background: var(--tz-surface) !important;
+  border: 1px solid var(--tz-border-solid) !important;
+  border-radius: 4px !important;
+  color: var(--tz-muted) !important;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--tz-bg); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.18); }
+
+/* ── Homepage body class override ───────────────────────────── */
+body.homepage-view .main-wrapper {
+  background: var(--tz-bg);
+}
+
+body.homepage-view .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* ── Misc ────────────────────────────────────────────────────── */
+hr {
+  border-color: var(--tz-border-solid);
+}
+
+blockquote {
+  border-left: 3px solid var(--tz-amber);
+  background: var(--tz-amber-faint);
+  border-radius: 0 4px 4px 0;
+  padding: 0.75rem 1rem;
+  margin: 1.5rem 0;
+  color: var(--tz-text);
+}
+
+blockquote p { margin: 0; }
+
+/* Badge/Tag utility used in markdown */
+.badge--amber {
+  background: var(--tz-amber-faint);
+  color: var(--tz-amber);
+  border: 1px solid rgba(233,160,32,0.25);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 2px;
 }

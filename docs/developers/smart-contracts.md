@@ -1,208 +1,298 @@
 ---
-sidebar_position: 1
-title: Smart Contracts
-description: TrendZap's Solidity smart contracts — addresses, interfaces, and architecture on Avalanche.
-last_update:
-  date: 2026-03-20
-  author: TrendZap Team
+sidebar_position: 2
+title: Smart Contract Integration
+description: How to interact directly with TrendZap contracts — placing bets, reading state, and listening to events.
 ---
 
-# Smart Contracts
+# Smart Contract Integration
 
-TrendZap's on-chain logic is written in Solidity and deployed on Avalanche. All contracts are open-source, audited, and verified on Snowtrace.
+You can interact with TrendZap contracts directly using any EVM-compatible library. This guide covers the most common integration patterns using Viem and Ethers.js.
 
 ---
 
-## Deployed Addresses
+## ABIs
 
-### Avalanche Fuji Testnet (chain ID: 43113)
+The full contract ABIs are available in the open-source repo at `github.com/trendzaphq/trendzap-contracts`. The key functions you'll need:
 
-| Contract | Address | Explorer |
-|----------|---------|---------|
-| `ViralityMarketV2` | `0x...` | [View on Snowtrace](https://testnet.snowtrace.io/address/0x...) |
-| `MarketFactoryV2` | `0x...` | [View on Snowtrace](https://testnet.snowtrace.io/address/0x...) |
-| `SocialOracle` | `0x...` | [View on Snowtrace](https://testnet.snowtrace.io/address/0x...) |
-| `Treasury` | `0x...` | [View on Snowtrace](https://testnet.snowtrace.io/address/0x...) |
+### TrendZapMarket ABI (excerpt)
 
-### Avalanche C-Chain Mainnet (chain ID: 43114)
-
-| Contract | Address | Explorer |
-|----------|---------|---------|
-| `ViralityMarketV2` | `Coming Q2 2026` | — |
-| `MarketFactoryV2` | `Coming Q2 2026` | — |
-
----
-
-## Contract Architecture
-
+```typescript
+const MARKET_ABI = [
+  // Read
+  {
+    name: 'postUrl',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [],
+    outputs: [{ type: 'string' }],
+  },
+  {
+    name: 'threshold',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [],
+    outputs: [{ type: 'uint256' }],
+  },
+  {
+    name: 'totalOverStake',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [],
+    outputs: [{ type: 'uint256' }],
+  },
+  {
+    name: 'totalUnderStake',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [],
+    outputs: [{ type: 'uint256' }],
+  },
+  {
+    name: 'getPosition',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [{ name: 'user', type: 'address' }],
+    outputs: [
+      { name: 'overStake', type: 'uint256' },
+      { name: 'underStake', type: 'uint256' },
+    ],
+  },
+  {
+    name: 'resolved',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [],
+    outputs: [{ type: 'bool' }],
+  },
+  {
+    name: 'outcomeIsOver',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [],
+    outputs: [{ type: 'bool' }],
+  },
+  // Write
+  {
+    name: 'bet',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'isOver', type: 'bool' },
+      { name: 'amount', type: 'uint256' },
+    ],
+    outputs: [],
+  },
+  {
+    name: 'claim',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [],
+    outputs: [],
+  },
+] as const;
 ```
-MarketFactoryV2
-    └── Creates and manages ViralityMarketV2 instances
-            └── Each market is an independent contract
-            └── SocialOracle resolves outcomes
-            └── Treasury receives protocol fees
+
+---
+
+## Reading Market State (Viem)
+
+```typescript
+import { createPublicClient, http } from 'viem';
+import { arbitrum } from 'viem/chains';
+
+const client = createPublicClient({
+  chain: arbitrum,
+  transport: http(),
+});
+
+const MARKET_ADDRESS = '0x...'; // specific market address
+
+// Read basic market info
+const [postUrl, threshold, endTime] = await Promise.all([
+  client.readContract({ address: MARKET_ADDRESS, abi: MARKET_ABI, functionName: 'postUrl' }),
+  client.readContract({ address: MARKET_ADDRESS, abi: MARKET_ABI, functionName: 'threshold' }),
+  client.readContract({ address: MARKET_ADDRESS, abi: MARKET_ABI, functionName: 'endTime' }),
+]);
+
+// Read pool state
+const [overStake, underStake] = await Promise.all([
+  client.readContract({ address: MARKET_ADDRESS, abi: MARKET_ABI, functionName: 'totalOverStake' }),
+  client.readContract({ address: MARKET_ADDRESS, abi: MARKET_ABI, functionName: 'totalUnderStake' }),
+]);
+
+// Implied probability
+const total = overStake + underStake;
+const overProbability = Number(overStake) / Number(total);
+
+// Read a user's position
+const [userOver, userUnder] = await client.readContract({
+  address: MARKET_ADDRESS,
+  abi: MARKET_ABI,
+  functionName: 'getPosition',
+  args: ['0xUserAddress'],
+});
 ```
 
 ---
 
-## ViralityMarketV2
+## Placing a Bet (Viem)
 
-The core prediction market contract. Each market is an instance of this contract.
+Betting requires two transactions: USDC approval (first time) and the actual bet.
 
-### Key Functions
+```typescript
+import { createWalletClient, parseUnits } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
 
-#### `createMarket(params, initialBet, betOnOver)` → `marketId`
+const USDC_ADDRESS = '0xaf88d065e77c8cC2239327C5EDb3A432268e5831';
+const USDC_ABI = [
+  {
+    name: 'approve',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [{ name: 'spender', type: 'address' }, { name: 'amount', type: 'uint256' }],
+    outputs: [{ type: 'bool' }],
+  },
+] as const;
 
-Creates a new prediction market. The creator may optionally seed initial liquidity.
+const walletClient = createWalletClient({
+  account: privateKeyToAccount('0xPrivateKey'),
+  chain: arbitrum,
+  transport: http(),
+});
 
-```solidity
-struct MarketParams {
-    string postUrl;        // Full URL of the social media post
-    Platform platform;     // TWITTER, YOUTUBE, TIKTOK, INSTAGRAM
-    MetricType metricType; // LIKES, VIEWS, RETWEETS, COMMENTS, SHARES
-    uint256 threshold;     // Engagement number to bet against
-    uint256 startTime;     // When betting opens
-    uint256 endTime;       // When betting closes
-    uint256 resolutionTime;// When oracle resolution can begin
+const betAmount = parseUnits('10', 6); // 10 USDC (6 decimals)
+
+// Step 1: Approve USDC spend
+await walletClient.writeContract({
+  address: USDC_ADDRESS,
+  abi: USDC_ABI,
+  functionName: 'approve',
+  args: [MARKET_ADDRESS, betAmount],
+});
+
+// Step 2: Place bet
+await walletClient.writeContract({
+  address: MARKET_ADDRESS,
+  abi: MARKET_ABI,
+  functionName: 'bet',
+  args: [true, betAmount], // true = OVER, false = UNDER
+});
+```
+
+---
+
+## Listening to Events
+
+```typescript
+// Watch for new bets on a market
+const unwatch = client.watchContractEvent({
+  address: MARKET_ADDRESS,
+  abi: MARKET_ABI,
+  eventName: 'BetPlaced',
+  onLogs: (logs) => {
+    for (const log of logs) {
+      console.log('New bet:', {
+        user: log.args.user,
+        isOver: log.args.isOver,
+        amount: log.args.amount,
+      });
+    }
+  },
+});
+
+// Watch for market resolution
+client.watchContractEvent({
+  address: MARKET_ADDRESS,
+  abi: MARKET_ABI,
+  eventName: 'MarketResolved',
+  onLogs: (logs) => {
+    const log = logs[0];
+    console.log('Market resolved:', {
+      outcomeIsOver: log.args.outcomeIsOver,
+      finalValue: log.args.finalMetricValue,
+    });
+  },
+});
+```
+
+---
+
+## Claiming Winnings
+
+```typescript
+// Check if user can claim
+const isResolved = await client.readContract({
+  address: MARKET_ADDRESS, abi: MARKET_ABI, functionName: 'resolved',
+});
+
+const outcomeIsOver = await client.readContract({
+  address: MARKET_ADDRESS, abi: MARKET_ABI, functionName: 'outcomeIsOver',
+});
+
+const [userOverStake, userUnderStake] = await client.readContract({
+  address: MARKET_ADDRESS,
+  abi: MARKET_ABI,
+  functionName: 'getPosition',
+  args: ['0xUserAddress'],
+});
+
+const userWon = isResolved && (
+  (outcomeIsOver && userOverStake > 0n) ||
+  (!outcomeIsOver && userUnderStake > 0n)
+);
+
+if (userWon) {
+  await walletClient.writeContract({
+    address: MARKET_ADDRESS,
+    abi: MARKET_ABI,
+    functionName: 'claim',
+  });
 }
 ```
 
-#### `buyShares(marketId, isOver)` → `payable`
+---
 
-Places a bet. Send AVAX with the call. Returns shares based on current LMSR pricing.
+## Getting All Markets (Factory)
 
-```solidity
-// Bet OVER on market 1, sending 0.5 AVAX
-viralityMarket.buyShares{value: 0.5 ether}(1, true);
+```typescript
+const FACTORY_ABI = [
+  {
+    name: 'getMarkets',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [
+      { name: 'offset', type: 'uint256' },
+      { name: 'limit', type: 'uint256' },
+    ],
+    outputs: [{ type: 'address[]' }],
+  },
+] as const;
+
+const FACTORY_ADDRESS = '0x...';
+
+const markets = await client.readContract({
+  address: FACTORY_ADDRESS,
+  abi: FACTORY_ABI,
+  functionName: 'getMarkets',
+  args: [0n, 20n], // first 20 markets
+});
 ```
 
-#### `sellShares(marketId, shares, isOver)`
-
-Exits a position before market resolution. Returns AVAX based on current market price (minus fee).
-
-#### `resolveMarket(marketId, metricValue)`
-
-Called only by the oracle address. Delivers the final engagement metric and settles the market.
-
-#### `claimWinnings(marketId)`
-
-Winners call this after resolution to receive their proportional payout.
-
-#### `claimRefund(marketId)`
-
-Available only on cancelled markets. Returns the original stake.
-
-#### `getPrices(marketId)` → `(priceOver, priceUnder)`
-
-View function returning current LMSR-derived prices as 18-decimal fixed-point numbers.
-
-#### `getProbabilities(marketId)` → `(probOver, probUnder)`
-
-View function returning current implied probabilities as percentages (0–100).
-
-#### `quoteBuy(marketId, shares, isOver)` → `cost`
-
-Preview the AVAX cost to purchase a given number of shares. Use this before calling `buyShares`.
-
-### Fee Model
-
-| Fee | Rate | Recipient |
-|-----|------|-----------|
-| Platform fee | 2.0% | Protocol treasury |
-| Creator royalty | 0.5% | Market creator wallet |
-
-Fees are collected at the point of market resolution and distributed via `_distributeFees()` automatically.
-
-### Access Control Roles
-
-| Role | Capabilities |
-|------|-------------|
-| `DEFAULT_ADMIN_ROLE` | Update treasury address |
-| `ADMIN_ROLE` | Pause/unpause, cancel markets |
-| `ORACLE_ROLE` | Call `resolveMarket` |
-| `KEEPER_ROLE` | Call `closeMarket` when deadline passes |
-
 ---
 
-## SocialOracle
+## Using the TypeScript SDK Instead
 
-The bridge between Chainlink's decentralized oracle network and TrendZap smart contracts.
+For most use cases, the [SDK Reference](/docs/developers/sdk-reference) is simpler and handles USDC approval, gas estimation, and error handling automatically.
 
-### How It Works
-
-1. `requestMetric(marketId, postUrl, platform, metricType)` is called by an authorized requester
-2. The contract builds a Chainlink Any API request pointing at the TrendZap oracle adapter
-3. The Chainlink DON executes the job, fetches the social media metric, and aggregates results
-4. `fulfill(requestId, metricValue)` is called back by the Chainlink DON
-5. The oracle stores the result and triggers market resolution
-
-### Key State
-
-```solidity
-mapping(bytes32 => uint256) public requestToMarket;  // Chainlink requestId → marketId
-mapping(uint256 => uint256) public latestMetricValue; // marketId → resolved metric
-mapping(uint256 => uint256) public lastUpdateTime;    // marketId → timestamp
-```
-
-### Chainlink Configuration (Fuji)
-
-| Parameter | Value |
-|-----------|-------|
-| LINK Token | `0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846` |
-| Oracle Address | TrendZap dedicated Chainlink node |
-| Job ID | Social media metric fetcher |
-| Fee | 0.1 LINK per request |
-
----
-
-## MarketFactoryV2
-
-A factory contract that manages the creation and registry of all TrendZap markets.
-
-- Maintains a list of all deployed markets
-- Validates creator parameters before deployment
-- Emits `MarketCreated` events indexed by The Graph subgraph
-
----
-
-## Security
-
-### Audit Status
-
-Smart contract security review is in progress. The audit report will be published at `docs.trendzap.xyz/security` before mainnet launch.
-
-### Known Protections
-
-| Vector | Mitigation |
-|--------|-----------|
-| Reentrancy | OpenZeppelin `ReentrancyGuard` on all fund-transfer functions |
-| Access control | OpenZeppelin `AccessControl` with role separation |
-| Integer overflow | Solidity 0.8.20+ (built-in overflow protection) |
-| Oracle manipulation | Chainlink DON aggregation + minimum 3-node threshold |
-| Emergency | `Pausable` contract — admin can halt new bets without touching locked funds |
-
-### Bug Bounty
-
-A bug bounty programme will launch alongside the mainnet deployment. Issues should be reported to **security@trendzap.xyz** before public disclosure.
-
----
-
-## Source Code
-
-All contracts are open-source under MIT License:
-
-📦 [github.com/trendzaphq/trendzap-contracts](https://github.com/trendzaphq/trendzap-contracts)
-
-- `contracts/core/ViralityMarketV2.sol` — Main market logic
-- `contracts/core/MarketFactoryV2.sol` — Factory
-- `contracts/oracle/SocialOracle.sol` — Chainlink integration
-- `contracts/libraries/LMSR.sol` — Market scoring math
-- `contracts/libraries/FixedPointMath.sol` — Precision arithmetic
+Use direct contract interaction when:
+- You need lower-level control
+- You're building a custom frontend with your own state management
+- You're integrating in a non-TypeScript environment
 
 ---
 
 ## Next Steps
 
-- [Oracle Integration](/docs/developers/oracle-integration) — How the Chainlink oracle delivers data
-- [SDK Reference](/docs/developers/sdk-reference) — Interact with contracts via TypeScript
-- [Subgraph](/docs/developers/subgraph) — Query market data via GraphQL
+- [SDK Reference](/docs/developers/sdk-reference) — High-level TypeScript SDK
+- [Subgraph](/docs/developers/subgraph) — Query market state without RPC calls
+- [Smart Contract Architecture](/docs/architecture/smart-contracts) — Full ABI and address reference

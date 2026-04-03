@@ -1,28 +1,24 @@
 ---
 sidebar_position: 3
 title: Subgraph
-description: Query TrendZap market data, positions, and analytics via The Graph's GraphQL API.
-last_update:
-  date: 2026-03-20
-  author: TrendZap Team
+description: Query TrendZap on-chain data via the Graph Protocol subgraph — market state, positions, and resolution history.
 ---
 
 # Subgraph
 
-TrendZap's on-chain events are indexed by [The Graph](https://thegraph.com), giving you fast, flexible access to historical market data, user positions, leaderboards, and analytics — all via a standard GraphQL API.
-
-No RPC node required. No pagination through thousands of events. Just query what you need.
+TrendZap's subgraph indexes all on-chain events from the Factory and Market contracts and exposes them via a GraphQL API. Use it to query market data without making raw RPC calls.
 
 ---
 
 ## Endpoint
 
 ```
-# Fuji Testnet
-https://api.thegraph.com/subgraphs/name/trendzaphq/trendzap-fuji
+https://api.thegraph.com/subgraphs/name/trendzaphq/trendzap-arbitrum
+```
 
-# Avalanche Mainnet (launching Q2 2026)
-https://api.thegraph.com/subgraphs/name/trendzaphq/trendzap
+Testnet (Arbitrum Sepolia):
+```
+https://api.thegraph.com/subgraphs/name/trendzaphq/trendzap-arbitrum-sepolia
 ```
 
 ---
@@ -31,97 +27,55 @@ https://api.thegraph.com/subgraphs/name/trendzaphq/trendzap
 
 ### Market
 
-Represents a single prediction market.
-
 ```graphql
-type Market @entity {
-  id: ID!                         # Market ID (numeric string)
-  postUrl: String!                # Social media post URL
-  platform: Platform!             # TWITTER | YOUTUBE | TIKTOK | INSTAGRAM
-  metricType: MetricType!         # LIKES | VIEWS | RETWEETS | COMMENTS | SHARES
-  threshold: BigInt!              # Engagement threshold
-  endTime: BigInt!                # Betting deadline (unix timestamp)
-  resolutionTime: BigInt!         # Resolution timestamp
-  status: MarketStatus!           # PENDING | ACTIVE | CLOSED | RESOLVED | CANCELLED
-  outcome: Outcome                # OVER | UNDER (null until resolved)
-  resolvedValue: BigInt           # Actual metric value from oracle
-  totalOverStake: BigInt!         # Total AVAX bet on OVER
-  totalUnderStake: BigInt!        # Total AVAX bet on UNDER
-  totalVolume: BigInt!            # Total AVAX traded
-  feesCollected: BigInt!          # Protocol fees collected
-  creator: User!                  # Market creator
-  positions: [Position!]!         @derivedFrom(field: "market")
-  bets: [Bet!]!                   @derivedFrom(field: "market")
+type Market {
+  id: ID!                    # Market contract address
+  marketId: BigInt!          # Sequential ID from factory
+  creator: Bytes!            # Creator wallet address
+  postUrl: String!
+  platform: String!          # TWITTER | TIKTOK | INSTAGRAM | YOUTUBE
+  metric: String!            # LIKES | VIEWS | RETWEETS | COMMENTS | SHARES
+  threshold: BigInt!
+  endTime: BigInt!
   createdAt: BigInt!
+  resolved: Boolean!
+  disputed: Boolean!
+  outcomeIsOver: Boolean
+  finalMetricValue: BigInt
   resolvedAt: BigInt
-}
-```
-
-### User
-
-Aggregated stats per wallet address.
-
-```graphql
-type User @entity {
-  id: ID!                         # Wallet address
-  totalBets: BigInt!              # Lifetime number of bets placed
-  totalWins: BigInt!              # Number of winning markets
-  totalVolume: BigInt!            # Total AVAX bet across all markets
-  totalProfit: BigInt!            # Net AVAX profit (can be negative)
-  winRate: BigDecimal!            # Win rate (0.0 – 1.0)
-  marketsCreated: [Market!]!      @derivedFrom(field: "creator")
-  positions: [Position!]!         @derivedFrom(field: "user")
+  totalOverStake: BigInt!
+  totalUnderStake: BigInt!
+  betCount: BigInt!
+  positions: [Position!]! @derivedFrom(field: "market")
 }
 ```
 
 ### Position
 
-A user's stake in a specific market.
-
 ```graphql
-type Position @entity {
-  id: ID!                         # "{marketId}-{userAddress}"
+type Position {
+  id: ID!             # marketAddress-userAddress
   market: Market!
-  user: User!
-  overShares: BigInt!             # OVER shares held
-  underShares: BigInt!            # UNDER shares held
-  overCost: BigInt!               # Total AVAX paid for OVER shares
-  underCost: BigInt!              # Total AVAX paid for UNDER shares
-  claimed: Boolean!               # Whether payout has been claimed
-  payout: BigInt                  # Payout received (null if not claimed)
-  updatedAt: BigInt!
+  user: Bytes!
+  overStake: BigInt!
+  underStake: BigInt!
+  claimed: Boolean!
+  claimedAmount: BigInt
+  lastUpdated: BigInt!
 }
 ```
 
 ### Bet
 
-Individual bet event (each `buyShares` call).
-
 ```graphql
-type Bet @entity {
-  id: ID!                         # Transaction hash + log index
+type Bet {
+  id: ID!             # txHash-logIndex
   market: Market!
-  user: User!
-  isOver: Boolean!                # true = OVER, false = UNDER
-  shares: BigInt!                 # Shares received
-  cost: BigInt!                   # AVAX paid
+  user: Bytes!
+  isOver: Boolean!
+  amount: BigInt!
   timestamp: BigInt!
   txHash: Bytes!
-}
-```
-
-### DailyStat
-
-Aggregate protocol statistics by day.
-
-```graphql
-type DailyStat @entity {
-  id: ID!                         # Date string "YYYY-MM-DD"
-  date: BigInt!                   # Unix timestamp (start of day)
-  totalVolume: BigInt!            # AVAX traded that day
-  totalMarkets: BigInt!           # New markets created
-  totalBets: BigInt!              # Bets placed
-  uniqueUsers: BigInt!            # Unique active wallets
 }
 ```
 
@@ -129,120 +83,118 @@ type DailyStat @entity {
 
 ## Example Queries
 
-### Active Markets Feed
+### Active Markets
 
 ```graphql
 query ActiveMarkets {
   markets(
-    where: { status: "ACTIVE" }
-    orderBy: totalVolume
+    where: { resolved: false, disputed: false }
+    orderBy: totalOverStake
     orderDirection: desc
     first: 20
   ) {
     id
     postUrl
     platform
-    metricType
+    metric
     threshold
     endTime
     totalOverStake
     totalUnderStake
-    totalVolume
-    creator {
-      id
-    }
+    betCount
   }
 }
 ```
 
-### User Portfolio
+### Market Detail
 
 ```graphql
-query UserPortfolio($userAddress: String!) {
-  user(id: $userAddress) {
-    totalBets
-    totalWins
-    totalVolume
-    totalProfit
-    winRate
-    positions(where: { market_: { status_not: "CANCELLED" } }) {
-      market {
-        id
-        postUrl
-        platform
-        status
-        outcome
-      }
-      overShares
-      underShares
-      overCost
-      underCost
+query MarketDetail($id: ID!) {
+  market(id: $id) {
+    id
+    postUrl
+    platform
+    metric
+    threshold
+    endTime
+    totalOverStake
+    totalUnderStake
+    resolved
+    outcomeIsOver
+    finalMetricValue
+    positions(orderBy: overStake, orderDirection: desc, first: 10) {
+      user
+      overStake
+      underStake
       claimed
-      payout
     }
   }
 }
 ```
 
-### Leaderboard — Top Forecasters
+### User Positions
 
 ```graphql
-query Leaderboard {
-  users(
-    orderBy: winRate
+query UserPositions($user: Bytes!) {
+  positions(
+    where: { user: $user, overStake_gt: "0" }
+    orderBy: lastUpdated
+    orderDirection: desc
+  ) {
+    market {
+      id
+      postUrl
+      platform
+      threshold
+      endTime
+      resolved
+      outcomeIsOver
+    }
+    overStake
+    underStake
+    claimed
+    claimedAmount
+  }
+}
+```
+
+### Recent Bets on a Market
+
+```graphql
+query RecentBets($market: String!) {
+  bets(
+    where: { market: $market }
+    orderBy: timestamp
     orderDirection: desc
     first: 50
-    where: { totalBets_gte: "10" }  # Minimum 10 bets for credibility
   ) {
-    id
-    totalBets
-    totalWins
-    winRate
-    totalProfit
-    totalVolume
+    user
+    isOver
+    amount
+    timestamp
+    txHash
   }
 }
 ```
 
-### Protocol Analytics — Last 30 Days
+### Resolved Markets
 
 ```graphql
-query ProtocolStats {
-  dailyStats(
-    orderBy: date
-    orderDirection: desc
-    first: 30
-  ) {
-    date
-    totalVolume
-    totalMarkets
-    totalBets
-    uniqueUsers
-  }
-}
-```
-
-### Market Resolution History
-
-```graphql
-query ResolvedMarkets($platform: String) {
+query ResolvedMarkets {
   markets(
-    where: {
-      status: "RESOLVED"
-      platform: $platform
-    }
+    where: { resolved: true }
     orderBy: resolvedAt
     orderDirection: desc
-    first: 50
+    first: 20
   ) {
     id
     postUrl
     platform
-    metricType
     threshold
-    resolvedValue
-    outcome
-    totalVolume
+    outcomeIsOver
+    finalMetricValue
+    totalOverStake
+    totalUnderStake
     resolvedAt
   }
 }
@@ -250,76 +202,61 @@ query ResolvedMarkets($platform: String) {
 
 ---
 
-## Using the Subgraph in TypeScript
-
-### With @apollo/client
+## Using with TypeScript
 
 ```typescript
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+const SUBGRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/trendzaphq/trendzap-arbitrum';
 
-const client = new ApolloClient({
-  uri: 'https://api.thegraph.com/subgraphs/name/trendzaphq/trendzap-fuji',
-  cache: new InMemoryCache(),
-});
-
-const { data } = await client.query({
-  query: gql`
+async function fetchActiveMarkets() {
+  const query = `
     query {
-      markets(where: { status: "ACTIVE" }, first: 10) {
+      markets(
+        where: { resolved: false }
+        orderBy: totalOverStake
+        orderDirection: desc
+        first: 20
+      ) {
         id
         postUrl
-        totalVolume
+        platform
+        threshold
+        totalOverStake
+        totalUnderStake
       }
     }
-  `,
-});
-```
+  `;
 
-### With the TrendZap SDK (Recommended)
+  const res = await fetch(SUBGRAPH_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query }),
+  });
 
-The SDK wraps the subgraph automatically:
-
-```typescript
-import { TrendZapClient } from '@trendzap/sdk';
-
-const client = new TrendZapClient({ chain: 'avalanche-fuji' });
-
-// Leaderboard — top 20 forecasters
-const leaderboard = await client.analytics.leaderboard({ limit: 20 });
-
-// User portfolio
-const portfolio = await client.analytics.userPortfolio('0xYourAddress');
-
-// Protocol volume
-const stats = await client.analytics.protocolStats({ days: 30 });
+  const { data } = await res.json();
+  return data.markets;
+}
 ```
 
 ---
 
-## Indexed Events
+## Running Your Own Instance
 
-The subgraph listens to the following contract events:
+The subgraph is open source. To run your own instance:
 
-| Event | Triggered When |
-|-------|---------------|
-| `MarketCreated` | New market deployed |
-| `SharesBought` | User places a bet |
-| `SharesSold` | User exits position early |
-| `MarketResolved` | Oracle delivers final metric |
-| `WinningsClaimed` | User claims payout |
-| `MarketStatusChanged` | Market moves between states |
-| `FeesWithdrawn` | Protocol/creator fees distributed |
+```bash
+git clone https://github.com/trendzaphq/trendzap-subgraph
+cd trendzap-subgraph
+npm install
+graph deploy --node http://localhost:8020/ trendzap-local
+```
 
----
-
-## Source Code
-
-📦 [github.com/trendzaphq/trendzap-subgraph](https://github.com/trendzaphq/trendzap-subgraph)
+See the repo README for full local setup instructions.
 
 ---
 
 ## Next Steps
 
-- [SDK Reference](/docs/developers/sdk-reference) — Access subgraph data via the SDK
-- [Smart Contracts](/docs/developers/smart-contracts) — On-chain contract reference
-- [Oracle Integration](/docs/developers/oracle-integration) — How resolution data gets on-chain
+- [SDK Reference](/docs/developers/sdk-reference) — TypeScript SDK that wraps subgraph queries
+- [Oracle Integration](/docs/developers/oracle-integration) — Build custom oracle adapters
+- [Architecture Overview](/docs/architecture/overview) — How the subgraph fits into the system

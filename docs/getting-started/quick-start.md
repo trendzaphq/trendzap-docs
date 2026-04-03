@@ -1,129 +1,123 @@
 ---
 sidebar_position: 1
 title: Quick Start
-description: Get started with TrendZap on Avalanche in under 5 minutes — no crypto experience needed.
-last_update:
-  date: 2026-03-20
-  author: TrendZap Team
+description: Get from zero to your first TrendZap bet in under five minutes.
 ---
 
 # Quick Start
 
-You can be placing your first TrendZap prediction in under 5 minutes. You don't need a wallet set up in advance — just a Twitter account or an email address.
+Get from zero to your first prediction in under five minutes.
 
 ---
 
-## Option A: Sign In with Twitter / Email (Recommended for Beginners)
+## What You Need
 
-TrendZap supports social login via **Privy** — the same technology used by Coinbase and major Web3 apps to onboard non-crypto users.
+- A browser wallet: MetaMask, Coinbase Wallet, Rabby, or any WalletConnect-compatible wallet
+- The Arbitrum One network added to your wallet
+- A small amount of ETH for gas (typically less than $0.10 per transaction)
+- USDC to stake on a market
 
-1. Go to [app.trendzap.xyz](https://app.trendzap.xyz)
-2. Click **Get Started** or **Sign In**
-3. Choose **Continue with X (Twitter)** or **Continue with Email**
-4. Authorize the connection
-5. Privy automatically creates a **non-custodial embedded wallet** for you — your AVAX is yours, TrendZap cannot access it
+---
 
-You are now logged in. Your wallet address appears in the top-right corner.
+## Step 1 — Add Arbitrum to Your Wallet
 
-:::tip No seed phrase required
-Your embedded wallet is secured by your social account. You can export the private key at any time from the account settings if you want to use it with MetaMask or Core later.
+If Arbitrum One isn't in your wallet yet, add it manually:
+
+| Field | Value |
+|-------|-------|
+| Network Name | Arbitrum One |
+| RPC URL | `https://arb1.arbitrum.io/rpc` |
+| Chain ID | `42161` |
+| Currency Symbol | ETH |
+| Block Explorer | `https://arbiscan.io` |
+
+Most wallets will add Arbitrum automatically when you connect to [trendzap.xyz](https://trendzap.xyz) for the first time.
+
+:::tip Using a hardware wallet?
+Arbitrum One is fully supported by Ledger and Trezor via MetaMask. Use the same network config above.
 :::
 
 ---
 
-## Option B: Connect an Existing Wallet
+## Step 2 — Get ETH on Arbitrum
 
-If you already have MetaMask, Core Wallet, or any WalletConnect-compatible wallet:
+You need a small amount of ETH on Arbitrum for gas. Options:
 
-1. Go to [app.trendzap.xyz](https://app.trendzap.xyz)
-2. Click **Connect Wallet**
-3. Select your wallet
-4. Switch to the **Avalanche C-Chain** network if prompted
+**Bridge from Ethereum mainnet**
+Use the official [Arbitrum Bridge](https://bridge.arbitrum.io) to move ETH from mainnet. Takes ~15 minutes.
 
-### Manual Network Configuration (Avalanche Mainnet)
+**Buy directly on-chain**
+Most centralised exchanges (Coinbase, Binance, Kraken) support direct withdrawal to Arbitrum One.
 
-| Field | Value |
-|-------|-------|
-| Network Name | Avalanche C-Chain |
-| RPC URL | `https://api.avax.network/ext/bc/C/rpc` |
-| Chain ID | `43114` |
-| Currency Symbol | `AVAX` |
-| Block Explorer | `https://snowtrace.io` |
-
-### Testnet (Fuji) — For Testing Only
-
-| Field | Value |
-|-------|-------|
-| Network Name | Avalanche Fuji Testnet |
-| RPC URL | `https://api.avax-test.network/ext/bc/C/rpc` |
-| Chain ID | `43113` |
-| Currency Symbol | `AVAX` |
-| Block Explorer | `https://testnet.snowtrace.io` |
-| Faucet | [faucet.avax.network](https://faucet.avax.network) |
+**Testnet (Arbitrum Sepolia)**
+If you want to test without real funds, use Arbitrum Sepolia. Request testnet ETH from the [Alchemy Faucet](https://www.alchemy.com/faucets/arbitrum-sepolia) or [Chainlink Faucet](https://faucets.chain.link/arbitrum-sepolia).
 
 ---
 
-## Get AVAX
+## Step 3 — Get USDC
 
-TrendZap markets are denominated in **AVAX** (native Avalanche token).
+TrendZap uses USDC (Circle's native USDC on Arbitrum One) for all bets and payouts.
 
-### On Testnet (Free)
-Visit [faucet.avax.network](https://faucet.avax.network), paste your wallet address, and receive free testnet AVAX.
+**Already have USDC on Ethereum mainnet?**
+Bridge it via the official [Arbitrum Bridge](https://bridge.arbitrum.io) or [Stargate](https://stargate.finance).
 
-### On Mainnet
-- **Exchanges:** Buy AVAX on Binance, Coinbase, Kraken, or OKX and withdraw to your Avalanche C-Chain address
-- **Bridge:** Bridge assets from another chain using [bridge.avax.network](https://bridge.avax.network)
+**Swap for USDC on Arbitrum**
+Use [Uniswap on Arbitrum](https://app.uniswap.org) to swap ETH or any Arbitrum token for USDC.
 
----
-
-## Browse and Join a Market
-
-1. From the main feed, scroll through **Active Markets**
-2. Click any market card to open the detail view
-3. Review:
-   - The social media post being tracked
-   - The engagement threshold (e.g., "5M views")
-   - The deadline
-   - Current OVER/UNDER implied probabilities
-   - Total pool size
+**Testnet USDC**
+On Arbitrum Sepolia, use the faucet link in the TrendZap app to get testnet USDC for free.
 
 ---
 
-## Place Your First Bet
+## Step 4 — Connect Your Wallet
 
-1. Select **OVER** or **UNDER** based on your prediction
-2. Enter your stake amount in AVAX
-3. Review the **estimated shares** and **potential payout** shown in the interface
-4. Click **Place Bet**
-5. Confirm the transaction in your wallet (gas fee: typically < $0.05)
+1. Go to [trendzap.xyz](https://trendzap.xyz)
+2. Click **Connect Wallet** in the top right
+3. Select your wallet provider
+4. Approve the connection request
+5. If prompted, switch to Arbitrum One
 
-Your position is confirmed on-chain in under 2 seconds. You can view it anytime under **My Positions**.
-
----
-
-## Wait for Resolution
-
-When the market deadline arrives:
-- The Chainlink oracle fetches the actual engagement metric from the platform's API
-- The result is delivered on-chain automatically
-- You receive a notification (if you've enabled them)
+Your address will appear in the navbar once connected.
 
 ---
 
-## Claim Your Winnings
+## Step 5 — Browse Markets
 
-If your prediction was correct:
+The main feed shows all active prediction markets. Each card shows:
 
-1. Go to **My Positions** → **Resolved**
-2. Find the settled market
-3. Click **Claim Winnings**
-4. Confirm the transaction
-5. AVAX is transferred to your wallet immediately
+- The social media post and platform
+- The threshold (e.g. "500K likes")
+- Current OVER / UNDER split
+- Pool size in USDC
+- Time remaining
+
+Click any market to open the full detail view.
 
 ---
 
-## What's Next?
+## Step 6 — Place Your Bet
 
-- [Connect Wallet Guide](/docs/getting-started/connect-wallet) — Detailed wallet setup for all wallet types
-- [How It Works](/docs/introduction/how-it-works) — Understand LMSR pricing and oracle resolution
-- [Creating Markets](/docs/user-guide/creating-markets) — Create your own market and earn a creator royalty
+1. Open a market you want to trade
+2. Click **OVER** or **UNDER**
+3. Enter your stake amount in USDC
+4. Review the estimated payout
+5. Click **Confirm Bet**
+6. Approve the transaction in your wallet
+
+That's it. Your position is recorded on Arbitrum. You can view it in your **Portfolio** tab at any time.
+
+---
+
+## What Happens Next?
+
+When the market's end time arrives, the oracle fetches the final metric. If your side wins, a **Claim** button appears on the market card. Click it, confirm the transaction, and your USDC arrives in your wallet.
+
+See [Claiming Winnings](/docs/user-guide/claiming-winnings) for the full flow.
+
+---
+
+## Need Help?
+
+- [Connect Wallet Guide](/docs/getting-started/connect-wallet) — Detailed wallet setup for each provider
+- [Your First Bet](/docs/getting-started/first-bet) — Walkthrough with screenshots
+- [FAQ](/docs/faq) — Common questions answered

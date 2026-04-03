@@ -1,80 +1,84 @@
 ---
 sidebar_position: 1
 title: What is TrendZap?
-description: TrendZap is the first decentralized prediction market for social media virality — built on Avalanche.
-last_update:
-  date: 2026-03-20
-  author: TrendZap Team
+description: TrendZap is the first decentralized prediction market for social media virality — built on Arbitrum.
 ---
 
 # What is TrendZap?
 
-TrendZap is the first decentralized prediction market built on **Avalanche** that lets anyone bet on whether social media posts will hit engagement thresholds — and get paid when they're right.
+TrendZap is the first decentralized prediction market where anyone can bet on whether a social media post will go viral — verified on-chain, settled in USDC, powered by a tamper-proof oracle.
+
+The protocol is live on **Arbitrum**, backed by the Arbitrum ecosystem, and validated at some of the most competitive hackathons in web3. It is open source, non-custodial, and built in public.
+
+---
 
 ## The Problem
 
-Every day, billions of social media users make predictions:
+Social media engagement drives enormous real-world value — advertising spend, creator deals, brand equity, and cultural relevance. Yet there is no efficient market for it.
 
-- *"This video is going to blow up."*
-- *"That tweet won't age well."*
-- *"This campaign is going to flop."*
+- A creator posts something. Will it break out or flatline? Pure uncertainty.
+- A brand runs a campaign. The metrics move. No one holds a position on the outcome.
+- A trader watches a post go from 10K to 10M views. No instrument to trade that.
+- Millions of people have strong intuitions about what goes viral. No way to express them.
 
-These predictions are made constantly — by creators, marketers, crypto traders, and just about everyone with a social media account. But there has never been a trustless, transparent way to put real money behind them.
+Engagement is the most-watched, least-financialized metric on the internet.
 
-Existing prediction markets (Polymarket, Kalshi) cover politics, sports, and macroeconomics. **None of them cover social media** — the category that most of the internet actually cares about.
+---
 
 ## The Solution
 
-TrendZap creates OVER/UNDER prediction markets tied directly to real social media engagement metrics:
+TrendZap creates prediction markets around social media posts:
 
-| Step | What Happens |
-|------|-------------|
-| **Create** | Any user links a public post, sets an engagement threshold, and defines a deadline |
-| **Bet** | Participants stake AVAX on OVER (exceeds threshold) or UNDER (stays below) |
-| **Resolve** | A Chainlink oracle fetches the actual metric from the platform's official API |
-| **Settle** | Winners receive their proportional share of the pool — automatically, on-chain |
+1. **Any public post** — X/Twitter, TikTok, Instagram, YouTube
+2. **A clear threshold** — Will it hit 500K likes? 1M views? 50K retweets?
+3. **Two sides** — Bet **OVER** (you think it reaches the threshold) or **UNDER** (you think it falls short)
+4. **Automatic resolution** — When the window closes, our oracle fetches the real metric, the outcome is settled on-chain, and winners claim their share
 
-No admin makes a decision about the outcome. No platform can change the result. The oracle delivers the data; the smart contract executes the payout.
+No intermediary holds funds. No manual resolution. The contract does exactly what it says.
 
-## A Simple Example
+---
 
-> **Market:** "Will this YouTube video hit 5 million views within 48 hours?"
->
-> — Pool: 8.2 AVAX across 47 bettors  
-> — Current odds: OVER 61% / UNDER 39%  
-> — Resolution: Chainlink fetches the view count at the deadline  
-> — Settlement: OVER backers split the pool proportionally
+## A Concrete Example
 
-If you staked 0.5 AVAX on OVER and OVER wins with a 61% implied probability, your payout is calculated automatically and claimable immediately after resolution.
+> **Market:** Will this OpenAI tweet get more than 500,000 likes in 24 hours?
 
-## What Makes TrendZap Different
+| Side | Position |
+|------|----------|
+| OVER | You believe the tweet goes viral |
+| UNDER | You believe it doesn't reach 500K |
 
-### 🔮 Decentralized Oracle — Not an Admin
-The outcome of every TrendZap market is determined by **Chainlink's decentralized oracle network**, which fetches data directly from official social media APIs. No team member, no admin key, no governance vote can change a resolved outcome. The result is verifiable by anyone with a block explorer.
+Both sides stake USDC into a shared pool. When the window closes, the oracle reads the actual like count. Winners split the losing side's pool, proportionally to their stake.
 
-### ⚡ Built for Speed on Avalanche
-Avalanche's sub-second finality means bet confirmation feels instant — not like waiting for Ethereum to catch up. Gas fees low enough for micro-bets starting at a fraction of a dollar.
+---
 
-### 🎯 LMSR Continuous Pricing
-TrendZap uses the Logarithmic Market Scoring Rule (LMSR) — the same market mechanism used by Polymarket. This means natural, liquid odds from the very first bet, dynamic prices that update as new bets come in, and the ability to **sell your position before resolution** if you change your mind.
+## Key Properties
 
-### 🛡️ Non-Custodial and Audited
-Your AVAX is held in audited smart contracts, not by TrendZap. Payouts execute automatically on resolution. The team cannot access or move user funds.
+**Simple mechanics.** OVER or UNDER. No complex derivatives, no funding rates, no liquidations. You know your risk the moment you bet.
 
-### 🎨 No Wallet Needed to Start
-Sign in with your X (Twitter) account or email via Privy. An embedded non-custodial wallet is created for you automatically — no seed phrase, no MetaMask setup.
+**On-chain settlement.** Your position is a transaction. Resolution is a contract call. No one can change the outcome.
 
-## Who TrendZap Is For
+**USDC denominated.** Bet in stablecoins. Win in stablecoins. No token to acquire, no price exposure you didn't sign up for.
 
-| User | Why TrendZap |
-|------|-------------|
-| **Social Media Enthusiasts** | Turn strong opinions into verifiable predictions |
-| **Content Creators** | Create markets about your own content and earn a 0.5% royalty on all volume |
-| **Crypto Traders** | Access a new, uncorrelated asset class tied to social media performance |
-| **Marketers & Analysts** | Hedge campaign predictions or validate trend hypotheses |
+**Non-custodial.** Your funds stay in the contract until you claim. TrendZap never holds your assets.
 
-## Ready to Start?
+**Open source.** Every contract, every line of oracle logic, every SDK — public on GitHub under MIT license.
 
-- [How It Works](/docs/introduction/how-it-works) — The mechanics in depth
-- [Quick Start](/docs/getting-started/quick-start) — Be in a market in under 5 minutes
-- [Why Avalanche](/docs/introduction/why-this-chain) — Our chain decision explained
+---
+
+## Who Is TrendZap For?
+
+**Social media analysts** who track engagement professionally and want to put conviction behind their read.
+
+**Content creators** who want to hedge uncertainty around their own releases — or create markets on posts in their niche.
+
+**Crypto traders** looking for a new, uncorrelated prediction surface tied to real-world cultural events.
+
+**Developers** who want to embed TrendZap markets into their own products using the TypeScript SDK or interact directly with the contracts.
+
+---
+
+## Where to Go Next
+
+- [How It Works](/docs/introduction/how-it-works) — The full mechanics: oracle, parimutuel pool, resolution
+- [Quick Start](/docs/getting-started/quick-start) — Up and running in under five minutes
+- [Earned Trust](/docs/protocol/trust) — What security and transparency mean to us

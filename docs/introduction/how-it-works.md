@@ -1,182 +1,142 @@
 ---
 sidebar_position: 2
 title: How It Works
-description: A deep dive into TrendZap's prediction market mechanics — from market creation to settlement.
-last_update:
-  date: 2026-03-20
-  author: TrendZap Team
+description: The mechanics of TrendZap prediction markets — parimutuel pools, oracle resolution, and on-chain settlement.
 ---
 
-# How TrendZap Works
+# How It Works
 
-TrendZap combines a decentralized prediction market, a social media oracle, and LMSR-based continuous pricing into a single, non-custodial protocol. Here's how every piece fits together.
-
-## The Full Lifecycle of a Market
-
-```
- CREATE ──► ACTIVE ──► CLOSED ──► RESOLVING ──► SETTLED
-   │           │           │           │              │
- Post URL    Bets        Betting     Oracle         Claims
- Threshold   open        closed      fetches        open
- Deadline    LMSR        deadline    metrics
-             pricing     reached     on-chain
-```
+TrendZap prediction markets are simple by design. Every market has a post, a metric, a threshold, and a time window. You pick a side. The oracle decides. Winners claim.
 
 ---
 
-## 1. Market Creation
+## Market Lifecycle
 
-Any user can create a market by providing:
+```
+CREATE → ACTIVE → CLOSED → RESOLVED
+  │         │        │          │
+  │         │        │          └── Winners claim USDC from pool
+  │         │        └── Betting stops; oracle fetches final metric
+  │         └── Users place OVER / UNDER positions
+  └── Market created with post URL, threshold, end time
+```
 
-| Parameter | Description | Example |
-|-----------|-------------|---------|
-| **Post URL** | Any public post on a supported platform | `https://x.com/user/status/...` |
-| **Platform** | X/Twitter, YouTube, TikTok, or Instagram | `YouTube` |
-| **Metric** | The engagement type to track | `Views` |
-| **Threshold** | The number to bet against | `5,000,000` |
-| **Deadline** | When betting closes and resolution begins | `48 hours from now` |
-
-The market creator seeds initial liquidity and pays a small creation fee. In return, they earn a **0.5% royalty** on all volume their market generates — paid out automatically at resolution.
+Each stage is enforced by the smart contract. No one can extend the window after close or alter the resolution result.
 
 ---
 
-## 2. The Betting Mechanism — LMSR Pricing
+## Step 1 — Market Creation
 
-TrendZap uses the **Logarithmic Market Scoring Rule (LMSR)**, a continuous-time market-making system that provides instant liquidity and fair prices from the very first bet.
+Any wallet can create a market by specifying:
 
-### What This Means for You
+| Parameter | Description |
+|-----------|-------------|
+| `postUrl` | The public social media post to track |
+| `platform` | X/Twitter, TikTok, Instagram, or YouTube |
+| `metric` | Likes, views, retweets, or comments |
+| `threshold` | The target number (e.g. 500,000) |
+| `endTime` | When the betting window closes |
 
-Unlike a simple parimutuel pool where odds only reflect the final distribution:
-
-- Prices update **in real time** as each bet is placed
-- Early bettors are rewarded for providing liquidity (lower prices, more shares per AVAX)
-- You can **sell your position before resolution** if you change your mind
-- Large bets have bounded price impact — no single whale can dominate odds
-
-### How Shares Work
-
-When you bet on TrendZap, you receive **shares**, not a fixed odds payout:
-
-```
-You pay:   0.5 AVAX on OVER
-You get:   X OVER shares (calculated by LMSR formula)
-At resolution (if OVER wins):
-  Your payout = (Your OVER shares / Total OVER shares) × Prize pool
-```
-
-The lower the current OVER probability, the more shares you receive per AVAX — higher risk, higher potential reward.
-
-### Current Prices
-
-You can always see the current implied probabilities on any market:
-
-- **OVER: 63%** → Market consensus says the post will exceed the threshold
-- **UNDER: 37%** → Market consensus says it won't
-
-These probabilities shift dynamically as bets come in.
+A creation fee prevents spam. The creator can optionally seed one side of the pool.
 
 ---
 
-## 3. During the Betting Window
+## Step 2 — Placing Positions
 
-While a market is active:
+Once a market is active, anyone can take a position:
 
-- Any user can bet OVER or UNDER at any time
-- Prices and probabilities update automatically with every trade
-- You can exit your position early by selling shares back to the market (a small fee applies)
-- The market creator can monitor volume and earned royalties in real time
+- **OVER** — you believe the metric will exceed the threshold by the end time
+- **UNDER** — you believe it will fall short
 
-Position size limits apply to prevent single-user domination of any market.
+Your USDC is transferred to the contract. You can see the live pool composition and implied probability at any time.
 
----
-
-## 4. Market Close
-
-When the deadline arrives, the market transitions to **CLOSED** status:
-
-- No new bets can be placed
-- Existing positions are locked
-- The SocialOracle contract triggers a Chainlink data request
+:::tip Implied Probability
+The split of OVER vs UNDER stakes reflects the crowd's view. A 70/30 split means the market implies 70% probability of OVER.
+:::
 
 ---
 
-## 5. Oracle Resolution — How We Get the Data
+## Step 3 — Oracle Resolution
 
-This is the most important step in the system. TrendZap's `SocialOracle` contract sends a verified request to **Chainlink's Decentralized Oracle Network (DON)**:
+When the end time arrives, our oracle pipeline:
 
-```
-SocialOracle.requestMetric(marketId, postUrl, platform, metricType)
-    ↓
-Chainlink DON executes the job
-    ↓
-Our oracle adapter fetches data from official platform API
-    ↓
-Multiple Chainlink nodes aggregate and sign the result
-    ↓
-SocialOracle.fulfill(requestId, metricValue) is called on-chain
-    ↓
-ViralityMarket.resolveMarket(marketId, metricValue) executes
-```
+1. Fetches the metric from the platform's official API
+2. Cross-references a second data source for consistency
+3. Applies bot-detection filters to strip artificial engagement
+4. Delivers the verified value on-chain via Chainlink
 
-The resolved metric value is permanently stored on-chain. No admin override is possible. Anyone can verify the result by looking at the transaction on Snowtrace.
-
-### Supported Platforms and Metrics
-
-| Platform | Likes | Views | Retweets / Shares | Comments |
-|----------|-------|-------|-------------------|----------|
-| X (Twitter) | ✅ | ✅ | ✅ | ✅ |
-| YouTube | ✅ | ✅ | — | ✅ |
-| TikTok | ✅ | ✅ | ✅ | ✅ |
-| Instagram | ✅ | ✅ | — | ✅ |
+Once the oracle posts the final value, the contract determines the outcome — either OVER or UNDER — and the market is permanently resolved.
 
 ---
 
-## 6. Settlement and Payouts
+## Step 4 — Claiming Winnings
 
-Once the oracle delivers the result:
+Winners call `claim()` on the market contract to receive their payout.
 
-- **If OVER wins:** All OVER shareholders split the prize pool proportionally to their share count
-- **If UNDER wins:** All UNDER shareholders split the prize pool proportionally
-- **Platform fee:** 2% of the total pool is sent to the TrendZap treasury at resolution
-- **Creator royalty:** 0.5% is sent to the market creator automatically
-
-### Payout Calculation
+### The Math
 
 ```
-Total Pool     = All AVAX deposited into the market
-Platform Fee   = 2% of Total Pool
-Creator Fee    = 0.5% of Total Pool
-Prize Pool     = Total Pool − Platform Fee − Creator Fee
-
-Your Payout    = (Your Winning Shares ÷ Total Winning Shares) × Prize Pool
+Total Pool  = OVER stakes + UNDER stakes
+Platform Fee = 2% of Total Pool
+Winners Pool = Total Pool − Platform Fee
+Your Payout  = (Your Stake ÷ Total Winning Stakes) × Winners Pool
 ```
 
-Winners claim their payout by calling `claimWinnings()` — or clicking Claim in the app. Funds are transferred directly to your wallet. There is no approval step, no withdrawal queue, and no delay.
+### Example
+
+| Side  | Total Staked |
+|-------|-------------|
+| OVER  | 10,000 USDC |
+| UNDER | 5,000 USDC  |
+
+- **Total Pool:** 15,000 USDC
+- **Platform Fee (2%):** 300 USDC
+- **Winners Pool:** 14,700 USDC
+
+If OVER wins and you staked 1,000 USDC on OVER:
+
+```
+Your Payout = (1,000 ÷ 10,000) × 14,700 = 1,470 USDC
+Your Profit = 470 USDC
+```
 
 ---
 
-## 7. What Happens if a Market is Cancelled?
+## The Oracle in Detail
 
-If a market is cancelled (for example, because the post was deleted before the deadline), all betters receive a full refund of their original stake via `claimRefund()`. No fees are charged on cancelled markets.
+The oracle is the most critical component of any prediction market. TrendZap uses a multi-step verification pipeline:
+
+1. **Official APIs** — Data pulled directly from platform-provided endpoints, not scraping
+2. **Secondary source** — Cross-referenced with a second independent data provider
+3. **Bot filter** — Anomaly detection flags synthetic engagement spikes
+4. **Chainlink delivery** — Final value posted on-chain by a Chainlink node; fully auditable
+5. **Dispute window** — A short window allows community flagging of anomalous results
+
+See [Oracle System](/docs/architecture/oracle-system) for the full technical breakdown.
 
 ---
 
 ## Risk Controls
 
-TrendZap has multiple protection layers to maintain market integrity:
+TrendZap has protocol-level safeguards to protect users:
 
-| Control | How It Works |
+| Control | What It Does |
 |---------|-------------|
-| **Position Limits** | Maximum bet size per user per market (prevents single-whale domination) |
-| **Bot Detection** | Oracle adapter cross-checks engagement patterns against known artificial inflation signals |
-| **LMSR Bounds** | Market maker's maximum loss is bounded — continuous pricing prevents catastrophic manipulation |
-| **Pausable Contracts** | Admin role can pause contracts in an emergency (e.g., oracle outage) without touching user funds |
-| **Reentrancy Guards** | All fund-transfer functions use OpenZeppelin's `ReentrancyGuard` |
+| Position limits | Caps maximum stake per user per market |
+| Market exposure cap | Limits total pool size to prevent oracle manipulation incentive |
+| Bot detection | Oracle filters artificial metric inflation |
+| Anomaly halt | Markets can be paused if oracle reads deviate unexpectedly |
+
+---
+
+## What Happens If the Oracle Fails?
+
+If the oracle cannot deliver a result within the resolution window, the market enters a dispute state. Participants can withdraw their original stake. Funds are never locked permanently.
 
 ---
 
 ## Next Steps
 
-- [Why Avalanche](/docs/introduction/why-this-chain) — Why we chose this chain
-- [Quick Start](/docs/getting-started/quick-start) — Your first bet in 5 minutes
-- [Smart Contracts](/docs/developers/smart-contracts) — Read the source code
+- [Why Arbitrum?](/docs/introduction/why-this-chain) — Why we built on Arbitrum
+- [Smart Contract Architecture](/docs/architecture/smart-contracts) — Contract interfaces and addresses
+- [Oracle System](/docs/architecture/oracle-system) — Deep dive into data verification
