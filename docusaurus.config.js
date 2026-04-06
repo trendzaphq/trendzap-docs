@@ -70,7 +70,6 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          editUrl: 'https://github.com/trendzaphq/trendzap-docs/tree/main/',
           routeBasePath: 'docs',
           showLastUpdateTime: false,
           showLastUpdateAuthor: false,
@@ -116,11 +115,6 @@ const config = {
             label: 'Open App →',
             position: 'right',
           },
-          {
-            href: 'https://github.com/trendzaphq',
-            label: 'GitHub',
-            position: 'right',
-          },
         ],
       },
       footer: {
@@ -131,7 +125,7 @@ const config = {
             items: [
               { label: '🚀 Introduction', to: '/docs/introduction/what-is-trendzap' },
               { label: '⚡ Quick Start', to: '/docs/getting-started/quick-start' },
-              { label: '🛠 SDK Reference', to: '/docs/developers/sdk-reference' },
+              { label: '📖 User Guide', to: '/docs/user-guide/placing-bets' },
             ],
           },
           {
@@ -147,7 +141,13 @@ const config = {
             items: [
               { label: activeConfig.name, href: activeConfig.links.ecosystem },
               { label: activeConfig.oracle.provider, href: activeConfig.oracle.docsUrl },
-              { label: 'GitHub ↗', href: 'https://github.com/trendzaphq' },
+            ],
+          },
+          {
+            title: 'Legal',
+            items: [
+              { label: 'Terms of Service', to: '/docs/legal/terms' },
+              { label: 'Privacy Policy', to: '/docs/legal/privacy' },
             ],
           },
         ],

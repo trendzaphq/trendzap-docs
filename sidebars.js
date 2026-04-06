@@ -62,6 +62,15 @@ const sidebars = {
       ],
     },
     'faq/index',
+    {
+      type: 'category',
+      label: 'Legal',
+      collapsed: true,
+      items: [
+        'legal/terms',
+        'legal/privacy',
+      ],
+    },
   ],
 };
 

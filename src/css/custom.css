@@ -444,7 +444,57 @@ body.homepage-view .navbar {
   z-index: 100;
 }
 
-/* ── Misc ────────────────────────────────────────────────────── */
+/* ── Mobile Hamburger & Sidebar ──────────────────────────────── */
+.navbar__toggle {
+  color: var(--tz-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.navbar__toggle:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.navbar__toggle svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--tz-text);
+}
+
+/* Mobile sidebar overlay */
+.navbar-sidebar {
+  background: var(--tz-bg) !important;
+  border-right: 1px solid var(--tz-border-solid);
+  z-index: 300 !important;
+}
+
+.navbar-sidebar__brand {
+  border-bottom: 1px solid var(--tz-border-solid);
+  background: var(--tz-bg);
+}
+
+.navbar-sidebar__items {
+  background: var(--tz-bg);
+}
+
+.navbar-sidebar__item.menu {
+  padding: 1rem 0;
+}
+
+/* Backdrop when sidebar is open */
+.navbar-sidebar__backdrop {
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  z-index: 200 !important;
+}
+
+/* Misc ────────────────────────────────────────────────────── */
 hr {
   border-color: var(--tz-border-solid);
 }
