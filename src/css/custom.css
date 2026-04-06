@@ -163,6 +163,9 @@ a:hover {
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--tz-border-solid);
   background: rgba(9, 9, 14, 0.92) !important;
+  position: sticky;
+  top: 0;
+  z-index: 200;
 }
 
 .navbar__logo img {
