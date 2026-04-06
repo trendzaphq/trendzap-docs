@@ -6,87 +6,98 @@ description: How to create a new TrendZap prediction market around any public so
 
 # Creating Markets
 
-Any wallet can create a prediction market. You choose the post, the metric, the threshold, and the time window. Once created, it's live on-chain and anyone can take a position.
+Any connected wallet can create a prediction market. You choose the post, the metric, the threshold, and the deadline. Once created, it's live on-chain and anyone can bet.
 
 ---
 
-## What Makes a Good Market?
+## What makes a good market?
 
 A good market has a genuinely uncertain outcome. The threshold should be plausible but not obvious.
 
-**Good:** A post with 200K likes and a threshold of 500K in 48 hours — could go either way.
+**Good:** A post with 200K views and a threshold of 500K in 48 hours — could go either way.
 
-**Bad:** A post already at 800K likes with a threshold of 500K — the outcome is determined.
+**Bad:** A post already at 800K views with a threshold of 500K — the outcome is determined.
 
 **Also bad:** A private account, deleted post, or content behind a login wall — the oracle cannot read it.
 
 ---
 
-## Step by Step
+## Step by step
 
-### 1. Open Create Market
+### 1. Click "Create Market"
 
-In the TrendZap app, click **Create Market** in the nav bar.
+In the TrendZap app, click the **+ Create** button in the nav bar (or the FAB button on desktop, or the + icon in the mobile bottom nav). This takes you to the dedicated creation page.
 
-### 2. Paste the Post URL
+### 2. Paste the post URL
 
 Paste the direct link to the post you want to track.
 
 | Platform | Example format |
 |----------|----------------|
-| X/Twitter | `https://x.com/username/status/12345` |
-| TikTok | `https://www.tiktok.com/@username/video/12345` |
-| Instagram | `https://www.instagram.com/p/ABCDE` |
+| X (Twitter) | `https://x.com/username/status/12345` |
 | YouTube | `https://www.youtube.com/watch?v=ABCDE` |
 
-The app validates the URL and shows a post preview. You must confirm this is the correct post before proceeding.
+The app validates the URL, fetches a live embed of the post (including current stats), and uses AI to suggest a threshold based on engagement trajectory. You can accept the suggestion or set your own.
 
-### 3. Choose the Metric
+### 3. Choose the metric
 
-Select what to measure: likes, views, retweets/reposts, comments, or shares. Available options depend on the platform.
+Select what to measure: views, likes, retweets, comments, or shares. Available options depend on the platform.
 
-### 4. Set the Threshold
+| Platform | Available metrics |
+|----------|------------------|
+| X (Twitter) | Likes, Views, Retweets, Replies |
+| YouTube | Views, Likes, Comments |
 
-Enter the target number. This is the line the market resolves on. Choose a number that creates genuine uncertainty — check the post's current engagement and trajectory to calibrate.
+### 4. Set the threshold
 
-### 5. Set the End Time
+Enter the target number — the line the market resolves on. This is the **raw metric count** (e.g. `500000`, not a percentage or formatted number).
 
-Choose when the oracle will fetch the final metric and close the market.
+Check the post's current engagement and trajectory. The AI suggestion factor is based on current stats and typical growth curves for that post type.
 
-- Minimum: 1 hour from now
-- Maximum: 7 days from now
+### 5. Set the deadline
 
-A 24-hour window suits fast-moving posts. 48–72 hours suits creator content. 7 days suits campaigns.
+Choose when the oracle will check the final metric and close the market.
 
-### 6. Review and Confirm
+- **Minimum:** A few hours from now
+- **Maximum:** 30 days
 
-A summary screen shows every parameter. Confirm the transaction. Your wallet pays the creation fee in USDC, and the market is deployed on-chain immediately.
+24 hours suits fast-moving viral posts. 48–72 hours suits creator content. Up to 7 days suits campaigns and slower-growing content.
+
+### 6. Add your seed bet
+
+Every market requires a seed bet — an initial AVAX stake that bootstraps liquidity and sets the starting LMSR price. The larger the seed, the more initial liquidity. Your seed bet counts as your position on either OVER or UNDER.
+
+### 7. Confirm
+
+A summary shows every parameter. Confirm the transaction. The market deploys on Avalanche C-Chain immediately.
 
 ---
 
-## Creation Fee
+## After creation
 
-A small USDC fee prevents spam markets. The fee is burned — it is not collected by TrendZap. The current fee amount is shown in the UI before you confirm.
-
----
-
-## After Creation
-
-- You can optionally seed a position on either side to bootstrap liquidity
 - The market appears in the live feed immediately
-- The market is immutable — parameters cannot be changed after creation
-- You can share the market URL directly
+- Market parameters are immutable after creation — no one can change them
+- You earn a **3% fee** from the total pool when the market resolves
+- You can share the market URL directly with anyone
 
 ---
 
-## If the Post Gets Deleted
+## Your creator fee
 
-If the oracle cannot fetch a valid metric at resolution (deleted post, API failure, private account), the market enters a dispute state. All participants can withdraw their original stake. No funds are lost.
+When the market resolves, 3% of the total AVAX pool is distributed to the market creator address. This is automatic — you don't need to claim it separately.
+
+> If 500 AVAX is in the pool at resolution, you receive 15 AVAX regardless of which side wins.
 
 ---
 
-## Next Steps
+## If the post is no longer accessible
 
-- [Placing Bets](/docs/user-guide/placing-bets) — How positions and stakes work
-- [Understanding Odds](/docs/user-guide/understanding-odds) — How the pool split sets implied probability
-- [Oracle System](/docs/architecture/oracle-system) — How the final metric is verified
+If the oracle cannot read the metric at resolution (deleted post, account made private, API failure), the market is dissolved and all bettors receive their original AVAX back. No funds are lost.
+
+---
+
+## Next steps
+
+- [Placing Bets](/docs/user-guide/placing-bets) — how positions work
+- [Understanding Odds](/docs/user-guide/understanding-odds) — how LMSR sets prices
+- [FAQ](/docs/faq) — common questions about market creation

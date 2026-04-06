@@ -1,21 +1,21 @@
 ---
 sidebar_position: 2
 title: Connect Wallet
-description: How to connect your wallet to TrendZap on Arbitrum One.
+description: How to connect your wallet to TrendZap on Avalanche C-Chain.
 ---
 
 # Connect Wallet
 
-TrendZap is a non-custodial protocol. Your wallet is your account. Here's how to connect it.
+TrendZap is non-custodial. Your wallet is your account. Here's how to connect it.
 
 ---
 
-## Supported Wallets
+## Supported wallets
 
 | Wallet | Type | Notes |
 |--------|------|-------|
 | MetaMask | Browser extension / Mobile | Most widely used |
-| Coinbase Wallet | Browser extension / Mobile | Built-in Arbitrum support |
+| Coinbase Wallet | Browser extension / Mobile | Smart Wallet support built-in |
 | Rabby | Browser extension | Multi-chain with security hints |
 | Rainbow | Mobile | Simple, clean UI |
 | Ledger + MetaMask | Hardware | Most secure option |
@@ -26,16 +26,16 @@ TrendZap is a non-custodial protocol. Your wallet is your account. Here's how to
 ## Connecting MetaMask
 
 1. Install [MetaMask](https://metamask.io) as a browser extension
-2. Create a new wallet or import an existing one with your seed phrase
-3. Go to [trendzap.xyz](https://trendzap.xyz)
+2. Create or import a wallet
+3. Go to [app.trendzap.xyz](https://app.trendzap.xyz)
 4. Click **Connect Wallet** → **MetaMask**
-5. MetaMask will prompt you to connect — click **Connect**
-6. If not already on Arbitrum One, MetaMask will ask to switch networks — click **Switch Network**
+5. MetaMask prompts you to connect — click **Connect**
+6. If not already on Avalanche C-Chain, MetaMask will ask to switch — click **Switch Network**
 
-MetaMask will add Arbitrum One to your network list automatically. You only need to do this once.
+MetaMask adds Avalanche C-Chain to your network list automatically. You only need to do this once.
 
 :::caution
-Never share your seed phrase. TrendZap will never ask for it. If any site asks for your seed phrase, it is a scam.
+Never share your seed phrase. TrendZap will never ask for it. Any site asking for your seed phrase is a scam.
 :::
 
 ---
@@ -43,87 +43,71 @@ Never share your seed phrase. TrendZap will never ask for it. If any site asks f
 ## Connecting Coinbase Wallet
 
 1. Install Coinbase Wallet as a browser extension or mobile app
-2. Go to [trendzap.xyz](https://trendzap.xyz)
+2. Go to [app.trendzap.xyz](https://app.trendzap.xyz)
 3. Click **Connect Wallet** → **Coinbase Wallet**
-4. If on mobile, scan the QR code with the Coinbase Wallet app
-5. Approve the connection
+4. Approve the connection
+5. Switch to Avalanche C-Chain if prompted
 
-Coinbase Wallet has native Arbitrum One support — no manual network configuration needed.
+TrendZap supports Coinbase Smart Wallet — users without an existing wallet can create one through the connect flow without a seed phrase.
 
 ---
 
 ## Connecting via WalletConnect
 
-WalletConnect supports 300+ mobile wallets including Rainbow, Trust Wallet, imToken, and many others.
+WalletConnect supports 300+ mobile wallets including Trust Wallet, Rainbow, imToken, and many others.
 
-1. Go to [trendzap.xyz](https://trendzap.xyz)
+1. Go to [app.trendzap.xyz](https://app.trendzap.xyz)
 2. Click **Connect Wallet** → **WalletConnect**
 3. A QR code appears in the modal
 4. Open your mobile wallet and scan the QR code
 5. Approve the connection on your phone
 
-Ensure your mobile wallet is set to Arbitrum One before connecting.
+Ensure your mobile wallet is set to Avalanche C-Chain before connecting.
 
 ---
 
-## Adding Arbitrum One Manually
+## Adding Avalanche C-Chain manually
 
-If your wallet doesn't auto-detect Arbitrum, add it manually:
+If your wallet doesn't auto-detect Avalanche:
 
 ```
-Network Name:    Arbitrum One
-RPC URL:         https://arb1.arbitrum.io/rpc
-Chain ID:        42161
-Currency Symbol: ETH
-Block Explorer:  https://arbiscan.io
+Network Name:    Avalanche C-Chain
+RPC URL:         https://api.avax.network/ext/bc/C/rpc
+Chain ID:        43114
+Currency Symbol: AVAX
+Block Explorer:  https://snowtrace.io
 ```
 
 In MetaMask: Settings → Networks → Add a network → Add it manually.
 
 ---
 
-## Testnet (Arbitrum Sepolia)
-
-For testing without real funds:
-
-```
-Network Name:    Arbitrum Sepolia
-RPC URL:         https://sepolia-rollup.arbitrum.io/rpc
-Chain ID:        421614
-Currency Symbol: ETH
-Block Explorer:  https://sepolia.arbiscan.io
-```
-
-Get testnet ETH from [Alchemy Faucet](https://www.alchemy.com/faucets/arbitrum-sepolia).
-
----
-
 ## Troubleshooting
 
 **"Wrong network" error**
-Your wallet is connected to a different chain. Switch to Arbitrum One (Chain ID 42161) in your wallet's network selector.
+Your wallet is on a different chain. Switch to Avalanche C-Chain (Chain ID 43114) in your wallet's network selector.
 
-**Transaction stuck or failing**
-Try increasing the gas limit slightly. On Arbitrum, gas prices are stable but the limit matters for complex contract interactions.
+**Transaction failing**
+Make sure you have enough AVAX for gas (a few cents worth is sufficient). On Avalanche, gas is very cheap but you need a non-zero balance.
 
 **Wallet disconnects on page refresh**
-This is a browser extension quirk. Click **Connect Wallet** again — it will reconnect without asking for approval a second time.
+This is a browser extension behaviour. Click **Connect Wallet** again — it reconnects without asking for full approval again.
 
-**Can't see my USDC balance**
-Make sure you're on Arbitrum One and that USDC is added as a custom token: `0xaf88d065e77c8cC2239327C5EDb3A432268e5831` (native USDC on Arbitrum One).
+**Can't see my AVAX balance**
+Confirm you're on Avalanche C-Chain (not Ethereum or another network). AVAX is the native token — it should appear automatically once on the right network.
 
 ---
 
-## Security Notes
+## Security notes
 
 - TrendZap contracts are read-only until you sign a transaction
-- The protocol only requests approval to spend the USDC amount you've entered — not unlimited approval
-- Always verify the URL is `trendzap.xyz` before connecting
-- Check contract addresses against those listed in [Smart Contracts](/docs/architecture/smart-contracts)
+- The app only requests permission to send the specific AVAX amount you've entered
+- Always verify the URL is `app.trendzap.xyz` before connecting
+- Check contract addresses against those in [Why Avalanche?](/docs/introduction/why-this-chain)
 
 ---
 
-## Next Steps
+## Next steps
 
-- [Quick Start](/docs/getting-started/quick-start) — Back to the full onboarding flow
-- [Your First Bet](/docs/getting-started/first-bet) — Walk through placing your first position
+- [Quick Start](/docs/getting-started/quick-start) — back to the full onboarding flow
+- [Your First Bet](/docs/getting-started/first-bet) — walkthrough of placing your first position

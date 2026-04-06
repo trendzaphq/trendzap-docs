@@ -6,7 +6,7 @@ description: How TrendZap's oracle pipeline fetches, verifies, and delivers soci
 
 # Oracle System
 
-The oracle is the most trust-sensitive component of any prediction market. If the oracle can be manipulated, every market can be manipulated. This page documents exactly how TrendZap's oracle pipeline works and where the trust assumptions lie.
+The oracle is the most trust-sensitive component of any prediction market. If the oracle can be manipulated, every market can be manipulated. This page documents how TrendZap's oracle pipeline works and where the trust assumptions lie.
 
 ---
 
@@ -28,7 +28,7 @@ That answer must be:
 Market end time reached
         │
         ▼
-[1] FETCH — Primary API call to platform endpoint
+[1] FETCH — Primary call to platform's official API
         │
         ▼
 [2] CROSS-REFERENCE — Secondary independent source queried
@@ -37,65 +37,56 @@ Market end time reached
 [3] CONSISTENCY CHECK — Values compared against each other
         │                        ─── Discrepancy? → DISPUTE
         ▼
-[4] BOT FILTER — Anomaly detection on metric delta
-        │                        ─── Spike detected? → DISPUTE
+[4] ANOMALY DETECTION — Engagement pattern analysis
+        │                        ─── Anomaly detected? → DISPUTE
         ▼
-[5] CHAINLINK DELIVERY — Signed result posted on-chain
+[5] ON-CHAIN DELIVERY — Verified result posted to contract
         │
         ▼
-[6] CONTRACT RESOLUTION — TrendZapMarket records outcome
+[6] CONTRACT RESOLUTION — Market records outcome
 ```
 
 ---
 
 ## Step 1 — Primary Fetch
 
-The oracle calls the official API of the relevant platform to retrieve the current metric for the tracked post.
+The oracle queries the official API of the relevant platform to retrieve the current metric for the tracked post.
 
 | Platform | Data Source |
 |----------|-------------|
-| X/Twitter | X API v2 — tweet metrics endpoint |
-| TikTok | TikTok Research API — video stats |
-| Instagram | Instagram Graph API — media insights |
-| YouTube | YouTube Data API v3 — video statistics |
+| X/Twitter | Official X/Twitter API |
+| YouTube | Official YouTube API |
+| TikTok | Official TikTok API |
+| Instagram | Official Instagram API |
 
-All calls use authenticated, rate-limited API access. The raw response is recorded and hash-committed before any processing.
+All calls use authenticated API access. The raw response is recorded and hash-committed before any processing.
 
 ---
 
 ## Step 2 — Cross-Reference
 
-A second independent data provider is queried for the same metric. This guards against:
+A second independent data source is queried for the same metric. This guards against:
 - Primary API returning stale or cached data
 - Platform-side errors or maintenance windows
 - Discrepancies introduced between fetch and delivery
 
-If the two values differ by more than the configured tolerance, the oracle does not post a result. The market enters dispute state.
+If the two values differ beyond the configured tolerance, the oracle does not post a result. The market enters dispute state.
 
 ---
 
-## Step 3 — Bot Filter
+## Step 3 — Anomaly Detection
 
-Before accepting the metric, the oracle applies anomaly detection:
-
-- **Velocity check** — Was the metric delta in the last window consistent with the preceding trajectory? Sudden large spikes inconsistent with historical growth are flagged.
-- **Account quality** — Cross-referenced with known bot farm fingerprints where available.
-- **Platform signal** — If the platform's own spam filter has removed engagement (as X/Twitter does), the cleaned metric is used, not the raw count.
+Before accepting the metric, the oracle applies anomaly detection to identify and filter artificial engagement. The goal is to ensure the final metric reflects genuine audience interaction, not coordinated manipulation.
 
 A flagged result triggers a dispute rather than a potentially manipulated resolution.
 
 ---
 
-## Step 4 — Chainlink Delivery
+## Step 4 — On-Chain Delivery
 
-Verified data is delivered on-chain via a Chainlink node:
+Once the metric passes all validation checks, the verified result is posted to the `TrendZapMarket` contract by the oracle service address. The contract verifies the sender before accepting the result. The final metric value is permanently recorded on-chain.
 
-1. The oracle computes a signed attestation of the final value
-2. The Chainlink node posts this to the `TrendZapMarket` contract via a trusted call
-3. The contract verifies the Chainlink node address before accepting the result
-4. The final metric value is permanently recorded on-chain
-
-The Chainlink node address is whitelisted in the market contract at deployment. Only that address can call `resolve()`.
+Only the whitelisted oracle address can call `resolve()`. This address is set at market deployment and cannot be changed.
 
 ---
 
@@ -104,12 +95,12 @@ The Chainlink node address is whitelisted in the market contract at deployment. 
 A market enters dispute if:
 
 - Primary and secondary sources differ beyond tolerance
-- Bot filter threshold is exceeded
-- The oracle fails to deliver within the resolution window (default: 60 minutes after end time)
+- Anomaly detection threshold is exceeded
+- The oracle fails to deliver within the resolution window
 
 In dispute state:
 - The market cannot be resolved to OVER or UNDER
-- All participants can call `withdrawStake()` to recover their original USDC
+- All participants can claim their original AVAX back
 - The dispute is logged on-chain for transparency
 
 Disputed markets are surfaced in the UI with an explanation of the failure reason.
@@ -120,12 +111,12 @@ Disputed markets are surfaced in the UI with an explanation of the failure reaso
 
 Every oracle result is publicly verifiable:
 
-1. Find the market on Arbiscan using the contract address
+1. Find the market on [Snowtrace](https://snowtrace.io) using the contract address
 2. Look for the `MarketResolved` event
 3. The `finalMetricValue` parameter is the exact number the oracle posted
-4. Cross-check against the platform's public API or any third-party archive
+4. Cross-check against the platform's public data or any third-party archive
 
-The signed Chainlink delivery transaction is also visible in the contract's transaction history, with the Chainlink node address as the sender.
+The oracle delivery transaction is visible in the contract's transaction history, with the oracle service address as the sender.
 
 ---
 
@@ -133,18 +124,15 @@ The signed Chainlink delivery transaction is also visible in the contract's tran
 
 | Component | Trust Assumption |
 |-----------|----------------|
-| Chainlink node | Operated independently; node address is verified in contract |
+| Oracle service | Dedicated address; whitelisted in contract at deployment |
 | Platform API | Official first-party data endpoint |
 | Secondary source | Independent provider; discrepancy triggers dispute |
-| Bot filter | Open-source rules; parameters published in repo |
-| TrendZap team | Cannot alter individual market results; no admin key on markets |
-
-The only meaningful trust assumption is that the Chainlink node operator and the platform APIs are not simultaneously compromised. This is the same assumption underpinning all Chainlink-powered DeFi protocols.
+| Anomaly detection | Applied before any result is accepted |
+| TrendZap team | Cannot alter individual market results; no admin key on deployed markets |
 
 ---
 
 ## Next Steps
 
-- [Risk Engine](/docs/architecture/risk-engine) — How bot detection parameters and dispute thresholds are set
 - [Smart Contracts](/docs/architecture/smart-contracts) — The `resolve()` interface
-- [Oracle Integration](/docs/developers/oracle-integration) — For developers building custom oracle adapters
+- [Earned Trust](/docs/protocol/trust) — Security and transparency commitments

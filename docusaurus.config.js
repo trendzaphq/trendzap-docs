@@ -112,8 +112,8 @@ const config = {
             label: 'Documentation',
           },
           {
-            href: 'https://trendzap.xyz',
-            label: 'App →',
+            href: 'https://app.trendzap.xyz',
+            label: 'Open App →',
             position: 'right',
           },
           {

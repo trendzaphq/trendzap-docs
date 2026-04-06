@@ -1,101 +1,96 @@
 ---
 sidebar_position: 4
 title: Claiming Winnings
-description: How to claim your USDC payout after a TrendZap market resolves in your favour.
+description: How to claim your AVAX payout after a TrendZap market resolves in your favour.
 ---
 
 # Claiming Winnings
 
-When a market resolves and your side wins, your USDC payout sits in the contract ready to be claimed. It does not expire — claim whenever you like.
+When a market resolves and your side wins, your AVAX payout sits in the contract ready to be claimed. It doesn't expire — claim whenever you like.
 
 ---
 
-## How Resolution Works
+## How resolution works
 
-When a market's end time arrives:
+When a market's deadline arrives:
 
-1. The oracle fetches the final metric from the platform's official API
-2. The result is posted on-chain — permanently and immutably
-3. The contract calculates each winner's proportional share of the pool
-4. The market status changes from **Closed** to **Resolved**
+1. The TrendZap Oracle fetches the final metric from the platform's official API
+2. The result is written on-chain — permanently and immutably
+3. The contract determines whether OVER or UNDER won
+4. The market status changes from **Active** to **Resolved**
 
-This process typically completes within a few minutes of the end time. You do not need to be online — the oracle runs automatically.
+This process typically completes within a few minutes of the deadline. You don't need to be online — the oracle runs automatically.
 
 ---
 
-## Claiming Your Payout
+## Claiming your payout
 
-### Via the App
+### Via the app
 
-1. Go to your **Portfolio** tab
-2. Find the resolved market — it will show a green **Claim** badge
+1. Open [app.trendzap.xyz](https://app.trendzap.xyz) and go to your **Profile** tab
+2. Find the resolved market — it shows a green **Claim Winnings** button
 3. Click **Claim Winnings**
 4. Confirm the transaction in your wallet
-5. USDC arrives in your wallet in the same block
+5. AVAX arrives in your wallet in the same block
 
-Gas for a claim transaction is typically under $0.05 on Arbitrum.
+Gas for a claim transaction is under $0.01 on Avalanche.
 
-### Via the Market Page
+### Via the market page
 
-You can also claim directly from the market detail page:
+You can also claim directly from the market detail view:
 
-1. Open the market (via Portfolio, the feed, or a shared link)
-2. If you won, the **Claim Winnings** button is visible in your position panel
+1. Open the market (via Profile, the feed, or a shared link)
+2. If you won, **Claim Winnings** is visible in your position panel
 3. Click and confirm
 
 ---
 
-## Your Payout Amount
+## Your payout amount
 
-Your payout is calculated at the moment of resolution using the final pool state:
+Your payout is calculated at resolution using the final pool state:
 
 ```
-Winners Pool = Total Pool × 0.98
-Your Payout  = (Your Stake ÷ Total Winning Stakes) × Winners Pool
+Total Pool   = all AVAX staked (OVER + UNDER)
+Creator Fee  = 3% of Total Pool
+Winners Pool = Total Pool − Creator Fee
+Your Payout  = (Your Shares ÷ Total Winning Shares) × Winners Pool
 ```
 
-The UI shows your exact claimable amount before you confirm the transaction.
+The app shows your exact claimable amount before you confirm the transaction.
 
 ---
 
-## If You Lost
+## If you lost
 
-If your side lost, there is nothing to claim. Your staked USDC was automatically distributed to the winners' pool at resolution. No transaction is needed from you.
+If your side lost, there is nothing to claim. Your staked AVAX was redistributed to the winners as part of the LMSR pool redistribution. No transaction is needed from you.
 
----
-
-## Claiming Multiple Markets at Once
-
-You can batch-claim multiple resolved markets in a single session from the Portfolio tab. Each claim is a separate on-chain transaction — you will need to confirm each one individually in your wallet.
+This is how prediction markets work — losers fund winners. It's not a bug.
 
 ---
 
-## Claiming via Contract Directly
+## If the market was dissolved
 
-Advanced users can call `claim(marketId)` directly on the TrendZap market contract. See [Smart Contract Reference](/docs/architecture/smart-contracts) for the full ABI and addresses.
-
----
-
-## What If the Market Was Disputed?
-
-If the oracle failed to deliver a result and the market entered dispute, you can withdraw your original stake — not a winning payout, just your committed USDC back. The **Withdraw Stake** button appears in place of **Claim Winnings** for disputed markets.
+If the oracle failed to verify the metric and the market was dissolved, you can claim your **original stake back** — not a winning payout, just your AVAX returned. The **Claim Refund** button appears in place of **Claim Winnings** for dissolved markets.
 
 ---
 
-## Frequently Asked Questions
+## Frequently asked questions
 
 **Is there a deadline to claim?**
 No. Your winnings remain in the contract indefinitely until you claim them.
 
 **I won but I don't see the Claim button.**
-The market may still be in the resolution process. Wait a few minutes for the oracle to post the result. If it's been more than 30 minutes since the end time, check the [Discord](https://discord.gg/trendzap) for status updates.
+The market may still be in the resolution pipeline. Wait a few minutes after the deadline. If it's been more than 30 minutes since the deadline passed and the market still shows Active, check the [Discord](https://discord.gg/trendzap) for status updates.
 
-**Can I claim from a different wallet than the one I bet with?**
+**Can I claim from a different wallet?**
 No. Claims are tied to the wallet address that placed the bet.
+
+**Why is my payout different from what I estimated earlier?**
+Payouts are calculated at resolution using the final pool state, not at bet time. If more people joined your side after you bet, your share of the winners' pool is smaller. See [Understanding Odds](/docs/user-guide/understanding-odds) for how this works.
 
 ---
 
-## Next Steps
+## Next steps
 
-- [Understanding Odds](/docs/user-guide/understanding-odds) — How your payout is calculated
-- [Placing Bets](/docs/user-guide/placing-bets) — Start your next market
+- [Understanding Odds](/docs/user-guide/understanding-odds) — how your payout is calculated
+- [Placing Bets](/docs/user-guide/placing-bets) — start your next market

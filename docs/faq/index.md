@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 title: FAQ
-description: Frequently asked questions about TrendZap — how it works, what's supported, and what to do when things go wrong.
+description: Frequently asked questions about TrendZap — how it works, what's supported, risks, deposits, withdrawals, and more.
 ---
 
 # FAQ
@@ -12,95 +12,147 @@ description: Frequently asked questions about TrendZap — how it works, what's 
 
 **What is TrendZap?**
 
-TrendZap is a decentralized prediction market where you bet on whether social media posts will reach a specific engagement threshold — for example, whether a tweet will hit 500K likes in 24 hours. It runs on Arbitrum One and settles in USDC.
+TrendZap is a decentralised prediction market where you bet AVAX on whether a social media post will hit a specific engagement metric — for example, whether a tweet will hit 500K views in 24 hours. It runs on Avalanche C-Chain and settles in AVAX.
 
-**How is this different from regular betting?**
+**How is this different from regular gambling?**
 
-There is no bookie, no centralized operator, and no counterparty who can default. You're betting against other users in a shared pool. The smart contract holds the funds and distributes them automatically based on a tamper-proof oracle result. TrendZap cannot take your winnings, alter the outcome, or disappear with your funds.
+There is no house, no bookie, and no centralised operator. You're betting against other users in a shared LMSR pool. The smart contract holds the funds and distributes them based on objective on-chain oracle results. TrendZap cannot alter the outcome, take your winnings, or disappear with your funds.
+
+**Do I need an account?**
+
+No. Your wallet is your account. Connect any compatible wallet to Avalanche C-Chain and start immediately.
 
 **Is TrendZap available in my country?**
 
-TrendZap is a permissionless protocol — there is no registration, no KYC, and no account. However, prediction markets exist in a complex regulatory environment. Users are responsible for understanding the laws in their own jurisdiction. Nothing here is legal advice.
-
-**Do I need an account to use TrendZap?**
-
-No. Your wallet is your account. Connect any compatible wallet to Arbitrum One and you can start immediately.
+TrendZap is a permissionless protocol — no registration, no KYC. However, prediction markets exist in a complex regulatory environment. Users are responsible for understanding the laws in their own jurisdiction. This is not legal advice.
 
 ---
 
-## Markets
+## Platforms and markets
 
 **What platforms are supported?**
 
-X/Twitter, TikTok, Instagram, and YouTube. We plan to add more platforms as the oracle is validated on each one.
+X (Twitter) and YouTube are live. TikTok and Instagram are coming soon.
+
+| Platform | Status |
+|----------|--------|
+| X (Twitter) | ✅ Live |
+| YouTube | ✅ Live |
+| TikTok | 🔜 Coming soon |
+| Instagram | 🔜 Coming soon |
 
 **What metrics can I bet on?**
 
-Likes, views, retweets/reposts, comments, and shares — depending on the platform. Not all metrics are available on all platforms (Instagram doesn't provide share counts publicly, for example).
+| Platform | Metrics |
+|----------|---------|
+| X (Twitter) | Likes, Views, Retweets, Replies |
+| YouTube | Views, Likes, Comments |
 
 **Can I create my own market?**
 
-Yes. Anyone can create a market by specifying a post URL, metric, threshold, and end time. A small USDC creation fee is required to prevent spam.
+Yes. Any wallet can create a market by providing a post URL, metric, threshold, and deadline. You seed the initial AVAX liquidity and earn a 3% creator fee from the total pool when the market resolves.
 
 **What makes a market valid?**
 
-The post must be publicly accessible via the platform's official API. Private accounts, deleted posts, or posts behind a login wall cannot be resolved by the oracle and will dispute.
+The post must be publicly accessible via the platform's official API. Private accounts, deleted posts, or content behind a login wall will trigger a dissolution and fund return.
 
-**Can a market be cancelled after it's created?**
+**Can a market be changed after creation?**
 
-No. Markets are immutable after creation. Once deployed, parameters cannot be changed by anyone — including TrendZap.
+No. Markets are immutable after deployment. Parameters cannot be changed by anyone — including TrendZap.
 
-**What happens if nobody bets on one side?**
+**What if nobody bets on one side?**
 
-If all bets are on OVER and the market resolves OVER, all participants simply get their stake back (minus the 2% fee). There is no "wrong outcome" for a one-sided pool — it just has no profitable resolution.
+If all bets are on one side and that side wins, all participants receive their stake back minus the creator fee. A one-sided pool doesn't make the market invalid — it just means there's nothing to redistribute.
 
 ---
 
 ## Betting
 
+**What token do I bet with?**
+
+AVAX — the native token of Avalanche C-Chain. No USDC, no wrapping, no bridging needed.
+
 **What's the minimum bet?**
 
-There is no protocol-level minimum, but very small amounts (under 1 USDC) may not be economical given gas costs (~$0.05–$0.10 on Arbitrum).
+There is no protocol minimum. Even small amounts (0.01 AVAX) work because gas on Avalanche is under $0.01.
 
 **Can I change or cancel my bet?**
 
 No. Once your bet transaction is confirmed on-chain, it is final. You cannot withdraw a position before market close.
 
-**What token do I use to bet?**
+**Why is my estimated payout different from what I calculated earlier?**
 
-USDC — specifically Circle's native USDC on Arbitrum One (`0xaf88d065e77c8cC2239327C5EDb3A432268e5831`). Not USDC.e (bridged USDC) — make sure you have native USDC.
-
-**Why is my estimated payout different from what I calculated?**
-
-Payouts are calculated at resolution using the final pool state, not at the time of your bet. If more people bet on your side between your bet and market close, your share of the winners' pool decreases. This is how parimutuel markets work. See [Understanding Odds](/docs/user-guide/understanding-odds).
-
-**Is there a maximum bet?**
-
-Yes. Each market has a maximum position per wallet to prevent single-wallet pool domination. The limit is shown in the UI before you confirm your bet. The contract enforces it — transactions exceeding the limit will revert.
+Payouts are calculated at resolution using the final pool state, not at bet time. If more people bet your side between your bet and market close, your share of the winners' pool decreases. This is how LMSR markets work. See [Understanding Odds](/docs/user-guide/understanding-odds).
 
 ---
 
-## Oracle and Resolution
+## Deposits and withdrawals
+
+**How do I deposit AVAX?**
+
+There's no deposit step. Just connect your wallet with AVAX and bet directly. Your AVAX goes straight from your wallet to the market contract.
+
+**How do I withdraw / get my money back?**
+
+You can't cancel an active bet before market close. After resolution:
+
+- **If you won:** Click **Claim Winnings** on the market. Your AVAX sends directly to your wallet.
+- **If you lost:** Nothing to claim — your stake redistributed to winners.
+- **If the market was dissolved:** Click **Claim Refund** to get your original stake back.
+
+There is no withdrawal fee. The only fee is the 3% creator fee taken at resolution from winning pools.
+
+**Is there a deadline to claim winnings?**
+
+No. Your winnings sit in the contract indefinitely until you claim.
+
+---
+
+## Resolution and oracle
 
 **How does TrendZap know the final metric?**
 
-The oracle fetches the final metric from the platform's official API at market close time, cross-references it with a second source, applies bot-detection filters, and posts the verified result on-chain via Chainlink. See [Oracle System](/docs/architecture/oracle-system) for the full pipeline.
+The TrendZap Oracle queries the platform's official API at market close time, then writes the verified result on-chain. All resolution data is visible on [Snowtrace](https://snowtrace.io).
+
+**Where do the losing funds go?**
+
+Losing AVAX redistributes to the winning side as part of the LMSR pool. Specifically:
+- **3% creator fee** goes to the market creator
+- **Remaining 97%** of the total pool distributes to winners proportionally
+
+Losing bettors get nothing. This is the mechanism — winners are funded by losers.
 
 **Can the oracle be manipulated by buying fake engagement?**
 
-It's designed to resist this. The oracle checks the metric against the post's historical trajectory — a sudden spike inconsistent with prior growth triggers a dispute rather than a resolution. The market pool cap also limits the financial incentive to attempt manipulation.
+The oracle checks the metric against the post's prior trajectory. A sudden spike inconsistent with historical growth triggers a dispute rather than an immediate resolution.
 
-**What if the oracle gets the wrong answer?**
+**What is a dissolved market?**
 
-If an oracle result is obviously wrong, the dispute mechanism allows stakeholders to flag it. If you believe a resolution was incorrect, post evidence in the Discord with the market address and the discrepancy. For confirmed errors, we investigate and escalate through the Chainlink dispute process.
+A market is dissolved when the oracle cannot deliver a verified result. All participants claim their original AVAX back. No funds are lost due to oracle failure.
 
-**What is a disputed market?**
+**How long does resolution take?**
 
-A market disputes when the oracle cannot deliver a verified result — due to API failure, cross-source inconsistency, bot-detection trigger, or delivery timeout. In a disputed market, all participants can withdraw their original stake. No funds are lost.
+Typically a few minutes after the deadline. If no result is delivered within a reasonable window, the market is dissolved and funds are returned.
 
-**How long does resolution take after the market closes?**
+---
 
-Typically a few minutes. The oracle job fires at the end time, runs through its pipeline, and delivers the result on-chain. In rare cases (API rate limits, platform outages), it may take up to 60 minutes. If no result is delivered within 60 minutes of the end time, the market automatically disputes.
+## Risks
+
+**What are the risks of using TrendZap?**
+
+- **Smart contract risk** — all protocols carry risk of undiscovered bugs
+- **Oracle risk** — the oracle could fail or be manipulated (dissolved market → funds returned)
+- **Market risk** — you can lose your full stake if the market resolves against you
+- **Liquidity risk** — early markets may have small pools; payouts depend on total pool size
+- **Regulatory risk** — prediction markets are regulated differently in different jurisdictions
+
+:::caution
+Never bet more than you can afford to lose. All prediction markets carry inherent risk.
+:::
+
+**Are the contracts audited?**
+
+A security audit is planned. The contracts are open source on GitHub and testable by anyone. See [Earned Trust](/docs/protocol/trust) for the current security posture.
 
 ---
 
@@ -108,39 +160,18 @@ Typically a few minutes. The oracle job fires at the end time, runs through its 
 
 **What network is TrendZap on?**
 
-Arbitrum One (Chain ID 42161). A testnet deployment is live on Arbitrum Sepolia (Chain ID 421614).
+Avalanche C-Chain mainnet (Chain ID 43114).
+
+**What are the contract addresses?**
+
+| Contract | Address |
+|----------|---------|
+| ViralityMarket | `0xbB898682B2BbD8cF19c33179b783ed172168BB6d` |
+| Factory | `0x1a30Ffc42DF5a505E68f671dCD92dF26AA00Ac94` |
 
 **Is the code open source?**
 
-Yes. All contracts, the oracle pipeline, SDK, and subgraph are MIT licensed and publicly available at `github.com/trendzaphq`.
-
-**Has the protocol been audited?**
-
-A full smart contract audit is in progress. The report will be published before mainnet launch. See [Earned Trust](/docs/protocol/trust) for details.
-
-**Can I build on TrendZap?**
-
-Yes. The TypeScript SDK makes it straightforward to embed markets, query state, and place bets in your own app. The subgraph provides indexed data access without RPC calls. See [SDK Reference](/docs/developers/sdk-reference).
-
----
-
-## Winnings
-
-**When can I claim my winnings?**
-
-As soon as the market is resolved. A **Claim** button appears on the market page and in your Portfolio tab.
-
-**Is there a deadline to claim?**
-
-No. Your winnings sit in the contract until you call `claim()`. There is no expiry.
-
-**I won but the Claim button isn't showing up.**
-
-The market may still be in the resolution pipeline. Wait a few minutes. If the market shows as "Resolved" but no Claim button appears, check that you're connected with the wallet that placed the bet. If the issue persists, raise it in the Discord.
-
-**What's the 2% fee?**
-
-Two percent of the total pool is taken as a protocol fee before distributing winnings. This is the only ongoing fee. It goes to the protocol treasury. There is no other hidden fee.
+Yes. Smart contracts and related tooling are publicly available at [github.com/trendzaphq](https://github.com/trendzaphq).
 
 ---
 
@@ -148,7 +179,7 @@ Two percent of the total pool is taken as a protocol fee before distributing win
 
 **Where can I get help?**
 
-- [Discord](https://discord.gg/trendzap) — For support, technical questions, and governance
-- [Telegram](https://t.me/+fsKNAii3K-Q5NWY0) — For general community discussion
-- [X / Twitter](https://twitter.com/TrendZapHQ) — Announcements and updates
-- [GitHub](https://github.com/trendzaphq) — Issues, PRs, and technical discussions
+- [Discord](https://discord.gg/trendzap) — support, technical questions, community
+- [Telegram](https://t.me/+fsKNAii3K-Q5NWY0) — general community discussion
+- [X / Twitter](https://twitter.com/TrendZapHQ) — announcements and updates
+- [GitHub](https://github.com/trendzaphq) — issues and technical discussions

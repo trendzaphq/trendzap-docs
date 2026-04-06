@@ -1,124 +1,114 @@
 ---
 sidebar_position: 1
 title: Placing Bets
-description: How to stake USDC on OVER or UNDER positions in TrendZap prediction markets.
+description: How to bet AVAX on OVER or UNDER in TrendZap prediction markets.
 ---
 
 # Placing Bets
 
-Every TrendZap market is a two-sided prediction: the metric either exceeds the threshold or it doesn't. You pick a side, stake USDC, and the smart contract handles everything else.
+Every TrendZap market is a two-sided prediction: the metric either exceeds the threshold or it doesn't. You pick a side, stake AVAX, and the smart contract handles the rest.
 
 ---
 
-## How Positions Work
+## How positions work
 
-TrendZap uses a **parimutuel pool** model — the same mechanism used in horse racing and some prediction markets. There is no counterparty matching. Instead:
+TrendZap uses **LMSR (Logarithmic Market Scoring Rule)** pricing — a mathematical model that converts the pool of bets into shares with continuously updating prices.
 
-- All OVER bets go into the OVER pool
-- All UNDER bets go into the UNDER pool
-- At resolution, the losing pool is distributed to winners proportionally
-
-Your payout depends on how much you staked relative to the total winning pool — not a fixed odds ratio set at the time of your bet.
+- Every AVAX bet buys a number of shares at the current LMSR price
+- As more bets come in, prices adjust to reflect the new implied probability
+- Earlier bets on the winning side get better prices
+- You can always buy shares — there's always a price (no order matching required)
 
 ---
 
-## Placing a Bet — Step by Step
+## Placing a bet — step by step
 
 **1. Find an active market**
 
-The home feed shows all live markets, sorted by pool size, time remaining, or recency. Use the filter bar to narrow by platform (X/Twitter, TikTok, Instagram, YouTube) or metric type.
+The home feed shows all live markets. Filter by platform (X, YouTube) or sort by pool size, time remaining, or newest.
 
 **2. Open the market**
 
-Click a market card to open the full view. Check the live metric update — the post's current stats are refreshed periodically so you can see where things stand.
+Click any market card. You'll see the live post embed with current stats, the OVER/UNDER odds breakdown, and a countdown to close.
 
-**3. Choose OVER or UNDER**
+**3. Tap Zap It!**
 
-OVER means you believe the metric will reach or exceed the threshold by the deadline.
-UNDER means you believe it will fall short.
+This opens the betting panel.
 
-**4. Enter your stake**
+**4. Choose OVER or UNDER**
 
-Type the USDC amount you want to commit. The interface will show:
+- **OVER** — you believe the metric will reach or exceed the threshold by the deadline
+- **UNDER** — you believe it will fall short
 
-- Your estimated payout at the current pool split
-- Your effective implied probability
-- The total pool size including your bet
+**5. Enter your AVAX amount**
 
-**5. Approve and confirm**
+Type the amount you want to stake. The modal shows:
 
-Click **Place Bet**. Your wallet will request two transactions if this is your first bet in USDC on this contract:
+- **Shares you'll receive** — based on current LMSR price
+- **Implied payout** — estimated AVAX if you win at current pool state
+- **Implied probability** — what the market currently prices your side at
 
-- **Approval** — Allow the contract to spend your USDC (one-time per contract, not per market)
-- **Bet** — The actual staking transaction
+**6. Confirm**
 
-Both cost under $0.10 in gas on Arbitrum.
+Review the bet confirm modal, then tap **Confirm** and approve the transaction in your wallet.
+
+Gas on Avalanche is under $0.01.
 
 ---
 
-## Understanding Your Payout
+## Understanding your payout
 
-Your payout at resolution:
+Your payout at resolution is based on your share of the total pool:
 
 ```
-Winners Pool = Total Pool × 0.98   (2% platform fee)
-Your Payout  = (Your Stake ÷ Total Winning Stakes) × Winners Pool
+Total Pool = all AVAX in (OVER + UNDER)
+Creator Fee = 3% of Total Pool
+Winners Pool = Total Pool − Creator Fee
+Your Payout = (Your Shares ÷ Total Winning Shares) × Winners Pool
 ```
 
-**Key point:** your share of the winners' pool changes as more people bet. If your side gets heavily favoured between now and close, your payout ratio decreases even if you win. This is the parimutuel dynamic.
+**Key point:** your payout changes as more bets come in. If many people bet the same side as you, your share of the winners' pool decreases. Final payout is determined at resolution, not at bet time.
 
-See [Understanding Odds](/docs/user-guide/understanding-odds) for a full breakdown with examples.
-
----
-
-## Position Limits
-
-To protect market integrity and prevent single-wallet manipulation:
-
-- There is a **maximum bet per user per market** (varies by market size)
-- There is a **maximum total pool size** per market (hardcoded in the contract)
-
-If you hit the limit, the UI will surface an error before you confirm the transaction.
+See [Understanding Odds](/docs/user-guide/understanding-odds) for a full worked example.
 
 ---
 
-## Viewing Your Positions
+## Viewing your positions
 
-After betting, find all your open positions under the **Portfolio** tab. Each entry shows:
+After betting, find all your positions in the **Profile** tab:
 
 | Field | Description |
 |-------|-------------|
 | Market | Post + platform + threshold |
 | Side | OVER or UNDER |
-| Stake | Your USDC committed |
-| Est. Payout | Estimated winnings at current pool split |
-| Status | Active / Closed / Resolved / Claimed |
+| Stake | Your AVAX committed |
+| Status | Active / Resolved / Claimed |
+
+You can also tap any market card from the profile to open the full market view.
 
 ---
 
-## What Happens at Resolution
+## What happens at resolution
 
 When the market closes:
 
-1. The oracle fetches the final metric from the platform API
-2. The outcome (OVER or UNDER) is determined on-chain
-3. Winners see a **Claim** button appear
-4. Losers' stakes are redistributed automatically — no transaction needed
+1. The oracle fetches the final metric from the platform's official API
+2. The outcome (OVER or UNDER) is written on-chain
+3. Winners see a **Claim Winnings** button appear
+4. Losers' AVAX is redistributed to the winning side — no transaction required from losers
 
-You do not need to be online at resolution time. The contract does the work.
-
----
-
-## Cancelled and Disputed Markets
-
-If the oracle cannot fetch a valid result within the resolution window, the market enters a dispute state. All participants can withdraw their original stake — no one loses funds due to an oracle failure.
-
-See [Oracle System](/docs/architecture/oracle-system) for the full resolution fallback logic.
+You do not need to be online at resolution time. The oracle and contract handle everything.
 
 ---
 
-## Next Steps
+## Cancelled markets
 
-- [Understanding Odds](/docs/user-guide/understanding-odds) — Implied probability and parimutuel mechanics
-- [Claiming Winnings](/docs/user-guide/claiming-winnings) — How to receive your payout
-- [Creating Markets](/docs/user-guide/creating-markets) — Create your own prediction market
+If the oracle cannot deliver a verified result (deleted post, API failure, private account), the market is dissolved. All participants can claim their original AVAX back. No funds are lost due to oracle failure.
+
+---
+
+## Next steps
+
+- [Understanding Odds](/docs/user-guide/understanding-odds) — LMSR pricing and implied probability
+- [Claiming Winnings](/docs/user-guide/claiming-winnings) — how to receive your payout
+- [Creating Markets](/docs/user-guide/creating-markets) — create your own market

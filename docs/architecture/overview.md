@@ -1,133 +1,107 @@
 ---
 sidebar_position: 1
 title: Architecture Overview
-description: How TrendZap's components fit together — smart contracts, oracle pipeline, risk engine, and indexer.
+description: How TrendZap's components fit together — smart contracts, oracle, risk engine, and data layer.
 ---
 
 # Architecture Overview
 
-TrendZap is composed of four layers: the smart contract protocol, the oracle pipeline, the risk engine, and the data indexer. Each layer is independently verifiable and designed to fail safely.
+TrendZap is composed of four layers: the smart contract protocol, the oracle pipeline, the intelligence engine, and the data layer. Each is designed to fail safely and operates non-custodially.
 
 ---
 
-## System Diagram
+## How the layers connect
 
 ```
-┌─────────────────────────────────────────────┐
-│              USER INTERFACE                 │
-│         trendzap.xyz  ·  SDK                │
-└──────────────────┬──────────────────────────┘
-                   │ read / write
-┌──────────────────▼──────────────────────────┐
-│           SMART CONTRACTS (Arbitrum)         │
-│  TrendZapFactory  ·  TrendZapMarket          │
-│  Parimutuel pool  ·  USDC settlement         │
-└──────────┬────────────────────┬─────────────┘
-           │ create/resolve     │ events
-┌──────────▼──────────┐  ┌─────▼─────────────┐
-│    ORACLE PIPELINE  │  │  SUBGRAPH INDEXER  │
-│  API fetch → verify │  │  GraphQL endpoint  │
-│  → Chainlink relay  │  │  Historical data   │
-└──────────┬──────────┘  └────────────────────┘
-           │ on-chain result
-┌──────────▼──────────┐
-│    RISK ENGINE      │
-│  Position limits    │
-│  Anomaly detection  │
-│  Dispute logic      │
-└─────────────────────┘
+┌─────────────────────────────────────┐
+│          USER INTERFACE             │
+│        app.trendzap.xyz             │
+└────────────────┬────────────────────┘
+                 │ read / write
+┌────────────────▼────────────────────┐
+│    SMART CONTRACTS (Avalanche)      │
+│  Factory  ·  Market Contracts       │
+│  LMSR pricing  ·  AVAX settlement   │
+└────────┬────────────────┬───────────┘
+         │ resolve        │ events
+┌────────▼────────┐  ┌────▼───────────┐
+│ ORACLE PIPELINE │  │   DATA LAYER   │
+│ Verify metrics  │  │ Market history │
+│ Resolve on-chain│  │ Leaderboard    │
+└────────┬────────┘  └────────────────┘
+         │
+┌────────▼────────┐
+│ INTELLIGENCE    │
+│ AI market assist│
+│ Risk checks     │
+└─────────────────┘
 ```
 
 ---
 
-## Layer 1 — Smart Contracts
+## Layer 1 — Smart contracts
 
-The protocol lives entirely on **Arbitrum One**. Two core contracts:
+The protocol lives entirely on **Avalanche C-Chain** mainnet. Two core contracts:
 
-**TrendZapFactory**
-Deploys and tracks all markets. Enforces creation fees. Maintains the global market registry.
+**ViralityMarket Factory**
+Deploys and tracks all markets. Maintains the global market registry.
 
-**TrendZapMarket**
-One contract per market. Holds the parimutuel pool, manages position records, enforces bet limits, receives oracle results, and distributes payouts. Immutable after deployment.
+**ViralityMarket**
+One contract per market. Holds the LMSR pool, manages share records, receives oracle results, and distributes payouts. Immutable after deployment.
 
 Key properties:
-- No admin keys on individual markets — once deployed, no one can alter parameters
-- USDC flows directly between user wallets and the market contract
-- `claim()` is permissionless — anyone can trigger payout distribution
-
-See [Smart Contracts](/docs/architecture/smart-contracts) for addresses, ABIs, and interface details.
-
----
-
-## Layer 2 — Oracle Pipeline
-
-The oracle is the bridge between social media reality and on-chain state. It runs off-chain but delivers results verifiably on-chain via Chainlink.
-
-Pipeline steps:
-
-1. **Trigger** — At market end time, the oracle job fires
-2. **Fetch** — Primary API call to the platform's official data endpoint
-3. **Cross-reference** — A second independent source is queried and compared
-4. **Bot filter** — Anomaly detection flags synthetic engagement spikes
-5. **Sign and deliver** — Verified result is signed and posted on-chain via Chainlink
-
-The Chainlink node is independently operated. The signed result is publicly verifiable on Arbiscan before the market contract accepts it.
-
-See [Oracle System](/docs/architecture/oracle-system) for the full pipeline specification.
+- Market parameters cannot be altered after deployment
+- AVAX flows directly from user wallets into the market contract
+- Claims are permissionless — any winning wallet can trigger their own payout
+- Admin roles secured via multisig — no single point of failure
 
 ---
 
-## Layer 3 — Risk Engine
+## Layer 2 — Oracle pipeline
 
-The risk engine runs at multiple levels:
+The oracle bridges social media reality to on-chain state. When a market reaches its deadline, the oracle:
 
-**Contract-level (on-chain)**
-- Maximum position size per wallet per market
-- Maximum total pool size per market (limits oracle manipulation incentive)
-- Dispute state when oracle delivery fails
+1. Fetches the current metric from the platform's official data API
+2. Verifies consistency across multiple data sources
+3. Determines the outcome against the threshold
+4. Writes the resolution on-chain
 
-**Oracle-level (off-chain)**
-- Bot detection on fetched metrics
-- Cross-source consistency checks
-- Anomaly thresholds that trigger a dispute rather than a bad resolution
-
-**UI-level**
-- Warnings when a single wallet has a disproportionate share of one side
-- Display of current pool concentration
-
-See [Risk Engine](/docs/architecture/risk-engine) for detailed thresholds and logic.
+All resolution transactions are publicly visible on [Snowtrace](https://snowtrace.io). Results are attributable and independently verifiable.
 
 ---
 
-## Layer 4 — Subgraph Indexer
+## Layer 3 — Intelligence engine
 
-A Graph Protocol subgraph indexes all on-chain events from TrendZapFactory and TrendZapMarket contracts, providing a fast GraphQL API for:
+TrendZap's intelligence layer provides market creators with AI-assisted tooling:
 
-- Market list and metadata
-- Position history per wallet
-- Pool snapshots over time
-- Resolution results and payout records
+- **Virality scoring** — analyses a post's current engagement and predicts its trajectory
+- **Threshold suggestions** — recommends data-backed thresholds based on the post's performance
+- **Risk checks** — validates market parameters and flags obviously one-sided setups before creation
 
-The subgraph is read-only and open — anyone can query it directly or run their own instance.
-
-See [Subgraph](/docs/developers/subgraph) for the schema and query examples.
+This layer is pre-market only — it does not participate in resolution.
 
 ---
 
-## Design Principles
+## Layer 4 — Data layer
 
-**Fail safe over fail silent.** If the oracle cannot deliver a verified result, the market disputes and all funds are returnable. No outcome is forced.
-
-**Minimal trust surface.** Individual market contracts have no admin keys. Oracle delivery is Chainlink-signed. Payouts are permissionless.
-
-**Verifiability at every step.** Every oracle result, every bet, every payout is a public transaction on Arbiscan. Nothing happens off-chain that can't be independently verified.
-
-**Open source throughout.** Contracts, oracle adapters, subgraph schema, and SDK are all MIT licensed and publicly available.
+On-chain events from the market contracts are indexed to power the app's feed, leaderboard, and user bets history. All indexed data traces back to on-chain transactions and is publicly verifiable at any time.
 
 ---
 
-## Next Steps
+## Design principles
 
-- [Smart Contracts](/docs/architecture/smart-contracts) — Addresses, ABIs, interfaces
-- [Oracle System](/docs/architecture/oracle-system) — Data pipeline detail
-- [Risk Engine](/docs/architecture/risk-engine) — Position limits and dispute logic
+**Fail safe.** If the oracle cannot deliver a verified result, the market is dissolved and all funds are returnable. No outcome is ever forced.
+
+**Minimal trust surface.** Individual market contracts have no admin keys after deployment. Payouts are permissionless.
+
+**Verifiable.** Every bet, resolution, and payout is a public transaction on Snowtrace.
+
+**Non-custodial.** AVAX flows directly into smart contracts — never into TrendZap-controlled wallets.
+
+---
+
+## Next steps
+
+- [Oracle System](/docs/architecture/oracle-system) — data verification in depth
+- [Smart Contracts](/docs/architecture/smart-contracts) — contract interfaces
+- [Earned Trust](/docs/protocol/trust) — security and transparency commitments

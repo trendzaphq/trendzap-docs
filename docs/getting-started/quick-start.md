@@ -10,114 +10,96 @@ Get from zero to your first prediction in under five minutes.
 
 ---
 
-## What You Need
+## What you need
 
 - A browser wallet: MetaMask, Coinbase Wallet, Rabby, or any WalletConnect-compatible wallet
-- The Arbitrum One network added to your wallet
-- A small amount of ETH for gas (typically less than $0.10 per transaction)
-- USDC to stake on a market
+- The Avalanche C-Chain network added to your wallet
+- A small amount of AVAX (for gas and betting — gas is under $0.01 per transaction)
 
 ---
 
-## Step 1 — Add Arbitrum to Your Wallet
+## Step 1 — Add Avalanche to your wallet
 
-If Arbitrum One isn't in your wallet yet, add it manually:
+Most wallets will auto-detect Avalanche when you connect to [app.trendzap.xyz](https://app.trendzap.xyz). If you need to add it manually:
 
 | Field | Value |
 |-------|-------|
-| Network Name | Arbitrum One |
-| RPC URL | `https://arb1.arbitrum.io/rpc` |
-| Chain ID | `42161` |
-| Currency Symbol | ETH |
-| Block Explorer | `https://arbiscan.io` |
+| Network Name | Avalanche C-Chain |
+| RPC URL | `https://api.avax.network/ext/bc/C/rpc` |
+| Chain ID | `43114` |
+| Currency Symbol | AVAX |
+| Block Explorer | `https://snowtrace.io` |
 
-Most wallets will add Arbitrum automatically when you connect to [trendzap.xyz](https://trendzap.xyz) for the first time.
+---
 
-:::tip Using a hardware wallet?
-Arbitrum One is fully supported by Ledger and Trezor via MetaMask. Use the same network config above.
+## Step 2 — Get AVAX
+
+TrendZap uses **AVAX** (native Avalanche token) for all bets and payouts.
+
+**Buy on a centralised exchange**
+Coinbase, Binance, and Kraken all support AVAX. Withdraw directly to Avalanche C-Chain (not Ethereum mainnet).
+
+**Bridge from another chain**
+Use the [Avalanche Bridge](https://bridge.avax.network/) to move funds from Ethereum.
+
+**On-ramp directly**
+Many WalletConnect wallets have built-in fiat on-ramp via MoonPay or similar.
+
+:::tip Small amounts go a long way
+Gas on Avalanche is under $0.01. A 0.5 AVAX bet costs roughly $0.01 in gas. You don't need much to get started.
 :::
 
 ---
 
-## Step 2 — Get ETH on Arbitrum
+## Step 3 — Connect your wallet
 
-You need a small amount of ETH on Arbitrum for gas. Options:
-
-**Bridge from Ethereum mainnet**
-Use the official [Arbitrum Bridge](https://bridge.arbitrum.io) to move ETH from mainnet. Takes ~15 minutes.
-
-**Buy directly on-chain**
-Most centralised exchanges (Coinbase, Binance, Kraken) support direct withdrawal to Arbitrum One.
-
-**Testnet (Arbitrum Sepolia)**
-If you want to test without real funds, use Arbitrum Sepolia. Request testnet ETH from the [Alchemy Faucet](https://www.alchemy.com/faucets/arbitrum-sepolia) or [Chainlink Faucet](https://faucets.chain.link/arbitrum-sepolia).
-
----
-
-## Step 3 — Get USDC
-
-TrendZap uses USDC (Circle's native USDC on Arbitrum One) for all bets and payouts.
-
-**Already have USDC on Ethereum mainnet?**
-Bridge it via the official [Arbitrum Bridge](https://bridge.arbitrum.io) or [Stargate](https://stargate.finance).
-
-**Swap for USDC on Arbitrum**
-Use [Uniswap on Arbitrum](https://app.uniswap.org) to swap ETH or any Arbitrum token for USDC.
-
-**Testnet USDC**
-On Arbitrum Sepolia, use the faucet link in the TrendZap app to get testnet USDC for free.
-
----
-
-## Step 4 — Connect Your Wallet
-
-1. Go to [trendzap.xyz](https://trendzap.xyz)
-2. Click **Connect Wallet** in the top right
+1. Go to [app.trendzap.xyz](https://app.trendzap.xyz)
+2. Click **Connect Wallet** in the top right (or the bottom nav on mobile)
 3. Select your wallet provider
-4. Approve the connection request
-5. If prompted, switch to Arbitrum One
+4. Approve the connection
+5. If prompted, switch to Avalanche C-Chain
 
-Your address will appear in the navbar once connected.
+Your address appears in the navbar once connected.
 
 ---
 
-## Step 5 — Browse Markets
+## Step 4 — Browse markets
 
 The main feed shows all active prediction markets. Each card shows:
 
-- The social media post and platform
-- The threshold (e.g. "500K likes")
-- Current OVER / UNDER split
-- Pool size in USDC
-- Time remaining
+- The social media post and platform (X, YouTube)
+- The threshold (e.g. "500K views")
+- Current OVER / UNDER implied probability
+- Total AVAX in the pool
+- Time remaining until market closes
 
-Click any market to open the full detail view.
-
----
-
-## Step 6 — Place Your Bet
-
-1. Open a market you want to trade
-2. Click **OVER** or **UNDER**
-3. Enter your stake amount in USDC
-4. Review the estimated payout
-5. Click **Confirm Bet**
-6. Approve the transaction in your wallet
-
-That's it. Your position is recorded on Arbitrum. You can view it in your **Portfolio** tab at any time.
+Click any market card to open the full detail view.
 
 ---
 
-## What Happens Next?
+## Step 5 — Place your bet
 
-When the market's end time arrives, the oracle fetches the final metric. If your side wins, a **Claim** button appears on the market card. Click it, confirm the transaction, and your USDC arrives in your wallet.
+1. Open a market you have a view on
+2. Tap **Zap It!**
+3. Choose **OVER** or **UNDER**
+4. Enter your AVAX stake amount
+5. Review the confirmation modal (shows your shares, implied payout, and current probability)
+6. Confirm the transaction in your wallet
+
+Your position is recorded on Avalanche. You can view it in your **Profile** tab at any time.
+
+---
+
+## What happens next?
+
+When the market's deadline arrives, the oracle fetches the final metric. If your side wins, a **Claim Winnings** button appears on the market. Click it, confirm the transaction, and AVAX arrives in your wallet.
 
 See [Claiming Winnings](/docs/user-guide/claiming-winnings) for the full flow.
 
 ---
 
-## Need Help?
+## Need help?
 
-- [Connect Wallet Guide](/docs/getting-started/connect-wallet) — Detailed wallet setup for each provider
-- [Your First Bet](/docs/getting-started/first-bet) — Walkthrough with screenshots
-- [FAQ](/docs/faq) — Common questions answered
+- [Connect Wallet Guide](/docs/getting-started/connect-wallet) — detailed wallet setup for each provider
+- [Your First Bet](/docs/getting-started/first-bet) — full walkthrough
+- [FAQ](/docs/faq) — common questions answered

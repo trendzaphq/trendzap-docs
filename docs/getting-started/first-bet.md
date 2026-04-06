@@ -6,144 +6,124 @@ description: A step-by-step walkthrough of placing your first TrendZap predictio
 
 # Your First Bet
 
-This walkthrough takes you from the market list to a confirmed on-chain position.
+This walkthrough takes you from the market feed to a confirmed on-chain position.
 
 ---
 
-## Before You Start
+## Before you start
 
 Make sure you have:
-- Wallet connected to Arbitrum One ([Connect Wallet](/docs/getting-started/connect-wallet))
-- Some ETH on Arbitrum for gas (less than $0.10 is enough)
-- USDC on Arbitrum to stake
+- Wallet connected to Avalanche C-Chain ([Connect Wallet](/docs/getting-started/connect-wallet))
+- Some AVAX in your wallet (gas is under $0.01; start with at least 0.1 AVAX to bet)
 
 ---
 
-## 1. Find a Market
+## 1. Find a market
 
-Open [trendzap.xyz](https://trendzap.xyz) and you'll see the live market feed.
+Open [app.trendzap.xyz](https://app.trendzap.xyz) and you'll see the live market feed.
 
 Each market card shows:
 
-- **Platform** — X/Twitter, TikTok, Instagram, or YouTube
-- **Post** — The specific post being tracked, with a link to it
-- **Metric** — What's being measured (likes, views, retweets, comments)
+- **Platform** — X (Twitter) or YouTube
+- **Post** — The specific post being tracked (with a live embed you can interact with)
+- **Metric** — What's being measured (views, likes, retweets, etc.)
 - **Threshold** — The number the metric needs to hit or miss
 - **Deadline** — When the market closes
-- **Pool size** — Total USDC staked by all participants
-- **OVER / UNDER split** — Current distribution of positions
+- **Pool** — Total AVAX staked
+- **OVER / UNDER** — Current implied probability on each side
 
 Browse until you find something you have a view on.
 
 :::tip How to pick a market
-Look at the current metric in real time. If a tweet already has 400K likes with 12 hours to go and the threshold is 500K — do you think it'll get there? That's the question.
+Open the market detail to see the live post embed with real-time stats. If a tweet is at 200K likes with 12 hours left and the threshold is 500K — do you think it'll get there? That's the question.
 :::
 
 ---
 
-## 2. Open the Market
+## 2. Open the market
 
-Click the market card. The detail page shows:
+Click the market card. The detail view shows:
 
-- A live link to the original post
-- Real-time metric updates (refreshed every few minutes)
-- The full odds breakdown — current implied probability for OVER and UNDER
-- Pool history — how the pool has grown over time
-- Time remaining, displayed as a live countdown
+- A live embed of the original post (real tweet or YouTube video) with current stats
+- Full odds — current OVER % and UNDER % implied probability
+- Time remaining countdown
+- Your wallet's current position (if any)
 
 ---
 
-## 3. Choose Your Side
+## 3. Choose your side
 
-You have two choices:
+Click **Zap It!** to open the betting panel.
 
-**OVER** — You believe the metric will exceed the threshold before the deadline. If it does, you win.
+**OVER** — you believe the metric will exceed the threshold before the deadline.
 
-**UNDER** — You believe the metric will fall short of the threshold before the deadline. If it stays below, you win.
+**UNDER** — you believe the metric will stay below it.
 
 There is no "maybe." The market resolves to exactly one outcome.
 
 ---
 
-## 4. Enter Your Stake
+## 4. Enter your stake
 
-Click **OVER** or **UNDER** to open the betting panel.
+Type the AVAX amount you want to bet. The modal shows:
 
-Enter the amount of USDC you want to stake. As you type, you'll see:
-
-- **Estimated payout** — How much you'd receive if you win (based on current pool split)
-- **Estimated odds** — Your implied probability given the current stakes
-- **Current pool** — Updated to show your bet's effect on the odds
-
-There is no maximum stake shown in the UI, but the contract enforces a per-market position cap to prevent manipulation.
-
-:::caution
-Your payout is calculated at the time of resolution, not at the time of your bet. If more people join your side before the market closes, your share of the winners' pool decreases. This is how parimutuel markets work.
-:::
+- **Shares** — how many market shares you'll receive
+- **Implied payout** — estimated AVAX if you win at current pool state
+- **Implied probability** — what the market currently prices your side at
 
 ---
 
-## 5. Confirm the Transaction
+## 5. Confirm the transaction
 
-Click **Place Bet**. Your wallet will pop up with a transaction request.
+Click **Confirm**. Your wallet pops up with the transaction request.
 
 Review:
-- **To:** The TrendZap market contract address (verify against [Smart Contracts](/docs/architecture/smart-contracts))
-- **Amount:** The USDC approval + transfer amount
-- **Gas:** Should be under $0.10 on Arbitrum
+- **To:** The TrendZap market contract address
+- **Value:** The AVAX amount
+- **Gas:** Under $0.01 on Avalanche
 
-Click **Confirm** in your wallet. The transaction broadcasts to Arbitrum One.
+Click **Confirm** in your wallet. The transaction broadcasts to Avalanche C-Chain.
 
-Within seconds, your position is confirmed on-chain. You'll see it appear under the **Your Position** section of the market page.
+Within seconds, your position is confirmed on-chain.
 
 ---
 
-## 6. Track Your Position
+## 6. Track your position
 
-In your **Portfolio** tab, you can see all open and resolved markets where you hold a position:
+In your **Profile** tab, you can see all markets you've bet on — open and resolved:
 
-- Markets you've bet on
-- Your stake amount per side
+- Your side (OVER / UNDER)
+- Your AVAX staked
 - Current implied probability
-- Estimated payout if you win today
-- Status: Active, Closed (awaiting resolution), or Resolved
+- Status: Active, Resolved, or Claimed
 
 ---
 
-## 7. Wait for Resolution
+## 7. Wait for resolution
 
 When the deadline arrives, the oracle fetches the final metric from the platform's API. This typically completes within a few minutes of market close.
 
-You'll see the market status change from **Active** → **Closed** → **Resolved**.
+The market status changes from **Active** → **Resolved**.
 
-The resolution result (final metric value and outcome) is recorded on-chain and publicly verifiable on Arbiscan.
+The result and resolved metric value are written on-chain and publicly verifiable on [Snowtrace](https://snowtrace.io).
 
 ---
 
-## 8. Claim Your Winnings
+## 8. Claim your winnings
 
-If your side won, a green **Claim Winnings** button appears on the market card.
+If your side won, a **Claim Winnings** button appears on the market.
 
 1. Click **Claim Winnings**
 2. Confirm the transaction in your wallet
-3. USDC arrives in your wallet immediately
+3. AVAX arrives in your wallet immediately
 
-There is no deadline to claim — your winnings sit in the contract until you call `claim()`.
+There is no deadline to claim — your winnings sit in the contract until you call claim.
 
-If your side lost, there is nothing to claim. Your staked USDC was distributed to the winners.
-
----
-
-## What Just Happened?
-
-You placed a prediction on a real social media metric. The outcome was determined by a tamper-proof oracle reading an official API. The payout was calculated and distributed automatically by a smart contract. No platform held your funds. No one made a judgment call.
-
-That's TrendZap.
+If your side lost, there is nothing to claim. Your AVAX was redistributed to the winning side as part of the LMSR pool.
 
 ---
 
-## Next Steps
+## Next steps
 
-- [Understanding Odds](/docs/user-guide/understanding-odds) — How parimutuel probabilities work
-- [Creating Markets](/docs/user-guide/creating-markets) — Start your own prediction market
-- [SDK Reference](/docs/developers/sdk-reference) — Integrate TrendZap into your own app
+- [Understanding Odds](/docs/user-guide/understanding-odds) — how LMSR pricing works
+- [Creating Markets](/docs/user-guide/creating-markets) — start your own prediction market

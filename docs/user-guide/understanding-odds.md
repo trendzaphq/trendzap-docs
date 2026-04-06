@@ -1,137 +1,109 @@
 ---
 sidebar_position: 3
 title: Understanding Odds
-description: How parimutuel pools work in TrendZap — implied probability, payouts, and what shifts odds.
+description: How LMSR pricing works in TrendZap — implied probability, share pricing, and payouts.
 ---
 
 # Understanding Odds
 
-TrendZap uses a parimutuel pool model. There are no fixed odds, no market makers, and no order books. The implied probability of each side is determined entirely by how much USDC has been staked on each.
+TrendZap uses **LMSR (Logarithmic Market Scoring Rule)** pricing. There are no fixed odds, no market makers, and no order books. Prices update continuously based on the total distribution of bets.
 
 ---
 
-## The Basic Mechanic
+## The basic mechanic
 
-Every market has two pools: OVER and UNDER.
+Every time someone bets AVAX on OVER or UNDER, the LMSR formula recalculates the price of shares on both sides.
 
-When you stake USDC on OVER, your money goes into the OVER pool. If OVER wins, you receive your proportional share of the entire pool (minus the 2% platform fee). If UNDER wins, you receive nothing.
+- Betting OVER makes OVER shares more expensive (higher implied probability)
+- Betting UNDER makes UNDER shares more expensive
+- Prices always reflect the current crowd probability
 
-```
-Total Pool   = OVER pool + UNDER pool
-Winners Pool = Total Pool × 0.98
-Your Payout  = (Your Stake ÷ Total Winning Pool) × Winners Pool
-```
+When the market resolves, winners' payouts come from the entire pool — their proportional share of all AVAX staked on both sides.
 
 ---
 
-## Implied Probability
+## Implied probability
 
-The implied probability of each outcome is simply the fraction of total stake on that side:
+The OVER % and UNDER % displayed on market cards are the current **implied probabilities** — what the aggregate of bets suggests about the likelihood of each outcome.
 
-```
-P(OVER)  = OVER pool  ÷ Total Pool
-P(UNDER) = UNDER pool ÷ Total Pool
-```
-
-**Example:** If 7,000 USDC is on OVER and 3,000 USDC is on UNDER:
-
-- Total Pool: 10,000 USDC
-- P(OVER) = 70%
-- P(UNDER) = 30%
-
-This means the crowd collectively implies a 70% chance the metric hits the threshold.
+These numbers update live with every new bet. If OVER % is 70%, the market collectively implies a 70% chance the post hits the threshold.
 
 ---
 
-## How Odds Change Over Time
+## Earlier bets = better prices
 
-Odds move as new bets come in. If a large amount lands on UNDER, the implied probability of UNDER rises and OVER falls.
+Because LMSR prices shift with each bet, the earlier you bet on the winning side, the cheaper your shares were. Cheaper shares mean a larger proportional payout from the same pool.
 
-This is different from traditional fixed-odds betting where your payout is locked in at bet time. In TrendZap:
-
-- Your **stake** is fixed when you bet
-- Your **payout ratio** fluctuates until market close
-- Final payout is calculated at resolution using the closing pool split
-
-This means you can place an early bet at favourable odds, but latecomers can dilute your share if they pile onto your side.
+This creates an incentive to bet early on uncertain markets rather than waiting until just before close.
 
 ---
 
-## Worked Example
+## Worked example
 
-### Setup
+### The setup
 
-| Side  | Total Staked |
-|-------|-------------|
-| OVER  | 6,000 USDC  |
-| UNDER | 4,000 USDC  |
+| Side | Total AVAX staked |
+|------|-----------------|
+| OVER | 600 AVAX |
+| UNDER | 400 AVAX |
 
-You bet **1,000 USDC on OVER** when this is the pool state.
+Total pool: **1000 AVAX**
 
-At this moment, your estimated payout if OVER wins:
+You bet **100 AVAX on OVER** now.
 
-```
-Winners Pool = 10,000 × 0.98 = 9,800 USDC
-Your share   = 1,000 ÷ 6,000 = 16.67%
-Payout       = 9,800 × 16.67% = 1,633 USDC
-Profit       = 633 USDC
-```
-
-### If More OVER Bets Come In
-
-Suppose an additional 4,000 USDC flows into OVER before close:
-
-| Side  | Total Staked |
-|-------|-------------|
-| OVER  | 10,000 USDC |
-| UNDER | 4,000 USDC  |
-
-Now if OVER wins:
+Estimated payout if OVER wins at this pool state:
 
 ```
-Winners Pool = 14,000 × 0.98 = 13,720 USDC
-Your share   = 1,000 ÷ 10,000 = 10%
-Payout       = 13,720 × 10% = 1,372 USDC
-Profit       = 372 USDC
+Creator fee  = 3% × 1100 = 33 AVAX
+Winners Pool = 1100 − 33 = 1067 AVAX
+Your share   = 100 ÷ 700 = 14.3%
+Your payout  = 1067 × 14.3% = ~152 AVAX
+Your profit  = ~52 AVAX
 ```
 
-Your payout decreased because others joined your side. You're still profitable if OVER wins — just less so.
+### If more OVER bets come in before close
 
-### If UNDER Bets Come In Instead
-
-Suppose 4,000 USDC flows into UNDER instead:
-
-| Side  | Total Staked |
-|-------|-------------|
-| OVER  | 6,000 USDC  |
-| UNDER | 8,000 USDC  |
-
-Now if OVER wins:
+Suppose 300 more AVAX flows into OVER:
 
 ```
-Winners Pool = 14,000 × 0.98 = 13,720 USDC
-Your share   = 1,000 ÷ 6,000 = 16.67%
-Payout       = 13,720 × 16.67% = 2,287 USDC
-Profit       = 1,287 USDC
+OVER pool now: 1000 AVAX total
+Your share = 100 ÷ 1000 = 10%
+Winners Pool ≈ 1370 × 0.97 ≈ 1329 AVAX
+Your payout = 1329 × 10% = ~133 AVAX
+Your profit = ~33 AVAX
+```
+
+Your payout decreases because others joined your side. You're still profitable — just less so.
+
+### If UNDER bets come in instead
+
+Suppose 300 AVAX flows into UNDER instead:
+
+```
+Your share = 100 ÷ 700 = 14.3% (unchanged)
+Total pool = 1400 AVAX
+Winners Pool ≈ 1400 × 0.97 ≈ 1358 AVAX
+Your payout = 1358 × 14.3% = ~194 AVAX
+Your profit = ~94 AVAX
 ```
 
 More money on the other side means a higher payout when you win. This is the incentive for early contrarian positions.
 
 ---
 
-## Key Takeaways
+## Key takeaways
 
-**Early bets on the winning side lock in more favourable pool conditions** — but the pool can shift before close.
+**Earlier bets get cheaper prices** — LMSR rewards conviction placed early.
 
-**Contrarian bets are rewarded more if correct** — betting on the minority side means a larger share of the losing pool if you win.
+**Contrarian bets pay more if correct** — the minority side captures more of the total pool.
 
-**The final payout is always calculated at resolution** — what you see in the UI during the market is an estimate based on the current pool state.
+**Payouts are always calculated at resolution** — what the UI shows during the market is an estimate based on the current pool state.
 
 **There is no edge from timing alone** — what matters is whether you're right about the outcome.
 
 ---
 
-## Next Steps
+## Next steps
 
-- [Placing Bets](/docs/user-guide/placing-bets) — Stake USDC on a position
-- [Claiming Winnings](/docs/user-guide/claiming-winnings) — Receive your payout after resolution
+- [Placing Bets](/docs/user-guide/placing-bets) — stake AVAX on a position
+- [Claiming Winnings](/docs/user-guide/claiming-winnings) — receive your payout after resolution
