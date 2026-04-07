@@ -81,8 +81,8 @@
   --ifm-color-warning:                   var(--tz-amber);
   --ifm-color-danger:                    var(--tz-red);
 
-  /* Z-index — override Docusaurus defaults so mobile sidebar stays above page content */
-  --ifm-z-index-fixed:    200;
+  /* Z-index — override Docusaurus defaults so navbar stays above all page content */
+  --ifm-z-index-fixed:    300;
   --ifm-z-index-overlay:  9000;
 
   /* Footer */
@@ -163,13 +163,55 @@ a:hover {
 
 /* ── Navbar ─────────────────────────────────────────────────── */
 .navbar {
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--tz-border-solid);
-  background: rgba(9, 9, 14, 0.92) !important;
+  background: #09090E !important;
   position: sticky;
   top: 0;
-  z-index: 200;
+  z-index: 300;
+}
+
+/* Frosted glass only on desktop — avoids backdrop-filter creating a CSS
+   containing block that traps position:fixed children on mobile */
+@media (min-width: 997px) {
+  .navbar {
+    background: rgba(9, 9, 14, 0.92) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+}
+
+/* ── Mobile: prevent ALL containing-block traps on navbar ──── */
+@media (max-width: 996px) {
+  .navbar {
+    will-change: auto !important;
+    transform: none !important;
+    perspective: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    contain: none !important;
+  }
+
+  /* Lock body scroll when sidebar is open */
+  html:has(.navbar-sidebar--show) {
+    overflow: hidden !important;
+  }
+
+  /* Hide desktop-only links */
+  .navbar__item.navbar__link {
+    display: none;
+  }
+
+  /* Smaller logo on mobile */
+  .navbar__logo img {
+    height: 24px;
+  }
+
+  /* Compact inner bar */
+  .navbar__inner {
+    padding: 0 0.75rem;
+    height: var(--ifm-navbar-height);
+  }
 }
 
 .navbar__logo img {
@@ -445,69 +487,273 @@ body.homepage-view .main-wrapper {
   background: var(--tz-bg);
 }
 
-body.homepage-view .navbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
 
 /* ── Mobile Hamburger & Sidebar ──────────────────────────────── */
+
+/* Toggle button — renders our custom swizzled SVG */
 .navbar__toggle {
-  color: var(--tz-text);
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 6px;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--tz-text);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.15s, color 0.15s;
+  padding: 0;
+  -webkit-appearance: none;
 }
 
 .navbar__toggle:hover {
   background: rgba(255, 255, 255, 0.06);
+  color: var(--tz-amber);
 }
 
+.navbar__toggle:focus-visible {
+  outline: 2px solid var(--tz-amber);
+  outline-offset: 2px;
+}
+
+/* Let inline SVG attributes handle fill/stroke — just ensure size & color cascade */
 .navbar__toggle svg {
-  width: 20px;
-  height: 20px;
-  fill: var(--tz-text);
+  display: block;
+  color: inherit;
 }
 
-/* Mobile sidebar overlay */
-.navbar-sidebar {
-  background: var(--tz-bg) !important;
-  border-right: 1px solid var(--tz-border-solid);
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  bottom: 0 !important;
-  z-index: 9000 !important;
-}
-
-.navbar-sidebar__brand {
-  border-bottom: 1px solid var(--tz-border-solid);
-  background: var(--tz-bg);
-}
-
-.navbar-sidebar__items {
-  background: var(--tz-bg);
-}
-
-.navbar-sidebar__item.menu {
-  padding: 1rem 0;
-}
-
-/* Backdrop when sidebar is open */
+/* ── Sidebar backdrop ──────────────────────────────── */
 .navbar-sidebar__backdrop {
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(6px);
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
   z-index: 8999 !important;
+  background: rgba(0, 0, 0, 0.72) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.28s ease,
+              visibility 0s linear 0.28s;
+}
+
+/* ── Sidebar panel ─────────────────────────────────── */
+.navbar-sidebar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  width: min(82vw, 300px) !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  z-index: 9000 !important;
+  display: flex;
+  flex-direction: column;
+  background: #0C0D15 !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.07) !important;
+  transform: translate3d(-100%, 0, 0);
+  visibility: hidden;
+  opacity: 0;
+  transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1),
+              opacity 0.28s ease,
+              visibility 0s linear 0.28s !important;
+  box-shadow: 4px 0 40px rgba(0, 0, 0, 0.6);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Show sidebar panel when hamburger is toggled
+   Docusaurus adds .navbar-sidebar--show to the <nav>, so we must use
+   the DESCENDANT selector to reach the actual sidebar <div>. */
+.navbar-sidebar--show .navbar-sidebar {
+  transform: translate3d(0, 0, 0) !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1),
+              opacity 0.28s ease,
+              visibility 0s linear 0s !important;
+}
+
+/* Show backdrop overlay */
+.navbar-sidebar--show .navbar-sidebar__backdrop {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: opacity 0.28s ease,
+              visibility 0s linear 0s !important;
+}
+
+/* ── Sidebar header (brand + close button) ─────────── */
+.navbar-sidebar__brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+  background: #0C0D15 !important;
+  flex-shrink: 0;
+}
+
+.navbar-sidebar__brand .navbar__logo img {
+  height: 26px;
+  width: auto;
+}
+
+/* Close button */
+.navbar-sidebar__close {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  color: var(--tz-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.navbar-sidebar__close:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--tz-text);
+}
+
+/* The × SVG inside close */
+.navbar-sidebar__close svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+}
+
+/* ── Sidebar scrollable content ────────────────────── */
+.navbar-sidebar__items {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #0C0D15 !important;
+  padding: 0.5rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.08) transparent;
+}
+
+.navbar-sidebar__items::-webkit-scrollbar { width: 3px; }
+.navbar-sidebar__items::-webkit-scrollbar-track { background: transparent; }
+.navbar-sidebar__items::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+}
+
+/* Back button inside secondary panel */
+.navbar-sidebar__back {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tz-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.navbar-sidebar__back:hover { color: var(--tz-text); }
+
+/* ── Menu links inside sidebar ──────────────────────── */
+.navbar-sidebar .menu__link {
+  border-radius: 8px;
+  margin: 1px 0.5rem;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--tz-muted);
+  transition: color 0.15s, background 0.15s;
+}
+
+.navbar-sidebar .menu__link:hover {
+  color: var(--tz-text);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.navbar-sidebar .menu__link--active {
+  color: var(--tz-amber) !important;
+  background: rgba(233, 160, 32, 0.1) !important;
+  font-weight: 600;
+}
+
+/* Category labels inside sidebar */
+.navbar-sidebar .menu__list > .menu__list-item > .menu__link.menu__link--sublist {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--tz-amber);
+  font-family: 'JetBrains Mono', monospace;
+  padding-left: 1.25rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  background: transparent !important;
+}
+
+/* Navbar items in the sidebar (top-level links like "Documentation", "Open App →") */
+.navbar-sidebar .navbar__item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar-sidebar .navbar__link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--tz-muted);
+  border-radius: 0;
+  transition: color 0.15s, background 0.15s;
+}
+
+.navbar-sidebar .navbar__link:hover,
+.navbar-sidebar .navbar__link--active {
+  color: var(--tz-amber);
+  background: rgba(233, 160, 32, 0.06);
+  text-decoration: none;
+}
+
+/* "Open App →" as a CTA in sidebar */
+.navbar-sidebar .navbar__item:last-child .navbar__link {
+  margin: 0.75rem 0.75rem 0;
+  border-radius: 10px;
+  border: 1px solid rgba(233, 160, 32, 0.25);
+  background: rgba(233, 160, 32, 0.06);
+  color: var(--tz-amber);
+  font-weight: 600;
+  justify-content: center;
+  padding: 0.6rem 1.25rem;
+}
+
+.navbar-sidebar .navbar__item:last-child .navbar__link:hover {
+  background: rgba(233, 160, 32, 0.12);
+  border-color: rgba(233, 160, 32, 0.4);
 }
 
 /* Misc ────────────────────────────────────────────────────── */
@@ -538,4 +784,69 @@ blockquote p { margin: 0; }
   text-transform: uppercase;
   padding: 2px 8px;
   border-radius: 2px;
+}
+
+/* ── Mobile Polish ─────────────────────────────────────────── */
+@media (max-width: 996px) {
+  /* Tighter article content on mobile */
+  .markdown h1 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .markdown h2 {
+    font-size: 1.2rem;
+    margin-top: 1.75rem;
+  }
+
+  .markdown h3 {
+    font-size: 1rem;
+  }
+
+  /* Reduce padding on code blocks for mobile */
+  pre {
+    font-size: 0.82rem;
+  }
+
+  /* Tables scroll horizontally on small screens */
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  th, td {
+    white-space: nowrap;
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* Pagination buttons stack better */
+  .pagination-nav {
+    gap: 0.5rem;
+  }
+
+  .pagination-nav__link {
+    padding: 0.75rem;
+  }
+
+  /* Footer is more compact on mobile */
+  .footer {
+    padding: 2rem 1rem;
+  }
+
+  /* Main content area padding */
+  .main-wrapper .container {
+    padding: 0 1rem;
+  }
+
+  /* Desktop sidebar hidden on mobile — content gets full width */
+  .theme-doc-sidebar-container {
+    display: none !important;
+  }
+
+  /* TOC pushed below content on mobile */
+  .col--3 {
+    display: none;
+  }
 }
