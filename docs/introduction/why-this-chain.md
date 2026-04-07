@@ -18,7 +18,7 @@ Social media engagement can spike within minutes of a post going live. Markets n
 - **Low gas fees** — typically under $0.01 per transaction
 - **High throughput** — handles burst activity without congestion
 
-This makes it practical to place small bets (0.01 AVAX) without gas eating your winnings.
+This makes it practical to place small bets (0.05 USDC minimum) without gas eating your winnings.
 
 ---
 
@@ -28,13 +28,18 @@ Avalanche C-Chain is fully EVM-compatible. Every Ethereum tool works out of the 
 
 ---
 
-## AVAX as native currency
+## USDC as betting currency
 
-TrendZap uses **AVAX** (native token) for all bets and payouts. No wrapping, no bridging, no approval transactions. Just AVAX in, AVAX out.
+TrendZap uses **USDC** (ERC-20, 6 decimals) for all bets and payouts — similar to how Polymarket uses USDC. This provides price stability so your position value isn't affected by AVAX price movements.
 
-**Getting AVAX:**
+**You still need a small amount of AVAX for gas fees.** Gas on Avalanche is typically under $0.01 per transaction.
+
+**Getting USDC on Avalanche:**
+- Swap AVAX → USDC on [Trader Joe](https://traderjoexyz.com/avalanche/trade) or [Pangolin](https://app.pangolin.exchange/#/swap)
+- Bridge USDC from Ethereum or other chains via the [Avalanche Bridge](https://bridge.avax.network/)
+
+**Getting AVAX (for gas):**
 - Buy directly on Coinbase, Kraken, or Binance and withdraw to Avalanche C-Chain
-- Bridge from Ethereum via the [Avalanche Bridge](https://bridge.avax.network/)
 - On-ramp via your wallet's fiat gateway (WalletConnect wallets support this)
 
 ---

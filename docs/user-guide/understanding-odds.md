@@ -12,13 +12,13 @@ TrendZap uses **LMSR (Logarithmic Market Scoring Rule)** pricing. There are no f
 
 ## The basic mechanic
 
-Every time someone bets AVAX on OVER or UNDER, the LMSR formula recalculates the price of shares on both sides.
+Every time someone bets USDC on OVER or UNDER, the LMSR formula recalculates the price of shares on both sides.
 
 - Betting OVER makes OVER shares more expensive (higher implied probability)
 - Betting UNDER makes UNDER shares more expensive
 - Prices always reflect the current crowd probability
 
-When the market resolves, winners' payouts come from the entire pool — their proportional share of all AVAX staked on both sides.
+When the market resolves, winners' payouts come from the entire pool — their proportional share of all USDC staked on both sides.
 
 ---
 
@@ -42,49 +42,49 @@ This creates an incentive to bet early on uncertain markets rather than waiting 
 
 ### The setup
 
-| Side | Total AVAX staked |
+| Side | Total USDC staked |
 |------|-----------------|
-| OVER | 600 AVAX |
-| UNDER | 400 AVAX |
+| OVER | 600 USDC |
+| UNDER | 400 USDC |
 
-Total pool: **1000 AVAX**
+Total pool: **1000 USDC**
 
-You bet **100 AVAX on OVER** now.
+You bet **100 USDC on OVER** now.
 
 Estimated payout if OVER wins at this pool state:
 
 ```
-Creator fee  = 3% × 1100 = 33 AVAX
-Winners Pool = 1100 − 33 = 1067 AVAX
+Creator fee  = 3% × 1100 = 33 USDC
+Winners Pool = 1100 − 33 = 1067 USDC
 Your share   = 100 ÷ 700 = 14.3%
-Your payout  = 1067 × 14.3% = ~152 AVAX
-Your profit  = ~52 AVAX
+Your payout  = 1067 × 14.3% = ~152 USDC
+Your profit  = ~52 USDC
 ```
 
 ### If more OVER bets come in before close
 
-Suppose 300 more AVAX flows into OVER:
+Suppose 300 more USDC flows into OVER:
 
 ```
-OVER pool now: 1000 AVAX total
+OVER pool now: 1000 USDC total
 Your share = 100 ÷ 1000 = 10%
-Winners Pool ≈ 1370 × 0.97 ≈ 1329 AVAX
-Your payout = 1329 × 10% = ~133 AVAX
-Your profit = ~33 AVAX
+Winners Pool ≈ 1370 × 0.97 ≈ 1329 USDC
+Your payout = 1329 × 10% = ~133 USDC
+Your profit = ~33 USDC
 ```
 
 Your payout decreases because others joined your side. You're still profitable — just less so.
 
 ### If UNDER bets come in instead
 
-Suppose 300 AVAX flows into UNDER instead:
+Suppose 300 USDC flows into UNDER instead:
 
 ```
 Your share = 100 ÷ 700 = 14.3% (unchanged)
-Total pool = 1400 AVAX
-Winners Pool ≈ 1400 × 0.97 ≈ 1358 AVAX
-Your payout = 1358 × 14.3% = ~194 AVAX
-Your profit = ~94 AVAX
+Total pool = 1400 USDC
+Winners Pool ≈ 1400 × 0.97 ≈ 1358 USDC
+Your payout = 1358 × 14.3% = ~194 USDC
+Your profit = ~94 USDC
 ```
 
 More money on the other side means a higher payout when you win. This is the incentive for early contrarian positions.
@@ -105,5 +105,5 @@ More money on the other side means a higher payout when you win. This is the inc
 
 ## Next steps
 
-- [Placing Bets](/docs/user-guide/placing-bets) — stake AVAX on a position
+- [Placing Bets](/docs/user-guide/placing-bets) — stake USDC on a position
 - [Claiming Winnings](/docs/user-guide/claiming-winnings) — receive your payout after resolution

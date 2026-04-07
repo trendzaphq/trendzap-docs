@@ -21,7 +21,7 @@ TrendZap is composed of four layers: the smart contract protocol, the oracle pip
 ┌────────────────▼────────────────────┐
 │    SMART CONTRACTS (Avalanche)      │
 │  Factory  ·  Market Contracts       │
-│  LMSR pricing  ·  AVAX settlement   │
+│  LMSR pricing  ·  USDC settlement   │
 └────────┬────────────────┬───────────┘
          │ resolve        │ events
 ┌────────▼────────┐  ┌────▼───────────┐
@@ -51,7 +51,7 @@ One contract per market. Holds the LMSR pool, manages share records, receives or
 
 Key properties:
 - Market parameters cannot be altered after deployment
-- AVAX flows directly from user wallets into the market contract
+- USDC flows directly from user wallets into the market contract (after ERC-20 approval)
 - Claims are permissionless — any winning wallet can trigger their own payout
 - Admin roles secured via multisig — no single point of failure
 
@@ -96,7 +96,7 @@ On-chain events from the market contracts are indexed to power the app's feed, l
 
 **Verifiable.** Every bet, resolution, and payout is a public transaction on Snowtrace.
 
-**Non-custodial.** AVAX flows directly into smart contracts — never into TrendZap-controlled wallets.
+**Non-custodial.** USDC flows directly into smart contracts — never into TrendZap-controlled wallets.
 
 ---
 

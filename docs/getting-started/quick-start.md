@@ -14,7 +14,8 @@ Get from zero to your first prediction in under five minutes.
 
 - A browser wallet: MetaMask, Coinbase Wallet, Rabby, or any WalletConnect-compatible wallet
 - The Avalanche C-Chain network added to your wallet
-- A small amount of AVAX (for gas and betting — gas is under $0.01 per transaction)
+- A small amount of AVAX for gas fees (under $0.01 per transaction)
+- USDC to place bets (the platform's betting currency)
 
 ---
 
@@ -32,21 +33,21 @@ Most wallets will auto-detect Avalanche when you connect to [app.trendzap.xyz](h
 
 ---
 
-## Step 2 — Get AVAX
+## Step 2 — Get USDC
 
-TrendZap uses **AVAX** (native Avalanche token) for all bets and payouts.
+TrendZap uses **USDC** (ERC-20 stablecoin, 6 decimals) for all bets and payouts. You'll need USDC to place bets. Swap AVAX → USDC on [Trader Joe](https://traderjoexyz.com/avalanche/trade) or [Pangolin](https://app.pangolin.exchange/#/swap). You'll still need a small amount of AVAX for gas fees.
 
-**Buy on a centralised exchange**
-Coinbase, Binance, and Kraken all support AVAX. Withdraw directly to Avalanche C-Chain (not Ethereum mainnet).
+**Get AVAX first (for gas)**
+Coinbase, Binance, and Kraken all support AVAX. Withdraw directly to Avalanche C-Chain (not Ethereum mainnet). A few dollars of AVAX is enough to cover gas for hundreds of transactions.
 
-**Bridge from another chain**
-Use the [Avalanche Bridge](https://bridge.avax.network/) to move funds from Ethereum.
+**Swap AVAX → USDC**
+Use [Trader Joe](https://traderjoexyz.com/avalanche/trade) or [Pangolin](https://app.pangolin.exchange/#/swap) on Avalanche to swap your AVAX for USDC. USDC on Avalanche C-Chain is at `0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E`.
 
-**On-ramp directly**
-Many WalletConnect wallets have built-in fiat on-ramp via MoonPay or similar.
+**Bridge USDC from another chain**
+Use the [Avalanche Bridge](https://bridge.avax.network/) or a cross-chain bridge to move USDC from Ethereum or other networks.
 
 :::tip Small amounts go a long way
-Gas on Avalanche is under $0.01. A 0.5 AVAX bet costs roughly $0.01 in gas. You don't need much to get started.
+Gas on Avalanche is under $0.01. The minimum bet is 0.05 USDC. You don't need much to get started.
 :::
 
 ---
@@ -70,7 +71,7 @@ The main feed shows all active prediction markets. Each card shows:
 - The social media post and platform (X, YouTube)
 - The threshold (e.g. "500K views")
 - Current OVER / UNDER implied probability
-- Total AVAX in the pool
+- Total USDC in the pool
 - Time remaining until market closes
 
 Click any market card to open the full detail view.
@@ -82,7 +83,7 @@ Click any market card to open the full detail view.
 1. Open a market you have a view on
 2. Tap **Zap It!**
 3. Choose **OVER** or **UNDER**
-4. Enter your AVAX stake amount
+4. Enter your USDC amount
 5. Review the confirmation modal (shows your shares, implied payout, and current probability)
 6. Confirm the transaction in your wallet
 
@@ -92,7 +93,7 @@ Your position is recorded on Avalanche. You can view it in your **Profile** tab 
 
 ## What happens next?
 
-When the market's deadline arrives, the oracle fetches the final metric. If your side wins, a **Claim Winnings** button appears on the market. Click it, confirm the transaction, and AVAX arrives in your wallet.
+When the market's deadline arrives, the oracle fetches the final metric. If your side wins, a **Claim Winnings** button appears on the market. Click it, confirm the transaction, and USDC arrives in your wallet.
 
 See [Claiming Winnings](/docs/user-guide/claiming-winnings) for the full flow.
 

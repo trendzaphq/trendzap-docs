@@ -1,12 +1,12 @@
 ---
 sidebar_position: 4
 title: Claiming Winnings
-description: How to claim your AVAX payout after a TrendZap market resolves in your favour.
+description: How to claim your USDC payout after a TrendZap market resolves in your favour.
 ---
 
 # Claiming Winnings
 
-When a market resolves and your side wins, your AVAX payout sits in the contract ready to be claimed. It doesn't expire — claim whenever you like.
+When a market resolves and your side wins, your USDC payout sits in the contract ready to be claimed. It doesn't expire — claim whenever you like.
 
 ---
 
@@ -31,7 +31,7 @@ This process typically completes within a few minutes of the deadline. You don't
 2. Find the resolved market — it shows a green **Claim Winnings** button
 3. Click **Claim Winnings**
 4. Confirm the transaction in your wallet
-5. AVAX arrives in your wallet in the same block
+5. USDC arrives in your wallet in the same block
 
 Gas for a claim transaction is under $0.01 on Avalanche.
 
@@ -50,7 +50,7 @@ You can also claim directly from the market detail view:
 Your payout is calculated at resolution using the final pool state:
 
 ```
-Total Pool   = all AVAX staked (OVER + UNDER)
+Total Pool   = all USDC staked (OVER + UNDER)
 Creator Fee  = 3% of Total Pool
 Winners Pool = Total Pool − Creator Fee
 Your Payout  = (Your Shares ÷ Total Winning Shares) × Winners Pool
@@ -62,7 +62,7 @@ The app shows your exact claimable amount before you confirm the transaction.
 
 ## If you lost
 
-If your side lost, there is nothing to claim. Your staked AVAX was redistributed to the winners as part of the LMSR pool redistribution. No transaction is needed from you.
+If your side lost, there is nothing to claim. Your staked USDC was redistributed to the winners as part of the LMSR pool redistribution. No transaction is needed from you.
 
 This is how prediction markets work — losers fund winners. It's not a bug.
 
@@ -70,7 +70,7 @@ This is how prediction markets work — losers fund winners. It's not a bug.
 
 ## If the market was dissolved
 
-If the oracle failed to verify the metric and the market was dissolved, you can claim your **original stake back** — not a winning payout, just your AVAX returned. The **Claim Refund** button appears in place of **Claim Winnings** for dissolved markets.
+If the oracle failed to verify the metric and the market was dissolved, you can claim your **original stake back** — not a winning payout, just your USDC returned. The **Claim Refund** button appears in place of **Claim Winnings** for dissolved markets.
 
 ---
 

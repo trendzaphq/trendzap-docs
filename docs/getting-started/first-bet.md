@@ -14,7 +14,7 @@ This walkthrough takes you from the market feed to a confirmed on-chain position
 
 Make sure you have:
 - Wallet connected to Avalanche C-Chain ([Connect Wallet](/docs/getting-started/connect-wallet))
-- Some AVAX in your wallet (gas is under $0.01; start with at least 0.1 AVAX to bet)
+- Some USDC for betting (minimum 0.05 USDC) and a small amount of AVAX for gas fees (under $0.01)
 
 ---
 
@@ -29,7 +29,7 @@ Each market card shows:
 - **Metric** — What's being measured (views, likes, retweets, etc.)
 - **Threshold** — The number the metric needs to hit or miss
 - **Deadline** — When the market closes
-- **Pool** — Total AVAX staked
+- **Pool** — Total USDC staked
 - **OVER / UNDER** — Current implied probability on each side
 
 Browse until you find something you have a view on.
@@ -65,10 +65,10 @@ There is no "maybe." The market resolves to exactly one outcome.
 
 ## 4. Enter your stake
 
-Type the AVAX amount you want to bet. The modal shows:
+Type the USDC amount you want to bet. The modal shows:
 
 - **Shares** — how many market shares you'll receive
-- **Implied payout** — estimated AVAX if you win at current pool state
+- **Implied payout** — estimated USDC if you win at current pool state
 - **Implied probability** — what the market currently prices your side at
 
 ---
@@ -79,7 +79,7 @@ Click **Confirm**. Your wallet pops up with the transaction request.
 
 Review:
 - **To:** The TrendZap market contract address
-- **Value:** The AVAX amount
+- **Amount:** The USDC amount (ERC-20 transfer, not native ETH value)
 - **Gas:** Under $0.01 on Avalanche
 
 Click **Confirm** in your wallet. The transaction broadcasts to Avalanche C-Chain.
@@ -93,7 +93,7 @@ Within seconds, your position is confirmed on-chain.
 In your **Profile** tab, you can see all markets you've bet on — open and resolved:
 
 - Your side (OVER / UNDER)
-- Your AVAX staked
+- Your USDC staked
 - Current implied probability
 - Status: Active, Resolved, or Claimed
 
@@ -115,11 +115,11 @@ If your side won, a **Claim Winnings** button appears on the market.
 
 1. Click **Claim Winnings**
 2. Confirm the transaction in your wallet
-3. AVAX arrives in your wallet immediately
+3. USDC arrives in your wallet immediately
 
 There is no deadline to claim — your winnings sit in the contract until you call claim.
 
-If your side lost, there is nothing to claim. Your AVAX was redistributed to the winning side as part of the LMSR pool.
+If your side lost, there is nothing to claim. Your USDC was redistributed to the winning side as part of the LMSR pool.
 
 ---
 

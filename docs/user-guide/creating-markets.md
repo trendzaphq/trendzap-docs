@@ -65,7 +65,7 @@ Choose when the oracle will check the final metric and close the market.
 
 ### 6. Add your seed bet
 
-Every market requires a seed bet — an initial AVAX stake that bootstraps liquidity and sets the starting LMSR price. The larger the seed, the more initial liquidity. Your seed bet counts as your position on either OVER or UNDER.
+Every market requires a seed bet — an initial USDC stake that bootstraps liquidity and sets the starting LMSR price. The larger the seed, the more initial liquidity. Your seed bet counts as your position on either OVER or UNDER.
 
 ### 7. Confirm
 
@@ -84,15 +84,15 @@ A summary shows every parameter. Confirm the transaction. The market deploys on 
 
 ## Your creator fee
 
-When the market resolves, 3% of the total AVAX pool is distributed to the market creator address. This is automatic — you don't need to claim it separately.
+When the market resolves, 3% of the total USDC pool is distributed to the market creator address. This is automatic — you don't need to claim it separately.
 
-> If 500 AVAX is in the pool at resolution, you receive 15 AVAX regardless of which side wins.
+> If 500 USDC is in the pool at resolution, you receive 15 USDC regardless of which side wins.
 
 ---
 
 ## If the post is no longer accessible
 
-If the oracle cannot read the metric at resolution (deleted post, account made private, API failure), the market is dissolved and all bettors receive their original AVAX back. No funds are lost.
+If the oracle cannot read the metric at resolution (deleted post, account made private, API failure), the market is dissolved and all bettors receive their original USDC back. No funds are lost.
 
 ---
 

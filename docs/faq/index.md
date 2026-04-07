@@ -12,7 +12,7 @@ description: Frequently asked questions about TrendZap — how it works, what's 
 
 **What is TrendZap?**
 
-TrendZap is a decentralised prediction market where you bet AVAX on whether a social media post will hit a specific engagement metric — for example, whether a tweet will hit 500K views in 24 hours. It runs on Avalanche C-Chain and settles in AVAX.
+TrendZap is a decentralised prediction market where you bet **USDC** on whether a social media post will hit a specific engagement metric — for example, whether a tweet will hit 500K views in 24 hours. It runs on Avalanche C-Chain and settles in USDC.
 
 **How is this different from regular gambling?**
 
@@ -50,7 +50,7 @@ X (Twitter) and YouTube are live. TikTok and Instagram are coming soon.
 
 **Can I create my own market?**
 
-Yes. Any wallet can create a market by providing a post URL, metric, threshold, and deadline. You seed the initial AVAX liquidity and earn a 3% creator fee from the total pool when the market resolves.
+Yes. Any wallet can create a market by providing a post URL, metric, threshold, and deadline. You seed the initial USDC liquidity and earn a 3% creator fee from the total pool when the market resolves.
 
 **What makes a market valid?**
 
@@ -70,11 +70,17 @@ If all bets are on one side and that side wins, all participants receive their s
 
 **What token do I bet with?**
 
-AVAX — the native token of Avalanche C-Chain. No USDC, no wrapping, no bridging needed.
+USDC — a USD-pegged stablecoin (ERC-20, 6 decimals) on Avalanche C-Chain. This is similar to how Polymarket uses USDC. You still need a small amount of AVAX for gas fees, but all bets and payouts are in USDC.
+
+To get USDC: swap AVAX → USDC on [Trader Joe](https://traderjoexyz.com/avalanche/trade) or [Pangolin](https://app.pangolin.exchange/#/swap).
 
 **What's the minimum bet?**
 
-There is no protocol minimum. Even small amounts (0.01 AVAX) work because gas on Avalanche is under $0.01.
+0.05 USDC for regular users. Gas on Avalanche is under $0.01, so even small positions are economical.
+
+**Do I need to approve USDC spending?**
+
+First-time users must approve the TrendZap contract to spend USDC. The app handles this automatically — you'll see an approval transaction before your first bet, then normal bet transactions after that.
 
 **Can I change or cancel my bet?**
 
@@ -88,17 +94,17 @@ Payouts are calculated at resolution using the final pool state, not at bet time
 
 ## Deposits and withdrawals
 
-**How do I deposit AVAX?**
+**How do I deposit USDC?**
 
-There's no deposit step. Just connect your wallet with AVAX and bet directly. Your AVAX goes straight from your wallet to the market contract.
+There's no deposit step. Connect your wallet with USDC on Avalanche C-Chain and bet directly. Your USDC goes straight from your wallet to the market contract (after a one-time approval). You also need a small amount of AVAX in your wallet to cover gas fees.
 
 **How do I withdraw / get my money back?**
 
 You can't cancel an active bet before market close. After resolution:
 
-- **If you won:** Click **Claim Winnings** on the market. Your AVAX sends directly to your wallet.
+- **If you won:** Click **Claim Winnings** on the market. Your USDC sends directly to your wallet.
 - **If you lost:** Nothing to claim — your stake redistributed to winners.
-- **If the market was dissolved:** Click **Claim Refund** to get your original stake back.
+- **If the market was dissolved:** Click **Claim Refund** to get your original USDC stake back.
 
 There is no withdrawal fee. The only fee is the 3% creator fee taken at resolution from winning pools.
 
@@ -116,7 +122,7 @@ The TrendZap Oracle queries the platform's official API at market close time, th
 
 **Where do the losing funds go?**
 
-Losing AVAX redistributes to the winning side as part of the LMSR pool. Specifically:
+Losing USDC redistributes to the winning side as part of the LMSR pool. Specifically:
 - **3% creator fee** goes to the market creator
 - **Remaining 97%** of the total pool distributes to winners proportionally
 
@@ -128,7 +134,7 @@ The oracle checks the metric against the post's prior trajectory. A sudden spike
 
 **What is a dissolved market?**
 
-A market is dissolved when the oracle cannot deliver a verified result. All participants claim their original AVAX back. No funds are lost due to oracle failure.
+A market is dissolved when the oracle cannot deliver a verified result. All participants claim their original USDC back. No funds are lost due to oracle failure.
 
 **How long does resolution take?**
 

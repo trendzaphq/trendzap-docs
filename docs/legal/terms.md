@@ -37,7 +37,7 @@ By using TrendZap you represent and warrant that:
 
 TrendZap operates as a prediction market protocol. Participation involves real financial risk:
 
-- You may lose the full amount of AVAX you commit to a market
+- You may lose the full amount of USDC you commit to a market
 - Past results do not guarantee future outcomes
 - Market resolution depends on oracle data, which may be delayed or disputed
 - Smart contract bugs, though unlikely, could result in loss of funds
@@ -76,7 +76,7 @@ Markets are resolved by TrendZap's automated oracle pipeline, which fetches metr
 - Dissolve markets where reliable data cannot be confirmed
 - Update oracle parameters to improve accuracy over time
 
-In disputed or dissolved markets, all participants receive their original AVAX back.
+In disputed or dissolved markets, all participants receive their original USDC back.
 
 ---
 

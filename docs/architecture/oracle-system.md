@@ -100,7 +100,7 @@ A market enters dispute if:
 
 In dispute state:
 - The market cannot be resolved to OVER or UNDER
-- All participants can claim their original AVAX back
+- All participants can claim their original USDC back
 - The dispute is logged on-chain for transparency
 
 Disputed markets are surfaced in the UI with an explanation of the failure reason.

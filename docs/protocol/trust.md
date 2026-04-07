@@ -12,14 +12,14 @@ Trust in a prediction market protocol is not granted — it's earned. This page 
 
 ## Non-custodial by design
 
-TrendZap never holds your funds. Here is what actually happens to your AVAX:
+TrendZap never holds your funds. Here is what actually happens to your USDC:
 
-1. You call `bet()` on the market contract — your AVAX moves directly into the market contract
+1. You call `bet()` on the market contract — your USDC moves directly into the market contract
 2. At resolution, the oracle writes the outcome on-chain
-3. You call `claim()` on the market contract — your AVAX payout goes directly to your wallet
-4. If the market is dissolved, you call `claim()` to get your original AVAX back
+3. You call `claim()` on the market contract — your USDC payout goes directly to your wallet
+4. If the market is dissolved, you call `claim()` to get your original USDC back
 
-At no point does TrendZap hold your AVAX in a team wallet or multisig. The smart contract is the custodian. It executes deterministically. There is no human in the middle.
+At no point does TrendZap hold your USDC in a team wallet or multisig. The smart contract is the custodian. It executes deterministically. There is no human in the middle.
 
 ---
 

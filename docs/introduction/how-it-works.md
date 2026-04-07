@@ -18,7 +18,7 @@ Any connected wallet can create a market. You provide:
 - **Metric** — what to track (views, likes, retweets, comments, shares)
 - **Threshold** — the raw number the metric must exceed (e.g. `500000` views)
 - **Deadline** — the date/time when the oracle will check the metric
-- **Seed bet** — your initial AVAX contribution, which sets the starting price
+- **Seed bet** — your initial USDC contribution, which sets the starting price
 
 The market is deployed via the **ViralityMarket Factory** contract on Avalanche C-Chain. Once deployed, it is immediately open for betting.
 
@@ -30,7 +30,7 @@ TrendZap uses **Logarithmic Market Scoring Rule (LMSR)** pricing — the same mo
 
 ### What LMSR means for you
 
-- Prices reflect real probability. If the crowd leans OVER, the OVER price rises toward 1 AVAX per share.
+- Prices reflect real probability. If the crowd leans OVER, the OVER price rises toward 1 USDC per share.
 - **Earlier bettors get better prices.** The market price moves with every trade.
 - You always know exactly what you'll pay and how many shares you'll receive before confirming.
 - Inherent liquidity — you can always buy shares at the current LMSR price.
@@ -48,11 +48,11 @@ The app shows **OVER %** and **UNDER %** on every market card. These are the cur
 When you tap **Zap It!** on a market, a confirmation modal shows:
 
 - How many shares you're buying
-- The total AVAX cost
+- The total USDC cost
 - Your implied payout if you win
 - Current market probability
 
-Your AVAX goes directly into the smart contract liquidity pool. The transaction settles on Avalanche in under 2 seconds.
+Your USDC goes directly into the smart contract liquidity pool. The transaction settles on Avalanche in under 2 seconds.
 
 ---
 
@@ -71,25 +71,25 @@ All resolution data is publicly verifiable on [Snowtrace](https://snowtrace.io).
 
 ## 5. Payouts — where funds go
 
-All bets — both OVER and UNDER — go into a shared AVAX pool held by the smart contract. When the market resolves:
+All bets — both OVER and UNDER — go into a shared USDC pool held by the smart contract. When the market resolves:
 
 | Party | What they receive |
 |-------|------------------|
 | **Winners** | Proportional share of the entire pool based on their share count |
-| **Losers** | Nothing — their AVAX redistributes to the winning side |
+| **Losers** | Nothing — their USDC redistributes to the winning side |
 | **Market creator** | 3% fee deducted from the total pool at resolution |
 
 **Losers fund the winners.** The LMSR mechanism ensures earlier bettors receive more favourable prices. The creator is incentivised to create high-quality, genuinely uncertain markets.
 
-> **Example:** 1000 AVAX total pool. OVER wins. Creator takes 30 AVAX (3%). Remaining 970 AVAX distributed to all OVER share holders proportionally.
+> **Example:** 1000 USDC total pool. OVER wins. Creator takes 30 USDC (3%). Remaining 970 USDC distributed to all OVER share holders proportionally.
 
-No AVAX leaves the contract until a winning bettor claims it — funds are non-custodial.
+No USDC leaves the contract until a winning bettor claims it — funds are non-custodial.
 
 ---
 
 ## 6. Claiming winnings
 
-After resolution, winners connect their wallet and click **Claim Winnings** on the market. The contract sends their AVAX payout directly to their wallet. Gas on Avalanche is typically under $0.01.
+After resolution, winners connect their wallet and click **Claim Winnings** on the market. The contract sends their USDC payout directly to their wallet. Gas on Avalanche is typically under $0.01.
 
 Unclaimed winnings do not expire — claim at any time after resolution.
 
@@ -110,5 +110,5 @@ Deadline passes → Oracle reads metric
     ↓
 Outcome written on-chain → Market locked
     ↓
-Winners claim AVAX → Creator fee deducted
+Winners claim USDC → Creator fee deducted
 ```

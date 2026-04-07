@@ -101,7 +101,7 @@ Confirm you're on Avalanche C-Chain (not Ethereum or another network). AVAX is t
 ## Security notes
 
 - TrendZap contracts are read-only until you sign a transaction
-- The app only requests permission to send the specific AVAX amount you've entered
+- For your first bet, the app will request a USDC spending approval transaction — this is a one-time step per wallet
 - Always verify the URL is `app.trendzap.xyz` before connecting
 - Check contract addresses against those in [Why Avalanche?](/docs/introduction/why-this-chain)
 
