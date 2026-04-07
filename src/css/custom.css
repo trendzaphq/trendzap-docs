@@ -58,6 +58,7 @@
   --ifm-navbar-link-hover-color:        var(--tz-amber);
 
   /* Sidebar */
+  --ifm-navbar-sidebar-width:            min(82vw, 300px);
   --ifm-sidebar-width:                   272px;
   --ifm-menu-color:                      var(--tz-muted);
   --ifm-menu-color-active:               var(--tz-amber);
@@ -549,7 +550,6 @@ body.homepage-view .main-wrapper {
   top: 0 !important;
   left: 0 !important;
   bottom: 0 !important;
-  width: min(82vw, 300px) !important;
   height: 100vh !important;
   height: 100dvh !important;
   z-index: 9000 !important;
@@ -564,8 +564,6 @@ body.homepage-view .main-wrapper {
               opacity 0.28s ease,
               visibility 0s linear 0.28s !important;
   box-shadow: 4px 0 40px rgba(0, 0, 0, 0.6);
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 
 /* Show sidebar panel when hamburger is toggled
