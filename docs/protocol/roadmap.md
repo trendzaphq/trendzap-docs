@@ -1,7 +1,7 @@
 ---
 sidebar_position: 4
 title: Roadmap
-description: TrendZap's protocol milestones — from testnet through mainnet and beyond.
+description: TrendZap's protocol milestones — from mainnet launch through ecosystem growth.
 ---
 
 # Roadmap
@@ -12,68 +12,53 @@ This is what we're building and in what order. Dates are directional, not commit
 
 ## Where We Are
 
-TrendZap is live on **Arbitrum Sepolia testnet**. The core protocol is functional:
+TrendZap is **live on Avalanche Mainnet** (chain ID 43114). The core protocol is functional:
 
-- Markets can be created, bet on, and resolved
-- Oracle pipeline is running with X/Twitter, TikTok, and Instagram support
+- Markets can be created, bet on, and resolved on Avalanche C-Chain
+- Oracle pipeline is running with X/Twitter and YouTube support
 - The risk engine is active with position limits and anomaly detection
-- The TypeScript SDK and subgraph are deployed and usable
-
-The testnet phase is about finding edge cases, stress-testing the oracle under adversarial conditions, and building the community that will make early mainnet markets liquid.
+- All bets and payouts settle in USDC (ERC-20, 6 decimals)
 
 ---
 
-## Phase 1 — Testnet (Current)
+## Phase 1 — Mainnet Launch (Current)
 
 **Goal:** Prove the oracle is reliable and the market mechanics work under real usage.
 
-- [x] Core smart contracts deployed on Arbitrum Sepolia
-- [x] Oracle pipeline live for X/Twitter, TikTok, Instagram
-- [x] Parimutuel pool and USDC settlement working
+- [x] Core smart contracts deployed on Avalanche Mainnet
+- [x] Oracle pipeline live for X/Twitter, YouTube
+- [x] LMSR pool and USDC settlement working
 - [x] Risk engine: position limits, anomaly detection, dispute logic
-- [x] TypeScript SDK (beta)
 - [x] Subgraph indexer live
-- [x] Hackathon win — Arbitrum ecosystem recognition
 - [ ] Smart contract audit (in progress)
-- [ ] YouTube oracle support
+- [ ] TikTok and Instagram oracle support
 - [ ] Batch claim and market browsing improvements
 
 ---
 
-## Phase 2 — Mainnet Launch
+## Phase 2 — Protocol Maturity
 
-**Goal:** Go live with real USDC, with a security baseline we can stand behind.
+**Goal:** Build the primitives needed for TrendZap to function as a serious prediction market protocol.
 
 - [ ] Smart contract audit completed and report published
 - [ ] Bug bounty programme formalised
-- [ ] TrendZapFactory and TrendZapMarket deployed on Arbitrum One
-- [ ] Verified contracts on Arbiscan
 - [ ] All four platforms supported in oracle (X/Twitter, TikTok, Instagram, YouTube)
-- [ ] SDK v1.0 stable release
-- [ ] Market creation open to all wallets
+- [ ] Verified contracts on [Snowtrace](https://snowtrace.io)
+- [ ] Market creation open to all wallets (creator tier system)
 - [ ] Governance parameter discussion: fee rates, position limits
 
-**When:** Q2 2026, pending audit completion.
+**When:** Q3 2026.
 
 ---
 
-## Phase 3 — Protocol Maturity
+## Phase 3 — Ecosystem
 
-**Goal:** Build the primitives needed for TrendZap to function as a serious prediction market protocol.
+**Goal:** TrendZap as infrastructure that other products build on.
 
 - [ ] On-chain governance for protocol parameters (fees, limits, oracle thresholds)
 - [ ] Market curation signals — community flagging of low-quality markets
 - [ ] Reputation layer — on-chain track record for predictors
 - [ ] Creator tools — dashboard for tracking your own content in markets
-- [ ] Advanced market types: multi-threshold markets, bracket markets
-
----
-
-## Phase 4 — Ecosystem
-
-**Goal:** TrendZap as infrastructure that other products build on.
-
-- [ ] SDK v2 with React hooks and pre-built UI components
 - [ ] Embeddable market widget for third-party sites
 - [ ] API access tier for data providers and analytics products
 - [ ] Public data export — historical market and oracle data
@@ -82,7 +67,7 @@ The testnet phase is about finding edge cases, stress-testing the oracle under a
 
 ## What Is Not on the Roadmap
 
-**Multi-chain deployment** — We're focused on Arbitrum depth before breadth. When volume justifies it and liquidity can be sustained, we'll evaluate other chains. Not a current priority.
+**Multi-chain deployment** — We're focused on Avalanche depth before breadth. When volume justifies it and liquidity can be sustained, we'll evaluate other chains. Not a current priority.
 
 **Native token launch** — There is no TrendZap token planned at this stage. The protocol runs on USDC. If governance requires a token, that decision will be made transparently and with the community.
 
