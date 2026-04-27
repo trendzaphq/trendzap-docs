@@ -58,12 +58,14 @@ Your USDC goes directly into the smart contract liquidity pool. The transaction 
 
 ## 4. Oracle resolution
 
-When the market deadline passes, the **TrendZap Oracle** resolves the market on-chain:
+When the market deadline passes, the **TrendZap Oracle + keeper pipeline** resolves the market on-chain:
 
 1. Fetches the actual metric value for the post at resolution time via official platform APIs
 2. Compares it to the threshold
 3. Writes the outcome (`OVER` or `UNDER`) to the smart contract
 4. Locks the market — no more bets can be placed
+
+This is automated by a background worker/cron flow. If the oracle cannot retrieve a valid metric, the market is skipped or disputed until retried/fallback handling completes.
 
 All resolution data is publicly verifiable on [Snowtrace](https://snowtrace.io).
 
@@ -75,13 +77,14 @@ All bets — both OVER and UNDER — go into a shared USDC pool held by the smar
 
 | Party | What they receive |
 |-------|------------------|
-| **Winners** | Proportional share of the entire pool based on their share count |
-| **Losers** | Nothing — their USDC redistributes to the winning side |
-| **Market creator** | 3% fee deducted from the total pool at resolution |
+| **Winners** | Proportional share of the net payout pool based on winning shares |
+| **Losers** | Nothing — their stake contributes to the winning side's pool |
+| **Protocol treasury** | 1.6% effective share of gross volume (from 2% trade fees) |
+| **Market creator** | 0.4% effective share of gross volume (from 2% trade fees) |
 
-**Losers fund the winners.** The LMSR mechanism ensures earlier bettors receive more favourable prices. The creator is incentivised to create high-quality, genuinely uncertain markets.
+**Losers fund winners through pool economics.** Fees are collected per trade, then distributed at resolution to treasury + creator.
 
-> **Example:** 1000 USDC total pool. OVER wins. Creator takes 30 USDC (3%). Remaining 970 USDC distributed to all OVER share holders proportionally.
+> **Example:** If 1000 USDC gross volume is traded, 2% total trade fees are collected over time. Those fees are split at resolution (about 16 USDC to treasury, 4 USDC to creator). Winners claim from the remaining net payout pool proportionally.
 
 No USDC leaves the contract until a winning bettor claims it — funds are non-custodial.
 
@@ -97,7 +100,7 @@ Unclaimed winnings do not expire — claim at any time after resolution.
 
 ## 7. Dissolving a market
 
-If a market reaches its deadline but the oracle cannot verify the metric (deleted post, API failure, private account), the admin may dissolve the market and return all bettors' funds. This is a safety mechanism — normal markets always resolve automatically.
+If a market reaches its deadline but the oracle cannot verify the metric (deleted post, API failure, private account), fallback handling can skip/dispute/manual-resolve depending on policy. This is a safety mechanism for low-confidence or unavailable data.
 
 ---
 

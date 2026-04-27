@@ -50,7 +50,7 @@ X (Twitter) and YouTube are live. TikTok and Instagram are coming soon.
 
 **Can I create my own market?**
 
-Yes. Any wallet can create a market by providing a post URL, metric, threshold, and deadline. You seed the initial USDC liquidity and earn a 3% creator fee from the total pool when the market resolves.
+Yes. Any wallet can create a market by providing a post URL, metric, threshold, and deadline. You seed initial liquidity and receive the creator share from collected trade fees when the market resolves.
 
 **What makes a market valid?**
 
@@ -76,7 +76,7 @@ To get USDC: swap AVAX → USDC on [Trader Joe](https://traderjoexyz.com/avalanc
 
 **What's the minimum bet?**
 
-0.05 USDC for regular users. Gas on Avalanche is under $0.01, so even small positions are economical.
+0.5 USDC for regular users. Admin wallets can use 0.03 USDC for operational/testing flows.
 
 **Do I need to approve USDC spending?**
 
@@ -106,7 +106,7 @@ You can't cancel an active bet before market close. After resolution:
 - **If you lost:** Nothing to claim — your stake redistributed to winners.
 - **If the market was dissolved:** Click **Claim Refund** to get your original USDC stake back.
 
-There is no withdrawal fee. The only fee is the 3% creator fee taken at resolution from winning pools.
+There is no withdrawal fee charged by TrendZap when you claim. Claiming is still an on-chain transaction, so you pay normal Avalanche gas from your wallet.
 
 **Is there a deadline to claim winnings?**
 
@@ -123,8 +123,9 @@ The TrendZap Oracle queries the platform's official API at market close time, th
 **Where do the losing funds go?**
 
 Losing USDC redistributes to the winning side as part of the LMSR pool. Specifically:
-- **3% creator fee** goes to the market creator
-- **Remaining 97%** of the total pool distributes to winners proportionally
+- **2% trade fee** is collected per bet
+- At resolution, collected fees are split between treasury and creator
+- Winners claim from the remaining net payout pool proportionally
 
 Losing bettors get nothing. This is the mechanism — winners are funded by losers.
 
@@ -138,7 +139,7 @@ A market is dissolved when the oracle cannot deliver a verified result. All part
 
 **How long does resolution take?**
 
-Typically a few minutes after the deadline. If no result is delivered within a reasonable window, the market is dissolved and funds are returned.
+Typically a few minutes after deadline. The oracle/keeper flow runs in the background; when data is unavailable or low-confidence, a market may be skipped, retried, or escalated for manual fallback.
 
 ---
 

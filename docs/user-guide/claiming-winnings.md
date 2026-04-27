@@ -50,13 +50,11 @@ You can also claim directly from the market detail view:
 Your payout is calculated at resolution using the final pool state:
 
 ```
-Total Pool   = all USDC staked (OVER + UNDER)
-Creator Fee  = 3% of Total Pool
-Winners Pool = Total Pool − Creator Fee
-Your Payout  = (Your Shares ÷ Total Winning Shares) × Winners Pool
+Net Pool (poolBalance) = total USDC staked after per-trade fee deductions
+Your Payout            = (Your Winning Shares ÷ Total Winning Shares) × Net Pool at claim time
 ```
 
-The app shows your exact claimable amount before you confirm the transaction.
+The app shows an estimate while the market is live and your claimable amount after resolution.
 
 ---
 
@@ -86,7 +84,7 @@ The market may still be in the resolution pipeline. Wait a few minutes after the
 No. Claims are tied to the wallet address that placed the bet.
 
 **Why is my payout different from what I estimated earlier?**
-Payouts are calculated at resolution using the final pool state, not at bet time. If more people joined your side after you bet, your share of the winners' pool is smaller. See [Understanding Odds](/docs/user-guide/understanding-odds) for how this works.
+Live estimates are based on the current pool and share distribution. Final claimable payout depends on the final winning-share distribution and the remaining net payout pool when claims happen. See [Understanding Odds](/docs/user-guide/understanding-odds) for details.
 
 ---
 

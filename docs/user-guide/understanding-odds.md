@@ -47,18 +47,16 @@ This creates an incentive to bet early on uncertain markets rather than waiting 
 | OVER | 600 USDC |
 | UNDER | 400 USDC |
 
-Total pool: **1000 USDC**
+Total gross stake: **1000 USDC**
 
 You bet **100 USDC on OVER** now.
 
-Estimated payout if OVER wins at this pool state:
+Assume trade fee is 2% and this is the current state:
 
 ```
-Creator fee  = 3% × 1100 = 33 USDC
-Winners Pool = 1100 − 33 = 1067 USDC
-Your share   = 100 ÷ 700 = 14.3%
-Your payout  = 1067 × 14.3% = ~152 USDC
-Your profit  = ~52 USDC
+Net added from your bet = 100 × 0.98 = 98 USDC
+Your share of winners   = your winning shares ÷ total winning shares
+Estimated payout now    = your share × current net payout pool
 ```
 
 ### If more OVER bets come in before close
@@ -66,11 +64,9 @@ Your profit  = ~52 USDC
 Suppose 300 more USDC flows into OVER:
 
 ```
-OVER pool now: 1000 USDC total
-Your share = 100 ÷ 1000 = 10%
-Winners Pool ≈ 1370 × 0.97 ≈ 1329 USDC
-Your payout = 1329 × 10% = ~133 USDC
-Your profit = ~33 USDC
+OVER winning-share supply increases
+Your share fraction decreases
+Your estimated payout decreases (unless total net pool growth offsets dilution)
 ```
 
 Your payout decreases because others joined your side. You're still profitable — just less so.
@@ -80,11 +76,9 @@ Your payout decreases because others joined your side. You're still profitable �
 Suppose 300 USDC flows into UNDER instead:
 
 ```
-Your share = 100 ÷ 700 = 14.3% (unchanged)
-Total pool = 1400 USDC
-Winners Pool ≈ 1400 × 0.97 ≈ 1358 USDC
-Your payout = 1358 × 14.3% = ~194 USDC
-Your profit = ~94 USDC
+Your winning-share fraction stays the same
+Net payout pool grows from the other side's stakes
+Your estimated payout increases
 ```
 
 More money on the other side means a higher payout when you win. This is the incentive for early contrarian positions.
@@ -97,7 +91,7 @@ More money on the other side means a higher payout when you win. This is the inc
 
 **Contrarian bets pay more if correct** — the minority side captures more of the total pool.
 
-**Payouts are always calculated at resolution** — what the UI shows during the market is an estimate based on the current pool state.
+**Payouts are finalized at resolution and claim time** — what the UI shows during the market is an estimate based on the current state.
 
 **There is no edge from timing alone** — what matters is whether you're right about the outcome.
 
